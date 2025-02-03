@@ -10,6 +10,12 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'theme-light': "#8778FB",
+        'theme-dark': "#6859FF"
+      },
+      fontFamily: {
+        jost: ["Jost", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
       },
     },
   },

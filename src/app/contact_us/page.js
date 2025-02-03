@@ -1,6 +1,7 @@
 'use client'; // Required for using React hooks and client-side interactivity
 
 import { useState } from 'react';
+import Navbar from "@/components/Navbar";
 import Image from "next/image";
 
 
@@ -113,10 +114,14 @@ export default function ContactUs() {
       </div>
 
       {/* Right Section */}
-      <div className="pt-[91px] pb-[60px] left-[750px] absolute rounded-[15px] border-2 border-[#8174ff] flex-col justify-start items-start gap-2.5 inline-flex">
+      <div className="pt-[91px] pb-[60px] left-[750px]  rounded-[15px] border-2 border-[#8174ff] flex-col justify-start items-start gap-2.5 inline-flex">
         <Image
-          src="/src/assets/contact.png" alt="Contact Image" width={360} height={620}
-        ></Image>
+          src="/assets/contact.png" 
+          alt="Contact Image" 
+          width={360} 
+          height={620}
+          className="object-cover"
+        />
       </div>
     </div>
   </div>

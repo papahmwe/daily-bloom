@@ -1,11 +1,14 @@
 // Landing Page ("/")
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Stats from "@/components/Status";
 
 export default function Home() {
   return (
     <div>
-      <h1 className="font-damion text-mainSecondary">Home page One</h1>
-      <h1 className="font-montserrat ">Home page Two</h1>
-      <h1 className="font-jost font-medium">Home page Three</h1>
+      <Navbar />
+      <Hero />
+      <Stats />
     </div>
   );
 }

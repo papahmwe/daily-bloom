@@ -5,27 +5,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import google from '@/public/google.png'
-import facebook from '@/public/facebook.png'
-import instagram from '@/public/instagram.png'
-
-import login1 from '@/public/login1.png'
-import login2 from '@/public/login2.png'
-import login3 from '@/public/login3.png'
 
 const slides = [
   {
-    image: login1.src,
+    image: '/assets/images/auth/login1.png',
     title: 'One login',
     subtitle: 'endless growth with DailyBloom',
   },
   {
-    image: login2.src,
+    image: '/assets/images/auth/login2.png',
     title: 'Track Progress',
     subtitle: 'watch yourself grow every day',
   },
   {
-    image: login3.src,
+    image: '/assets/images/auth/login3.png',
     title: 'Earn Rewards',
     subtitle: 'get rewarded for consistency',
   },
@@ -190,17 +183,15 @@ export default function LoginPage() {
 
             <div className='flex justify-center items-center gap-10'>
               <button>
-                <img src={google.src} alt={'google'} className='w-6 h-6' />
+
+                <Image src='/assets/images/auth/google.png' alt='google' width={36} height={36}/>
               </button>
               <button className='p-3  transition-colors '>
-                <img
-                  src={facebook.src}
-                  alt={'google'}
-                  className='w-7 h-7  rounded-full'
-                />
+
+                <Image src='/assets/images/auth/facebook.png' alt='facebook' width={36} height={36} className='rounded-full'/>
               </button>
               <button className='p-3  transition-colors'>
-                <img src={instagram.src} alt={'google'} className='w-6 h-6' />
+                <Image src='/assets/images/auth/instagram.png' alt='instagram' width={36} height={36}/>
               </button>
             </div>
 

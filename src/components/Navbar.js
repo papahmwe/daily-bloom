@@ -27,7 +27,7 @@ const Navbar = () => {
       >
         <NavLink href="/" pathname={pathname} label="Home" onClick={() => setIsOpen(false)} />
         <NavLink href="/about" pathname={pathname} label="About" onClick={() => setIsOpen(false)} />
-        <NavLink href="/contact" pathname={pathname} label="Contact" onClick={() => setIsOpen(false)} />
+        <NavLink href="/contact_us" pathname={pathname} label="Contact" onClick={() => setIsOpen(false)} />
 
     
         <NavLink
@@ -49,7 +49,7 @@ const Navbar = () => {
       <div className="hidden md:flex space-x-6 items-center">
         <NavLink href="/" pathname={pathname} label="Home" />
         <NavLink href="/about" pathname={pathname} label="About Us" />
-        <NavLink href="/contact" pathname={pathname} label="Contact Us" />
+        <NavLink href="/contact_us" pathname={pathname} label="Contact Us" />
 
 
         <NavLink href="/sign-up" pathname={pathname} label="Sign Up" className="border border-theme-dark text-theme-dark uppercase px-4 py-2 rounded-lg" />

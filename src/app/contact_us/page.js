@@ -8,6 +8,9 @@ import Image from "next/image";
 export default function ContactUs() {
   const [agreed, setAgreed] = useState(false);
   return (
+    <div className='min-h-screen bg-white'>
+    <Navbar />
+      
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl w-full max-w-5xl">
       {/* Left Section */}
@@ -20,9 +23,9 @@ export default function ContactUs() {
           We're here to help. Send us a
           message, and we'll be here for you.
         </p>
-        <hr className='mb-0'></hr>
+        <hr></hr>
         {/* Contact Form */}
-        <form action="#" method="POST" className="mx-auto mt-10 max-w-xl sm:mt-20">
+        <form action="#" method="POST" className="mx-auto mt-10 max-w-xl sm:mt-10">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             {/* First Name */}
             <div>
@@ -101,11 +104,10 @@ export default function ContactUs() {
             </div>
 
             {/* Submit Button */}
-            <div className="mt-10 justify-end items-center inline-flex sm:col-span-2">
+            <div className="sm:mt-8 justify-end items-center inline-flex sm:col-span-2">
               <button
                 type="submit"
-                className="block w-[156] rounded-md bg-white px-3.5 py-2.5 text-center text-[16px] font-['Montserrat'] text-[#8174FF] font-bold shadow-xs hover:border-violet-500"
-              >
+                className="block w-48 h-12 rounded-md bg-white px-6 py-3 text-center text-[16px] font-['Montserrat'] text-[#8174FF] font-bold shadow-xs border border-[#8174FF] hover:bg-black hover:text-white hover:shadow-lg hover:scale-105 hover:opacity-80 transition-colors duration-300">
                 Send
               </button>
             </div>
@@ -114,9 +116,9 @@ export default function ContactUs() {
       </div>
 
       {/* Right Section */}
-      <div className="pt-[91px] pb-[60px] left-[750px]  rounded-[15px] border-2 border-[#8174ff] flex-col justify-center items-center gap-2.5 inline-flex">
+      <div className="pt-[91px] pb-[60px] left-[750px] rounded-[15px] border-2 border-[#8174ff] flex-col justify-center items-center gap-2.5 inline-flex">
         <Image
-          src="/assets/images/contact.png" 
+          src="/assets/contact_images/contact.png" 
           alt="Contact Image" 
           width={360} 
           height={620}
@@ -124,6 +126,7 @@ export default function ContactUs() {
       </div>
     </div>
   </div>
+    </div>
   );
 }
       

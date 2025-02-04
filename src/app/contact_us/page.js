@@ -114,13 +114,12 @@ export default function ContactUs() {
       </div>
 
       {/* Right Section */}
-      <div className="pt-[91px] pb-[60px] left-[750px]  rounded-[15px] border-2 border-[#8174ff] flex-col justify-start items-start gap-2.5 inline-flex">
+      <div className="pt-[91px] pb-[60px] left-[750px]  rounded-[15px] border-2 border-[#8174ff] flex-col justify-center items-center gap-2.5 inline-flex">
         <Image
-          src="/assets/contact.png" 
+          src="/assets/images/contact.png" 
           alt="Contact Image" 
           width={360} 
           height={620}
-          className="object-cover"
         />
       </div>
     </div>

@@ -9,7 +9,7 @@ export default function About() {
         {/* image section*/}
         <div>
           <Image
-            src="/assets/images/about-hero-img.png"
+            src="/assets/about/about-hero-img.png"
             alt="hero-image"
             width={675}
             height={419}
@@ -45,7 +45,7 @@ export default function About() {
         <div className="w-full h-[743px] ">
           <div className="flex flex-col justify-center items-center gap-[20px] py-20">
             <Image
-              src="/assets/images/goals-image.png"
+              src="/assets/about/goals-image.png"
               alt="goals_image"
               width={365}
               height={231}
@@ -68,7 +68,7 @@ export default function About() {
           <div className="flex justify-between items-center gap-[70px] mx-20 px-5 ">
             {/* image */}
             <Image
-              src="/assets/images/mission_image.png"
+              src="/assets/about/mission_image.png"
               alt="Mission_image"
               width={519}
               height={389}
@@ -105,7 +105,7 @@ export default function About() {
 
             {/* image */}
             <Image
-              src="/assets/images/vision_image.png"
+              src="/assets/about/vision_image.png"
               alt="Vision_image"
               width={519}
               height={389}
@@ -129,14 +129,14 @@ export default function About() {
                   <div className="relative z-10 flex items-center justify-center">
                     <div className="flex flex-col justify-between items-center">
                       <Image
-                        src="/assets/images/footer_logo.png"
+                        src="/assets/about/footer_logo.png"
                         alt="logo_image"
                         width={119}
                         height={111.51}
                         className="object-cover "
                       />
                       <Image
-                        src="/assets/images/footer_logo_text.png"
+                        src="/assets/about/footer_logo_text.png"
                         alt="logo_image"
                         width={197}
                         height={51}
@@ -194,7 +194,7 @@ export default function About() {
                   <div className="w-[287px] h-[70px] flex justify-between items-center">
                     <div className="w-[73px] h-[70px] flex flex-col justify-center items-center gap-[4px]">
                       <Image
-                        src="/assets/images/Symbol.svg.png"
+                        src="/assets/about/facebook.png"
                         alt="facebook_image"
                         width={40}
                         height={40}
@@ -205,7 +205,7 @@ export default function About() {
                     </div>
                     <div className="w-[73px] h-[70px] flex flex-col justify-center items-center gap-[4px]">
                       <Image
-                        src="/assets/images/linkedin_icon.png.png"
+                        src="/assets/about/linkedin_icon.png"
                         alt="linkedIn_image"
                         width={40}
                         height={40}
@@ -216,7 +216,7 @@ export default function About() {
                     </div>
                     <div className="w-[73px] h-[70px] flex flex-col justify-center items-center gap-[4px]">
                       <Image
-                        src="/assets/images/x_icon.jpeg.png"
+                        src="/assets/about/x_icon.png"
                         alt="X_image"
                         width={40}
                         height={40}

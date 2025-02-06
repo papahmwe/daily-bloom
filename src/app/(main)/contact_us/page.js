@@ -9,7 +9,7 @@ export default function ContactUs() {
   const [agreed, setAgreed] = useState(false);
   return (
     <div className='min-h-screen bg-white'>
-    <Navbar />
+    {/* <Navbar /> */}
       
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl w-full max-w-5xl">

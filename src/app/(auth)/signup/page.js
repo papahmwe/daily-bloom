@@ -5,9 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import signup1 from '@/public/signup1.png'
-import signup2 from '@/public/signup2.png'
-import signup3 from '@/public/signup3.png'
+import signup1 from '@/public/assets/auth/signup1.png'
+import signup2 from '@/public/assets/auth/signup2.png'
+import signup3 from '@/public/assets/auth/signup3.png'
 
 const slides = [
   {

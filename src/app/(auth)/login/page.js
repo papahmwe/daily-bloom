@@ -5,13 +5,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import google from '@/public/google.png'
-import facebook from '@/public/facebook.png'
-import instagram from '@/public/instagram.png'
+import google from '@/public/assets/auth/google.png'
+import facebook from '@/public/assets/auth/facebook.png'
+import instagram from '@/public/assets/auth/instagram.png'
 
-import login1 from '@/public/login1.png'
-import login2 from '@/public/login2.png'
-import login3 from '@/public/login3.png'
+import login1 from '@/public/assets/auth/login1.png'
+import login2 from '@/public/assets/auth/login2.png'
+import login3 from '@/public/assets/auth/login3.png'
 
 const slides = [
   {

@@ -49,7 +49,7 @@ export default function DonutChart() {
       {/* First Pie Chart */}
       <div className="p-3 bg-white rounded-lg shadow-md text-center mr-10">
         <h3 className="text-lg font-semibold text-gray-700 font-[Jost]">Progress</h3>
-        <p>50%</p>
+        <p className="font-[Jost]">50%</p>
         <div className="w-56 mx-auto">
           <Doughnut data={data} />
         </div>
@@ -58,7 +58,7 @@ export default function DonutChart() {
       {/* Second Pie Chart */}
       <div className="p-3 bg-white rounded-lg shadow-md text-center mr-10">
         <h3 className="text-lg font-semibold text-gray-700 font-[Jost]">Consistency</h3>
-        <p>50%</p>
+        <p className="font-[Jost]">50%</p>
         <div className="w-56 mx-auto">
           <Doughnut data={data1} />
         </div>
@@ -67,7 +67,7 @@ export default function DonutChart() {
       {/* Third Pie Chart */}
       <div className="p-3 bg-white rounded-lg shadow-md text-center">
         <h3 className="text-lg font-semibold text-gray-700 font-[Jost]">Consistency</h3>
-        <p>50%</p>
+        <p className="font-[Jost]">50%</p>
         <div className="w-56 mx-auto">
           <Doughnut data={data2} />
         </div>

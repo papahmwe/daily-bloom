@@ -1,3 +1,9 @@
-export default function DashboardHomePage() {
-  return <h1>Dashboard Home Page</h1>;
+import Home from "@/app/(dashboard)/dashboard/home/page";
+
+export default function dashboard(){
+  return (
+    <div>
+      <Home />
+    </div>
+  );
 }

@@ -1,4 +1,4 @@
-import Nav from "@/components/Navbar";
+import Nav from "@/components/Home/Navbar";
 import "../../styles/globals.css";
 
 export const metadata = {

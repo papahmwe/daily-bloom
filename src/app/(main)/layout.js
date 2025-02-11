@@ -1,4 +1,5 @@
-import '../styles/globals.css'
+import Nav from '@/components/Home/Navbar'
+import '../../styles/globals.css'
 
 export const metadata = {
   title: 'Daily Bloom',
@@ -9,7 +10,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <head />
-      <body>{children}</body>
+      <body>
+        <Nav />
+        {children}
+      </body>
     </html>
   )
 }

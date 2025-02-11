@@ -1,3 +1,3 @@
 export default function DashboardHomePage() {
-  return <h1>Dashboard Home Page</h1>;
+  return <div className="bg-backgroundSecondary ">Dashboard Home Page</div>;
 }

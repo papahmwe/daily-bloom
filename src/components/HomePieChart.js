@@ -14,7 +14,7 @@ export default function DonutChart() {
         data: [50, 50],
         backgroundColor: ["#9409ff", "#f1e6b9"],
         borderWidth: 1,
-        borderRadius:20,
+        // borderRadius:20,
         cutout: "50%", // Makes it a donut chart
       },
     ],
@@ -66,7 +66,7 @@ export default function DonutChart() {
 
       {/* Third Pie Chart */}
       <div className="p-3 bg-white rounded-lg shadow-md text-center">
-        <h3 className="text-lg font-semibold text-gray-700 font-[Jost]">Consistency</h3>
+        <h3 className="text-lg font-semibold text-gray-700 font-[Jost]">Habit Completion</h3>
         <p className="font-[Jost]">50%</p>
         <div className="w-56 mx-auto">
           <Doughnut data={data2} />

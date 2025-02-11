@@ -5,23 +5,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import signup1 from '@/public/assets/auth/signup1.png'
-import signup2 from '@/public/assets/auth/signup2.png'
-import signup3 from '@/public/assets/auth/signup3.png'
-
 const slides = [
   {
-    image: signup1.src,
+    image: '/assets/images/auth/signup1.png',
     title: 'One login',
     subtitle: 'endless growth with DailyBloom',
   },
   {
-    image: signup2.src,
+    image: '/assets/images/auth/signup2.png',
     title: 'Small Steps Big Rewards',
     subtitle: 'Stay Consisten With Dailybloom',
   },
   {
-    image: signup3.src,
+    image: '/assets/images/auth/signup3.png',
     title: 'Consistency Unlocks Rewards Rewards',
     subtitle: 'Start Blooming with DailyBloom',
   },

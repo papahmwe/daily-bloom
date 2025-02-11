@@ -30,7 +30,7 @@ const sideBarItemLists = [
     id: 4,
     title: "Habit Management",
     image: "/assets/dashboard_home/HabitManagement.png",
-    activeImage: "/assets/dashboard_home/HabitManagement.png",
+    activeImage: "/assets/dashboard_home/HabitManagement_White.png",
     route: "/dashboard/habitmanagement",
   },
   {
@@ -54,7 +54,7 @@ export default function Sidebar() {
 
   return (
     <div>
-      <div className="bg-backgroundPrimary flex flex-col justify-start items-center gap-[50px] w-[333px] h-[1024px] shadow-sm">
+      <div className="w-[333px] h-[1024px] flex flex-col justify-start items-center gap-[40px] bg-backgroundPrimary shadow-sm">
         {/* Logo */}
         <Image
           src="/assets/home/logo.png"
@@ -65,13 +65,13 @@ export default function Sidebar() {
         />
 
         {/* Menu */}
-        <div className="w-[277px] h-[497px] flex flex-col gap-[20px]">
+        <div className="w-[277px] h-[497px] flex flex-col gap-[15px]">
           {sideBarItemLists.map((sideBar, index) => {
             const isActive = pathname === sideBar.route;
 
             return (
               <Link
-                className={`cursor-pointer transition-all duration-200 flex justify-start items-center h-[48px] rounded-[10px] px-[14px] py-[16px] gap-[20px] ${
+                className={`h-[48px] flex justify-start items-center cursor-pointer rounded-[10px] px-[14px] py-[16px] gap-[20px] ${
                   pathname === sideBar.route
                     ? "bg-mainSecondary"
                     : "bg-transparent"
@@ -100,7 +100,7 @@ export default function Sidebar() {
           })}
 
           {/* Log Out */}
-          <div className="cursor-pointer transition-all duration-200 flex justify-start items-center h-[48px] rounded-[10px] px-[14px] py-[16px] gap-[20px]">
+          <div className=" h-[48px] flex justify-start items-center cursor-pointer rounded-[10px] px-[14px] py-[16px] gap-[20px]">
             <Image
               src="/assets/dashboard_home/LogOut.png"
               alt="LogOut"

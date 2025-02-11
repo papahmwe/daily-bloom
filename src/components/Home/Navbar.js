@@ -60,10 +60,10 @@ const Nav = () => {
         {/* Buttons */}
         <div className='flex justify-center items-center gap-[36px]'>
           <button className='w-[168px] h-[52px] font-montserrat font-[600] text-[23px] text-mainPrimary hover:text-backgroundPrimary hover:bg-mainPrimary transition-all duration-700 uppercase leading-[28.04px] border outline-none border-mainPrimary rounded-[10px]'>
-            Sign Up
+            <Link href='/signup'>Sign Up</Link>
           </button>
           <button className='w-[168px] h-[52px] font-montserrat font-[600] text-[23px] text-backgroundPrimary uppercase leading-[28.04px] border outline-none bg-mainPrimary hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 rounded-[10px]'>
-            login
+            <Link href='/login'>Login</Link>
           </button>
         </div>
       </div>

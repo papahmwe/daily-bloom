@@ -1,9 +1,11 @@
 'use client'
 
-import { Eye, EyeOff, User } from 'lucide-react'
+import { Eye, EyeOff, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation'
 
 const slides = [
   {
@@ -38,8 +40,17 @@ const formatSubtitle = (text) => {
 }
 
 export default function LoginPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (session) {
+      router.push('/dashboard');
+    }
+  }, [session, router]);
+
   const [currentSlide, setCurrentSlide] = useState(0)
   const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -47,6 +58,24 @@ export default function LoginPage() {
     }, 5000)
     return () => clearInterval(timer)
   }, [])
+
+  const handleSubmit = async (formData) => {
+    try {
+      const result = await signIn("credentials", {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      setError("An error occurred during login");
+    }
+  };
 
   return (
     <div className='min-h-screen bg-backgroundPrimary flex items-center justify-center p-4'>
@@ -116,22 +145,23 @@ export default function LoginPage() {
               <p className='text-backgroundPrimary/90'>every sigle day!</p>
             </div>
 
-            <form className='space-y-6'>
+            <form className='space-y-6' action={handleSubmit}>
               <div className='relative w-[350px] mx-auto'>
                 <input
-                  type='text'
-                  placeholder='username'
+                  type='email'
+                  placeholder='email'
+                  name='email'
                   className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
                 />
-                <User className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
+                <Mail className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
               </div>
-
               <div className='relative w-[350px] mx-auto'>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder='password'
+                  name='password'
                   className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
@@ -168,6 +198,8 @@ export default function LoginPage() {
                 </button>
               </div>
             </form>
+
+            {error && <div className="text-red-500">{error}</div>}
 
             <div className='relative'>
               <div className='absolute inset-0 flex items-center'>

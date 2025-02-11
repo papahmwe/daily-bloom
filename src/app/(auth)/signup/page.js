@@ -1,9 +1,12 @@
 'use client'
 
-import { Eye, EyeOff, User } from 'lucide-react'
+import { Eye, EyeOff, User, Mail  } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { register } from '../../../../action/user'
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation'
 
 const slides = [
   {
@@ -24,9 +27,19 @@ const slides = [
 ]
 
 export default function SignupPage() {
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push('/dashboard');
+    }
+  }, [session, router]);
+
   const [currentSlide, setCurrentSlide] = useState(0)
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -67,11 +80,12 @@ export default function SignupPage() {
               </p>
             </div>
 
-            <form className='space-y-8'>
+            <form className='space-y-8' action={register}>
               <div className='relative'>
                 <input
                   type='text'
                   placeholder='username'
+                  name='username'
                   required
                   className='w-full px-4 py-5 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
@@ -82,8 +96,22 @@ export default function SignupPage() {
 
               <div className='relative'>
                 <input
+                  type='email'
+                  placeholder='email'
+                  name='email'
+                  required
+                  className='w-full px-4 py-5 rounded-lg bg-white/80  
+                    border border-white/30 text-black/60 placeholder:text-black/60
+                    focus:outline-none focus:border-white/50'
+                />
+                <Mail className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
+              </div>
+
+              <div className='relative'>
+                <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder='password'
+                  name='password'
                   required
                   className='w-full px-4 py-5 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
@@ -102,27 +130,7 @@ export default function SignupPage() {
                 </button>
               </div>
 
-              <div className='relative'>
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder='confirm password'
-                  required
-                  className='w-full px-4 py-5 rounded-lg bg-white/80  
-                    border border-white/30 text-black/60 placeholder:text-black/60
-                    focus:outline-none focus:border-white/50'
-                />
-                <button
-                  type='button'
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className='absolute right-4 top-1/2 -translate-y-1/2 text-black/60'
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className='w-5 h-5' />
-                  ) : (
-                    <Eye className='w-5 h-5' />
-                  )}
-                </button>
-              </div>
+
 
               <button
                 type='submit'

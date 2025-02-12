@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import connectDB from "./lib/db";
+import connectDB from "./src/lib/db";
 import { User } from "./models/User";
 import { compare } from "bcryptjs";
 
@@ -78,6 +78,7 @@ export const authOptions = {
 
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.username = user.username;
         token.gender = user.gender;
         token.streak = user.streak;

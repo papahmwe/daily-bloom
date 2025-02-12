@@ -42,13 +42,16 @@ export function Calendar({
     const date = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
-      day + 1
+      day + 1 
     )
       .toISOString()
       .split('T')[0]
 
+    const formattedCompletedDates = completedDates.map(date => new Date(date).toISOString().split('T')[0])  
+
+
     const isInRange = dateRange.includes(date)
-    const isCompleted = completedDates.includes(date)
+    const isCompleted = formattedCompletedDates.includes(date)
     const isToday = date === today
     const isSelected = date === selectedDate
 
@@ -59,6 +62,10 @@ export function Calendar({
         return
       } else if (date > today) {
         alert('You cannot select a date in the future.')
+        return
+      }
+      else if(isCompleted) {
+        alert('You cannot select a date that is already completed.')
         return
       }
       setSelectedDate(date)
@@ -73,12 +80,14 @@ export function Calendar({
         className={`
           relative h-10 w-10 rounded-full flex items-center justify-center text-sm
           ${isInRange ? 'bg-[#7C5CFC]/20' : 'text-gray-400'}
-          ${isToday ? 'bg-purple-500 text-white' : ''}
+          ${isToday ? 'bg-purple-400 text-white' : ''}
+          ${isCompleted ? 'border-2 border-green-700' : ''}
+          ${isInRange && !isCompleted && date < today ? 'border-2 border-red-500' : ''}
           
         `}
       >
         {day}
-        {isCompleted && (
+        {/* {isCompleted && (
           <span className='absolute -top-1 -right-1'>
             <Check className='w-4 h-4 text-green-500' />
           </span>
@@ -87,7 +96,7 @@ export function Calendar({
           <span className='absolute -top-1 -right-1'>
             <X className='w-4 h-4 text-red-500' />
           </span>
-        )}
+        )} */}
       </button>
     )
   }

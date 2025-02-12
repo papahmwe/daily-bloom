@@ -1,10 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CalendarIcon, ArrowUpDown, Search } from 'lucide-react'
 import { Calendar } from '@/components/Calendar'
 import { HabitConfirmation } from '@/components/HabitComfimration'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
+import { toast } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 
 export function calculateDateRange(startDate, endDate) {
   const dates = []
@@ -32,35 +35,28 @@ export function calculateProgress(habit) {
   }
 }
 
-// Demo data
-const initialHabits = [
-  {
-    id: 1,
-    name: 'Yoga',
-    startDate: '2025-02-07',
-    endDate: '2025-02-12',
-    category: 'Lifestyle',
-    status: 'Not Started',
-    completedDates: [],
-  },
-  {
-    id: 2,
-    name: 'Meditation',
-    startDate: '2025-01-03',
-    endDate: '2025-01-09',
-    category: 'Health',
-    status: 'Not Started',
-    completedDates: [],
-  },
-]
 
 export default function TrackingPage() {
-  const [habits, setHabits] = useState(initialHabits)
+  const { data: session, status } = useSession()
+  const [habits, setHabits] = useState([])
   const [selectedHabit, setSelectedHabit] = useState(null)
   const [showCalendar, setShowCalendar] = useState(false)
   const [selectedDate, setSelectedDate] = useState(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [activeView, setActiveView] = useState('current') // Add state for active view
+
+  const fetchHabits = async () => {
+    const response = await fetch(`/api/habits/get/${session.user.id}`)
+    const data = await response.json()
+    setHabits(data)
+  }
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+        fetchHabits()
+    }
+  }, [session, status])
+
 
   const handleDateSelect = (habit, date) => {
     setSelectedHabit(habit)
@@ -68,27 +64,34 @@ export default function TrackingPage() {
     setShowConfirmation(true)
   }
 
-  const handleHabitComplete = () => {
+  const handleHabitComplete = async () => {
     if (!selectedHabit || !selectedDate) return
     setShowCalendar(false)
-    setHabits(
-      habits.map((habit) => {
-        if (habit.id === selectedHabit.id) {
-          const newCompletedDates = [...habit.completedDates, selectedDate]
-          const progress = calculateProgress({
-            ...habit,
-            completedDates: newCompletedDates,
-          })
-
-          return {
-            ...habit,
-            completedDates: newCompletedDates,
-            status: progress.percentage === 100 ? 'Completed' : 'In Progress',
-          }
-        }
-        return habit
+    try {
+      const response = await fetch(`/api/habits/update/${selectedHabit._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          completedDates: [...selectedHabit.completedDates, selectedDate],
+          userId: session.user.id 
+        }),
       })
-    )
+      
+      const data = await response.json()
+      if (response.ok) {
+        await fetchHabits()
+        setShowConfirmation(false)
+        console.log("data", data)
+        
+        // Show toast if habit was completed and points were awarded
+        if (data.pointsAwarded) {
+          toast.success(`Congratulations! You completed the habit and earned ${data.pointsAwarded} points!`)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to update habit:', error)
+      toast.error('Failed to update habit')
+    }
   }
 
   // Function to get habits based on active view
@@ -98,8 +101,21 @@ export default function TrackingPage() {
     return habits
   }
 
+  if (status === 'unauthenticated') {
+    return <div>Access Denied</div>
+  }
+
+  if (habits.length === 0) {
+    return <div>No habits found</div>
+  }
+
+  if(status === 'loading') {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className='p-6 font-jost'>
+      <Toaster position="top-center" />
       <div className='flex items-center justify-between mb-6'>
         <div className='flex space-x-8'>
           <button className='px-4 py-2 bg-white rounded-lg border flex items-center space-x-2'>
@@ -247,10 +263,10 @@ export default function TrackingPage() {
               </tr>
             </thead>
             <tbody>
-              {getFilteredHabits().map((habit) => {
+              {getFilteredHabits().map((habit, index) => {
                 const progress = calculateProgress(habit)
                 return (
-                  <tr key={habit.id} className='border-b'>
+                  <tr key={index} className='border-b'>
                     <td className='px-6 py-4'>
                       <div className='flex items-center space-x-2'>
                         <span className='text-sm'>{progress.percentage}%</span>
@@ -292,10 +308,14 @@ export default function TrackingPage() {
                     <td className='px-6 py-4'>
                       <span
                         className={`px-2 py-1 rounded-full text-xs ${
-                          habit.status === 'Completed'
+                          habit.status === 'completed'
                             ? 'bg-green-100 text-green-800'
-                            : habit.status === 'In Progress'
+                            : habit.status === 'ongoing'
                             ? 'bg-blue-100 text-blue-800'
+                            : habit.status === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800' 
+                            : habit.status === 'failed'
+                            ? 'bg-red-100 text-red-800'
                             : 'bg-gray-100 text-gray-800'
                         }`}
                       >

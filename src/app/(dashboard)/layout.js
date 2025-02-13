@@ -1,3 +1,5 @@
+import Navbar from "@/components/Dashboard_Home/Navbar";
+import Sidebar from "@/components/Dashboard_Home/Sidebar";
 import "../../styles/globals.css";
 
 export const metadata = {
@@ -9,7 +11,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head />
-      <body>{children}</body>
+      <body>
+        <main className="flex h-[100vh] w-[100vw] overflow-hidden">
+          <Sidebar />
+
+          <div className="w-full bg-backgroundSecondary">
+            <Navbar />
+            <div className="h-full overflow-auto">{children}</div>
+          </div>
+        </main>
+      </body>
     </html>
   );
 }

@@ -4,6 +4,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+const NavItems = [
+  { id: 1, title: "Home", route: "/" },
+  { id: 2, title: "About", route: "/about" },
+  { id: 3, title: "Contact", route: "/contact_us" },
+];
+
 const Nav = () => {
   const pathname = usePathname()
 
@@ -20,41 +26,28 @@ const Nav = () => {
         />
       </div>
 
-      {/* Navbar */}
-      <div className='w-[855px] h-[76px] flex justify-between items-center gap-[40px]'>
-        <ul className='flex justify-center items-center gap-[36px] '>
-          <li className='w-[84px] h-[36px] font-jost font-[700] text-[24px] uppercase leading-[34.68px] cursor-pointer'>
-            <Link
-              href='/'
-              className={`transition-all duration-700 ${
-                pathname === '/' ? 'text-mainPrimary' : 'text-[#000000]'
-              }`}
-            >
-              Home
-            </Link>
-          </li>
-          <li className='w-[84px] h-[36px] font-jost font-[700] text-[24px] uppercase leading-[34.68px] cursor-pointer'>
-            <Link
-              href='/about'
-              className={`transition-all duration-700 ${
-                pathname === '/about' ? 'text-mainPrimary' : 'text-[#000000]'
-              }`}
-            >
-              About
-            </Link>
-          </li>
-          <li className='w-[84px] h-[36px] font-jost font-[700] text-[24px] uppercase leading-[34.68px] cursor-pointer'>
-            <Link
-              href='/contact_us'
-              className={`transition-all duration-700 ${
-                pathname === '/contact_us'
-                  ? 'text-mainPrimary'
-                  : 'text-[#000000]'
-              }`}
-            >
-              Contact
-            </Link>
-          </li>
+      {/* Menu */}
+      <div className="w-[855px] h-[76px] flex justify-between items-center gap-[40px]">
+        <ul className="flex justify-center items-center gap-[36px] ">
+          {NavItems.map((item, index) => {
+            return (
+              <li
+                key={index.toString()}
+                className="w-[84px] h-[36px] font-jost font-[700] text-[24px] uppercase leading-[34.68px] cursor-pointer"
+              >
+                <Link
+                  href={item.route}
+                  className={`transition-all duration-700 ${
+                    pathname === item.route
+                      ? "text-mainPrimary"
+                      : "text-[#000000]"
+                  }`}
+                >
+                  {item.title}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Buttons */}

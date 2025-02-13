@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Bell } from "lucide-react";
 
 const pageTitles = {
   "/dashboard": "Overview",
@@ -29,14 +30,11 @@ export default function Navbar() {
       {/* Notification Icon */}
 
       <div className="flex justify-center items-center gap-[30px]">
-        <div>
-          <Image
-            src="/assets/dashboard_home/Notification.png"
-            alt="Notification"
-            width={25}
-            height={25}
-            className="object-cover cursor-pointer"
-          />
+        <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 cursor-pointer relative">
+          <Bell className="w-6 h-6 text-gray-600 hover:text-gray-800" />
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+            <span className="text-white text-xs font-bold">1</span>
+          </div>
         </div>
 
         {/* User Profile */}

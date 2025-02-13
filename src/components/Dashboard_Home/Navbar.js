@@ -17,7 +17,7 @@ export default function Navbar() {
   const title = pageTitles[pathname] || "Dashboard";
 
   return (
-    <div className="w-full h-[96px] flex justify-between items-center bg-backgroundPrimary shadow-sm px-5">
+    <div className="w-full h-[96px] flex justify-between items-center bg-backgroundPrimary shadow-sm px-5 absolute left-0 top-0 z-[1000]">
       {/* Title Section */}
 
       <div>

@@ -12,12 +12,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head />
       <body>
-        <main className="flex h-[100vh] w-[100vw] overflow-hidden">
+        <main className="flex w-[100vw] h-[100vh] overflow-hidden">
           <Sidebar />
 
-          <div className="w-full bg-backgroundSecondary">
+          <div className="relative w-full h-[100vh] bg-backgroundSecondary">
             <Navbar />
-            <div className="h-full overflow-auto">{children}</div>
+            <div className="w-full h-full overflow-y-auto pt-[130px] pb-[80px]">
+              {children}
+            </div>
           </div>
         </main>
       </body>

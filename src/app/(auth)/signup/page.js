@@ -4,7 +4,6 @@ import { Eye, EyeOff, User, Mail  } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { register } from '../../../../action/user'
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation'
 
@@ -27,9 +26,9 @@ const slides = [
 ]
 
 export default function SignupPage() {
-
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (session) {
@@ -63,6 +62,46 @@ export default function SignupPage() {
     return text
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.get('username'),
+          email: formData.get('email'),
+          password: formData.get('password'),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+
+      // If signup successful, sign in automatically
+      const result = await signIn('credentials', {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <div className='min-h-screen bg-backgroundPrimary flex items-center justify-center p-4'>
       <div className='p-3 w-full max-w-5xl bg-backgroundForm rounded-lg overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-2'>
@@ -80,7 +119,7 @@ export default function SignupPage() {
               </p>
             </div>
 
-            <form className='space-y-8' action={register}>
+            <form onSubmit={handleSubmit} className='space-y-8'>
               <div className='relative'>
                 <input
                   type='text'
@@ -130,8 +169,6 @@ export default function SignupPage() {
                 </button>
               </div>
 
-
-
               <button
                 type='submit'
                 className='w-full py-4 px-4 bg-white text-2xl text-backgroundForm font-bold rounded-lg
@@ -140,6 +177,7 @@ export default function SignupPage() {
                 Sign up
               </button>
             </form>
+            {error && <div className="text-red-500 text-sm">{error}</div>}
           </div>
         </div>
 

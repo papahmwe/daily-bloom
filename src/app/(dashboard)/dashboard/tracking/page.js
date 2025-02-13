@@ -46,7 +46,7 @@ export default function TrackingPage() {
   const [activeView, setActiveView] = useState('current') // Add state for active view
 
   const fetchHabits = async () => {
-    const response = await fetch(`/api/habits/get/${session.user.id}`)
+    const response = await fetch(`/api/habits/${session.user.id}`)
     const data = await response.json()
     setHabits(data)
   }

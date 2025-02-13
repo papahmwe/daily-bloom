@@ -1,5 +1,5 @@
-import connectDB from '../../../../../lib/db'
-import Habit from '../../../../../../models/Habit'
+import connectDB from '../../../../lib/db'
+import Habit from '../../../../../models/Habit'
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {

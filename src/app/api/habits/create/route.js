@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import connectDB from '../../../lib/db'
-import Habit from '../../../../models/Habit'
+import connectDB from '../../../../lib/db'
+import Habit from '../../../../../models/Habit'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -38,36 +38,5 @@ export async function POST(request) {
     }
 }
 
-// READ ALL - GET /api/habits of a user
-export async function GET() {
 
-
-    try {
-        await connectDB();
-        const habits = await Habit.find();
-        return NextResponse.json(habits);
-        
-    } catch (error) {
-        return NextResponse.json(
-            { error: "Failed to fetch habits" },
-            { status: 500 }
-        );
-    }
-}
-
-// UPDATE - PUT /api/habits/:id
-export async function PUT(request) {
-    const body = await request.json();
-    console.log(body)
-    try{
-        await connectDB();
-        const habit = await Habit.findByIdAndUpdate(body._id, body, { new: true });
-        return NextResponse.json(habit);
-    } catch (error) {
-        return NextResponse.json(
-            { error: "Failed to update habit" },
-            { status: 500 }
-        );
-    }
-}
 

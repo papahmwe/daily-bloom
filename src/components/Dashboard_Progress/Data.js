@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import DonutChart from "@/components/Dashboard_Progress/DonutPieWithData";
 
 export default function Data() {
@@ -14,6 +16,41 @@ export default function Data() {
     { name: "Education", value: 20, fill: "#93FC90" },
   ];
 
+  const completedData = [
+    {
+      id: 1,
+      name: "Workout",
+      progress: "100%",
+      progressTitleOne: "Completed",
+      progressTitleTwo: "Active",
+      image: "/assets/Progress/Workout.svg",
+    },
+    {
+      id: 2,
+      name: "Yoga",
+      progress: "100%",
+      progressTitleOne: "Completed",
+      progressTitleTwo: "Active",
+      image: "/assets/Progress/Yoga.svg",
+    },
+    {
+      id: 3,
+      name: "Drinking",
+      progress: "100%",
+      progressTitleOne: "Completed",
+      progressTitleTwo: "Active",
+      image: "/assets/Progress/Drinking.svg",
+    },
+    {
+      id: 4,
+      name: "Reading",
+      progress: "100%",
+      progressTitleOne: "Completed",
+      progressTitleTwo: "Active",
+      image: "/assets/Progress/Reading.svg",
+    },
+  ];
+
   const percentage = 80;
 
   return (
@@ -24,8 +61,8 @@ export default function Data() {
           The progress you&apos;ve already made.
         </h1>
 
-        <div className="w-[660px] h-[269px] flex justify-start items-center gap-[40px] border border-red-800">
-          <div className="flex justify-start items-center gap-[80px]">
+        <div className="w-[660px] h-[269px] flex justify-start items-center gap-[40px] ">
+          <div className="flex justify-start items-center gap-[80px] ">
             {/* First Donut Chart */}
             <DonutChart data={goalData} percentage={percentage} />
 
@@ -34,7 +71,7 @@ export default function Data() {
           </div>
 
           {/* Legend on the Right */}
-          <div className="flex flex-col justify-center items-start gap-[10px]">
+          <div className="flex flex-col justify-center items-start gap-[10px] ">
             {monthlyData.map((entry, index) => (
               <div
                 key={entry.name}
@@ -58,7 +95,87 @@ export default function Data() {
         <h1 className="font-montserrat font-[700] text-[27px] text-[#000000] leading-[32.91px]">
           Completed Habits
         </h1>
-        <div className="w-[951.71px] h-[722.46px] flex gap-[30px] border border-red-800"></div>
+
+        {/* Display Data Section */}
+        <div className="w-[951.71px] h-[722.46px] flex flex-1 flex-wrap gap-6 ">
+          {completedData.map((data, index) => {
+            return (
+              <div
+                key={data.id}
+                className={`w-[463px] h-[348px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
+                ${
+                  data.id === 2 || data.id === 4
+                    ? "flex-row-reverse "
+                    : "flex-row "
+                }
+                ${
+                  data.id === 1
+                    ? "rounded-t-[10px] rounded-bl-[10px] rounded-br-[100px]"
+                    : ""
+                }
+                 ${
+                   data.id === 2
+                     ? "rounded-t-[10px] rounded-bl-[100px] rounded-br-[10px]"
+                     : ""
+                 }
+                 ${
+                   data.id === 3
+                     ? "rounded-tl-[10px] rounded-tr-[100px] rounded-b-[10px]"
+                     : ""
+                 }
+                 ${
+                   data.id === 4
+                     ? "rounded-tl-[100px] rounded-tr-[10px] rounded-b-[10px]"
+                     : ""
+                 }
+               `}
+              >
+                <div
+                  className={`flex flex-col justify-between gap-28
+                ${data.id === 2 || data.id === 4 ? "items-end" : "items-start"}
+                `}
+                >
+                  {/* Title */}
+                  <h1 className="font-montserrat font-[600] text-[40px] text-[#F5F5F5]">
+                    {data.name}
+                  </h1>
+
+                  {/* Bottom Data */}
+                  <div>
+                    <h3 className="font-montserrat font-[600] text-[36px] text-[#F5F5F5]">
+                      {data.progress}
+                    </h3>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-start items-center gap-2">
+                        <span className="inline-block w-[15px] h-[15px] border-2 border-mainPrimary rounded-full bg-[#F5F5F5]"></span>
+                        <h3 className="font-jost font-[400] text-[18px] text-[#F5F5F5]">
+                          {data.progressTitleOne}
+                        </h3>
+                      </div>
+                      <div className="flex justify-start items-center gap-2">
+                        <span className="inline-block w-[15px] h-[15px] border-2 border-mainPrimary rounded-full bg-[#F5F5F5]"></span>
+                        <h3 className="font-jost font-[400] text-[18px] text-[#F5F5F5]">
+                          {data.progressTitleTwo}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Image */}
+                <div>
+                  <Image
+                    src={data.image}
+                    alt={data.name}
+                    width={250}
+                    height={250}
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

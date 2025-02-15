@@ -4,7 +4,7 @@ import PieChart from "@/components/HomePieChart";
 // components/HomePage.jsx
 export default function DashboarHomePage() {
   return (
-    <div className="p-6 bg-gray-200 min-h-screen">
+    <div className="p-6 bg-gray-200 max-h-screen">
       {/* Card Section */}
       <div className="flex justify-between mb-3 ml-10 mr-0">
         <div className="bg-white rounded-[20px] p-6 flex justify-start items-center space-x-6 shadow-lg">

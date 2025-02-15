@@ -138,7 +138,6 @@ export default function HabitsPage() {
     }
   }
 
-  // 2025-02-18T00:00:00.000Z
   const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', {

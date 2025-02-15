@@ -31,6 +31,14 @@ const challengeSchema = new mongoose.Schema({
     enum: ['pending', 'completed', 'failed'],
     default: 'pending',
   },
+  reward_available: {
+    type: Boolean,
+    default: false,
+  },  
+  reward_claimed: {
+    type: Boolean,
+    default: false,
+  },  
 }, { timestamps: true })
 
 const Challenge = mongoose.models.Challenge || mongoose.model('Challenge', challengeSchema)

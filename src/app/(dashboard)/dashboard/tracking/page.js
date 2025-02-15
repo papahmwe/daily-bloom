@@ -82,8 +82,6 @@ export default function TrackingPage() {
         await fetchHabits()
         setShowConfirmation(false)
         console.log("data", data)
-        
-        // Show toast if habit was completed and points were awarded
         if (data.pointsAwarded) {
           toast.success(`Congratulations! You completed the habit and earned ${data.pointsAwarded} points!`)
         }
@@ -94,10 +92,7 @@ export default function TrackingPage() {
     }
   }
 
-  // Function to get habits based on active view
   const getFilteredHabits = () => {
-    // For now, return all habits for each view
-    // You can implement actual filtering logic here later
     return habits
   }
 

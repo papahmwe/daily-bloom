@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+
 const pageTitles = {
   "/dashboard": "Overview",
   "/dashboard/challenges": "Challenges",
@@ -15,6 +16,7 @@ const pageTitles = {
 export default function Navbar() {
   const pathname = usePathname();
   const title = pageTitles[pathname] || "Dashboard";
+  
 
   return (
     <div className="w-full h-[96px] flex justify-between items-center bg-backgroundPrimary shadow-sm px-5">

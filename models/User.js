@@ -9,8 +9,10 @@ const userSchema = new mongoose.Schema({
   profilePicture: { type: String, default: "/assets/images/profile/default-profile.png" },
   gender: { type: String, enum: ["male", "female", "other"] },
   
-});
+}, {
+  timestamps: true 
+} );
 
-const User = mongoose.models?.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

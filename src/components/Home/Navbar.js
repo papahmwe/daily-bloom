@@ -14,7 +14,7 @@ const Nav = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-[1440px] h-[165px] mx-auto flex justify-center items-center gap-[300px]">
+    <div className="w-[1440px] h-[165px] mx-auto flex justify-center items-center gap-[300px] shadow-sm ">
       {/* Logo */}
       <div>
         <Image

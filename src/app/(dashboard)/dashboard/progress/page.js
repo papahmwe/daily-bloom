@@ -1,3 +1,11 @@
+import Data from "@/components/Dashboard_Progress/Data";
+import WithoutData from "@/components/Dashboard_Progress/WithoutData";
+
 export default function ProgressPage() {
-  return <h1>Progress Page</h1>;
+  return (
+    <div>
+      {/* <WithoutData /> */}
+      <Data />
+    </div>
+  );
 }

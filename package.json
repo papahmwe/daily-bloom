@@ -25,6 +25,7 @@
     "node-cron": "^3.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^2.15.1",
     "react-hot-toast": "^2.5.1"
   },
   "devDependencies": {

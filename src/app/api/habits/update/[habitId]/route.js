@@ -1,60 +1,52 @@
 import connectDB from '../../../../../lib/db'
 import Habit from '../../../../../../models/Habit'
-import { User } from '../../../../../../models/User'
 import { NextResponse } from "next/server";
+import { uploadImage, deleteImage } from '../../../../../lib/cloudinary'
 
-export async function PUT(request, { params }) {    
-    const { habitId } = params;
-    const { completedDates, userId } = await request.json();
-    
+export async function PUT(request, { params }) {
     try {
         await connectDB();
-        
-        // Find the habit to get total days
-        const habit = await Habit.findById(habitId);
-        const totalDays = habit.totalDays;
-        
-        // Determine habit status
-        let habitStatus = '';
-        let pointsAwarded = 0;
+        const body = await request.formData();
+        const { habitId } = params;
 
-        console.log("completedDates", completedDates)
-        console.log("totalDays", totalDays)
-        
-        if (completedDates.length == totalDays) {
-            habitStatus = 'completed';
-            pointsAwarded = 50; // Points awarded for completing habit
-            
-            // Update user's points
-            await User.findByIdAndUpdate(
-                userId,
-                { $inc: { points: pointsAwarded } },
-                { new: true }
-            );
-        } else if (completedDates.length > 0) {
-            habitStatus = 'ongoing';
-        } else {
-            habitStatus = 'pending';
+        const habit = await Habit.findById(habitId);
+        if (!habit) {
+            return NextResponse.json({ error: "Habit not found" }, { status: 404 });
         }
-        
-        // Update the habit
-        const updatedHabit = await Habit.findByIdAndUpdate(
-            habitId,
-            { completedDates, status: habitStatus },
-            { new: true }
+
+        const file = body.get('image');
+        if (file) {
+            // Delete old image if it exists
+            if (habit.image) {
+                // Extract public_id from the URL
+                const publicId = habit.image.split('/').slice(-1)[0].split('.')[0];
+                await deleteImage(`habits/${habit.userId}/${publicId}`);
+            }
+            // Upload new image
+            const imageUrl = await uploadImage(file, {
+                folder: `habits/${habit.userId}`,
+            });
+            habit.image = imageUrl;
+        }
+
+        // Update other fields
+        habit.name = body.get('name');
+        habit.description = body.get('description');
+        habit.category = body.get('category');
+        habit.startDate = new Date(body.get('startDate'));
+        habit.endDate = new Date(body.get('endDate'));
+        habit.totalDays = body.get('totalDays');
+
+        await habit.save();
+
+        return NextResponse.json(
+            { message: "Habit updated successfully", habit },
+            { status: 200 }
         );
-        
-        return NextResponse.json({
-            habit: updatedHabit,
-            pointsAwarded: pointsAwarded
-        });
-        
     } catch (error) {
-        console.error("Error updating habit:", error);
         return NextResponse.json(
             { error: "Failed to update habit" },
             { status: 500 }
         );
     }
-}
-
+}  

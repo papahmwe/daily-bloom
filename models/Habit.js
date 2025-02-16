@@ -42,6 +42,10 @@ const habitSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    image: {
+        type: String,  
+        default: '',
+    },
 })
 
 const Habit = mongoose.models.Habit || mongoose.model("Habit", habitSchema);

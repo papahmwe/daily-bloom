@@ -1,42 +1,68 @@
 import { NextResponse } from "next/server";
 import connectDB from '../../../../lib/db'
 import Habit from '../../../../../models/Habit'
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { uploadToCloudinary } from '../../../../lib/cloudinary'
+import mongoose from 'mongoose';
 
 
 // CREATE - POST /api/habits by a user  
 export async function POST(request) {
     try {
         await connectDB();
-        const body = await request.json();
-        console.log(body)
-        const totalDays = new Date(body.endDate) - new Date(body.startDate) + 1 
-        const habit = new Habit({
-            ...body,
-            status: 'pending',
-            totalDays: totalDays,
-            startDate: new Date(body.startDate),
-            endDate: new Date(body.endDate)
-        })
-        try{
-        await habit.save()
-        return NextResponse.json(habit, { status: 201 })    
-        } catch (error) {
-            console.error("Error creating habit:", error);
-            return NextResponse.json(
-                { error: "Failed to create habit" },
-                { status: 500 }
+        const data = await request.formData();
+        
+        const file = data.get('image');
+        const name = data.get('name');
+        const category = data.get('category');
+        const startDate = data.get('startDate');
+        const endDate = data.get('endDate');
+        const userId = data.get('userId');
+
+        // console.log('userId', userId)
+        // console.log('startDate', startDate)
+        // console.log('endDate', endDate)
+        // console.log('name', name)
+        // console.log('category', category)
+        // console.log('file', file)
+
+
+        // Validate userId
+        if (!userId) {
+            return new Response(
+                JSON.stringify({ error: "User ID is required" }), 
+                { status: 400 }
             );
         }
+
+        let imageUrl = null;
+        if (file) {
+            const buffer = await file.arrayBuffer();
+            imageUrl = await uploadToCloudinary(Buffer.from(buffer));
+        }
+
+        const totalDays = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
+        
+        const habit = new Habit({
+            name,
+            category,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            userId: new mongoose.Schema.Types.ObjectId(userId),
+            image: imageUrl,
+            status: 'pending',
+            totalDays,
+        });
+
+        await habit.save();
+        return NextResponse.json(habit, { status: 201 });
         
     } catch (error) {
-        return NextResponse.json(
-            { error: "Failed to create habit" },
-            { status: 500 }
-        );
+        console.error('Error creating habit:', error);
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 }
 
+
+ 
 
 

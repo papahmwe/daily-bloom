@@ -2,9 +2,11 @@
 
 import { Search, Pencil, Trash2, Plus, ChevronDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { Modal } from '@/components/AsignHabitModal'
+import  AssignHabitModal  from '@/components/Habits_Management/AssignHabitModal'
+import Modal from '@/components/Habits_Management/Modal'  
 import { useSession } from 'next-auth/react'
 import { ClipboardX } from 'lucide-react'
+import Image from 'next/image'
 
 
 const defaultCategories = [
@@ -32,14 +34,17 @@ export default function HabitsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
   const [categories, setCategories] = useState(defaultCategories)
-  const [newCategory, setNewCategory] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+   
   const [formData, setFormData] = useState({
+    _id: '',
     name: '',
     startDate: '',
     endDate: '',
     totalDays: '',
     category: '',
+    image: null,
+    userId: session?.user?.id,
   })
   
   useEffect(() => {
@@ -63,31 +68,54 @@ export default function HabitsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try {
-      const response = await fetch('/api/habits/create', {
-        method: isEditing ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          userId: session?.user?.id,
-          startDate: new Date(formData.startDate),
-          endDate: new Date(formData.endDate),
-          status: 'pending',
+    const formDataToSend = new FormData()
+    
+    // Add all form fields to FormData
+    Object.keys(formData).forEach(key => {
+      if (key !== 'image') {
+        formDataToSend.append(key, formData[key])
+      }
+    })
+    
+    // Add image if it exists
+    if (formData.image) {
+      formDataToSend.append('image', formData.image)
+    }
 
-        }),
-      })
+    
 
-      if (response.ok) {
-        await fetchHabits() 
+    if (isEditing) {
+      try {
+        const response = await fetch(`/api/habits/update/${formData._id}`, {
+          method: 'PUT',
+          body: formDataToSend,
+        })
+      } catch (error) {
+        console.error('Failed to update habit:', error)
+      } finally {
+        await fetchHabits()
         closeModal()
       }
-      console.log(formData)
-    } catch (error) {
-      console.error('Failed to save habit:', error)
+    } else {
+      try {
+        const response = await fetch('/api/habits/create', {
+          method: 'POST',
+          body: formDataToSend,
+        })
+
+        if (response.ok) {
+          await fetchHabits() 
+          closeModal()
+        }
+        console.log(formData)
+      } catch (error) {
+        console.error('Failed to save habit:', error)
+      }
     }
   }
 
   const handleEdit = (habit) => {
+    
     setFormData({
       ...habit,
       userId: session?.user?.id,
@@ -129,14 +157,6 @@ export default function HabitsPage() {
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const currentHabits = habits.slice(startIndex, endIndex)
-
-  const handleAddCategory = () => {
-    if (newCategory && !categories.includes(newCategory)) {
-      setCategories([...categories, newCategory])
-      setFormData({ ...formData, category: newCategory })
-      setNewCategory('')
-    }
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -225,44 +245,44 @@ export default function HabitsPage() {
                 </td>
               </tr>
             ) : (
-              habits.map((habit, index) => (
+              currentHabits.map((habit, index) => (
                 <tr
                   key={index}
-                className='border-b border-gray-200 hover:bg-gray-50'
-              >
-                <td className='px-6 py-4 text-sm'>{index + 1}</td>
-                <td className='px-6 py-4 text-sm'>{habit.name }</td>
-                <td className='px-6 py-4 text-sm'>{formatDate(habit.startDate)}</td>
-                <td className='px-6 py-4 text-sm'>{formatDate(habit.endDate)}</td>
-                <td className='px-6 py-4 text-sm'>{habit.category}</td>
-                <td className='px-6 py-4 text-sm'>
-                  
-                  <span className={`px-2 py-1 rounded-full text-xs ${habit.status === 'completed'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-yellow-100 text-yellow-800'} `}>
-                    {habit.status}
-                  </span>
-                </td>
-                <td className='px-6 py-4 text-sm'>
-                  <div className='flex space-x-2'>
-                    <button onClick={() => handleEdit(habit)} className='p-1 hover:bg-gray-100 rounded'>
-                      <Pencil className='w-4 h-4 text-yellow-500' />
-                    </button>
-                    <button onClick={() => handleDeleteClick(habit)} className='p-1 hover:bg-gray-100 rounded'>
-                      <Trash2 className='w-4 h-4 text-red-500' />
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                  className='border-b border-gray-200 hover:bg-gray-50'
+                >
+                  <td className='px-6 py-4 text-sm'>{startIndex + index + 1}</td>
+                  <td className='px-6 py-4 text-sm'>{habit.name }</td>
+                  <td className='px-6 py-4 text-sm'>{formatDate(habit.startDate)}</td>
+                  <td className='px-6 py-4 text-sm'>{formatDate(habit.endDate)}</td>
+                  <td className='px-6 py-4 text-sm'>{habit.category}</td>
+                  <td className='px-6 py-4 text-sm'>
+                    
+                    <span className={`px-2 py-1 rounded-full text-xs ${habit.status === 'completed'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-yellow-100 text-yellow-800'} `}>
+                      {habit.status}
+                    </span>
+                  </td>
+                  <td className='px-6 py-4 text-sm'>
+                    <div className='flex space-x-2'>
+                      <button onClick={() => handleEdit(habit)} className='p-1 hover:bg-gray-100 rounded'>
+                        <Pencil className='w-4 h-4 text-yellow-500' />
+                      </button>
+                      <button onClick={() => handleDeleteClick(habit)} className='p-1 hover:bg-gray-100 rounded'>
+                        <Trash2 className='w-4 h-4 text-red-500' />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               ))
             )}
           </tbody>
         </table>
         {habits.length > 0 && (
         <div className='px-6 py-4 flex justify-between items-center border-t border-gray-200'>
-          <p className='text-sm text-gray '>
-            Showing pairs of {startIndex + 1}-
-            {Math.min(endIndex, habits.length)}
+          <p className='text-sm text-gray'>
+            Showing {habits.length > 0 ? startIndex + 1 : 0}-
+            {Math.min(endIndex, habits.length)} of {habits.length} habits
           </p>
           <div className='flex space-x-2'>
             <button
@@ -272,22 +292,25 @@ export default function HabitsPage() {
             >
               Previous
             </button>
+            <span className="flex items-center px-4">
+              Page {currentPage} of {totalPages}
+            </span>
             <button
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
-              disabled={currentPage === totalPages}
+              disabled={currentPage === totalPages || habits.length === 0}
               className='bg-[#7C5CFC] text-white px-4 py-2 rounded-lg hover:bg-[#6a4ee3] disabled:opacity-50'
             >
               Next
             </button>
-            </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
 
       {/* Assign Habit Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <AssignHabitModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className='text-2xl font-bold mb-6'>Assign Habit</h2>
         <form onSubmit={handleSubmit}>
           <div className='space-y-6'>
@@ -352,9 +375,9 @@ export default function HabitsPage() {
                 </button>
 
                 {showCategoryDropdown && (
-                  <div className='absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg'>
+                  <div className='absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg'>
                     <div className='p-2'>
-                      <div className='flex flex-wrap gap-2 mb-2'>
+                      <div className='flex flex-wrap gap-1  '>
                         {categories.map((category) => (
                           <button
                             key={category}
@@ -373,23 +396,38 @@ export default function HabitsPage() {
                           </button>
                         ))}
                       </div>
-                      <div className='flex gap-2 mt-2 pt-2 border-t'>
-                        <input
-                          type='text'
-                          placeholder='Add custom category'
-                          value={newCategory}
-                          onChange={(e) => setNewCategory(e.target.value)}
-                          className='flex-1 p-2 text-sm border rounded'
-                        />
-                        <button
-                          type='button'
-                          onClick={handleAddCategory}
-                          className='px-3 py-1 bg-[#7C5CFC] text-white rounded-lg text-sm'
-                        >
-                          Add
-                        </button>
-                      </div>
+
                     </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className='block text-sm font-medium mb-2'>
+                Habit Image
+              </label>
+              <div className='relative'>
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={(e) => {
+                    const file = e.target.files[0]
+                    setFormData({ ...formData, image: file })
+                  }}
+                  className='w-full p-3 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#7C5CFC]'
+                />
+                {formData.image && (
+                  <div className='mt-2'>
+                    <Image
+                      src={typeof formData.image === 'string' 
+                        ? formData.image 
+                        : URL.createObjectURL(formData.image)}
+                      alt="Habit preview"
+                      width={100}
+                      height={100}
+                      className='rounded-lg'
+                    />
                   </div>
                 )}
               </div>
@@ -412,7 +450,7 @@ export default function HabitsPage() {
             </div>
           </div>
         </form>
-      </Modal>
+      </AssignHabitModal>
 
       {/* Delete Habit Modal */}
       <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>

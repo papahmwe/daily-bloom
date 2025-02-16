@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
     try {
         await connectDB()
         const habits = await Habit.find({ userId })
-        const pendingHabits = habits.filter(habit => habit.status === 'pending').length
+        const upcomingHabits = habits.filter(habit => habit.status === 'pending').length
         const totalHabits = habits.length
         const completedHabits = habits.filter(habit => habit.status === 'completed').length
         const onGoingHabits = habits.filter(habit => habit.status === 'ongoing').length
@@ -22,7 +22,7 @@ export async function GET(request, { params }) {
         
         return NextResponse.json({
             habits,
-            pendingHabits,
+            upcomingHabits,
             totalHabits,
             completedHabits,
             onGoingHabits,

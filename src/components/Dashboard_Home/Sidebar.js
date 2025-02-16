@@ -56,7 +56,7 @@ export default function Sidebar() {
 
   return (
     <div>
-      <div className="w-[333px] h-[1024px] flex flex-col justify-start items-center gap-[40px] bg-backgroundPrimary shadow-sm">
+      <div className="w-[333px] h-full flex flex-col justify-start items-center gap-[40px] bg-backgroundPrimary shadow-sm">
         {/* Logo */}
         <Image
           src="/assets/home/logo.png"

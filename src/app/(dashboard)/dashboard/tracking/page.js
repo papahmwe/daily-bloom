@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { CalendarIcon, ArrowUpDown, Search } from 'lucide-react'
-import { Calendar } from '@/components/Calendar'
-import { HabitConfirmation } from '@/components/HabitComfimration'
+import { Calendar } from '@/components/Habits_Management/Calendar'
+import { HabitConfirmation } from '@/components/Habits_Management/HabitComfimration'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
@@ -68,7 +68,7 @@ export default function TrackingPage() {
     if (!selectedHabit || !selectedDate) return
     setShowCalendar(false)
     try {
-      const response = await fetch(`/api/habits/update/${selectedHabit._id}`, {
+      const response = await fetch(`/api/habits/track/${selectedHabit._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -82,6 +82,7 @@ export default function TrackingPage() {
         await fetchHabits()
         setShowConfirmation(false)
         console.log("data", data)
+        toast.success("Habit completed successfully")
         if (data.pointsAwarded) {
           toast.success(`Congratulations! You completed the habit and earned ${data.pointsAwarded} points!`)
         }

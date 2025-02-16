@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
 
           <div className="relative w-full h-[100vh] bg-backgroundSecondary">
             <Navbar />
-            <div className="w-full h-full overflow-y-auto pt-[130px] pb-[80px] ml-20">
+            <div className="h-full w-full overflow-y-auto pt-[130px] pb-[80px] ml-10">
               {children}
             </div>
           </div>

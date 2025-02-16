@@ -1,12 +1,60 @@
+"use client";
+
 import Image from "next/image";
-import PieChart from "@/components/HomePieChart";
+import { useState, useEffect } from "react";
+import PieChart from "@/components/Dashboard_Home/HomePieChart";
+import HomeDataChart from "@/components/Dashboard_Home/HomeDataChart"
 
 // components/HomePage.jsx
 export default function DashboarHomePage() {
+  // Habit Section
+  const [upcomingHabit, setUpcomingHabit] = useState(0);
+  const [totalHabit, setTotalHabit] = useState(0);
+  const [completedPercentage, setCompletedPercentage] = useState(0);
+
+  // Recent Habits Section
+  const [habits, setHabits] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    async function fetchHabitData() {
+      try {
+        const response = await fetch("/api/habits"); // Update with your API endpoint
+        const data = await response.json();
+        setUpcomingHabit(data.upcomingHabit);
+        setTotalHabit(data.totalHabit);
+        setCompletedPercentage(data.completedPercentage);
+      } catch (error) {
+        console.error("Error fetching habit data:", error);
+      }
+    }
+
+    fetchHabitData();
+  }, []);
+  useEffect(() => {
+    async function fetchHabits() {
+      try {
+        const response = await fetch(`/api/habits?page=${page}&limit=3`);
+        const data = await response.json();
+
+        if (data.habits.length === 0) {
+          setHasMore(false); // No more habits available
+        } else {
+          setHabits((prev) => [...prev, ...data.habits]); // Append new data
+        }
+      } catch (error) {
+        console.error("Error fetching habits:", error);
+      }
+    }
+
+    fetchHabits();
+  }, [page]);
+
   return (
-    <div className="p-6 bg-gray-200 max-h-screen">
+    <div className="">
       {/* Card Section */}
-      <div className="flex justify-between mb-3 ml-10 mr-0">
+      <div className="flex justify-around mb-3 r-0">
         <div className="bg-white rounded-[20px] p-6 flex justify-start items-center space-x-6 shadow-lg">
 
         {/* Left: Text Content */}
@@ -15,7 +63,7 @@ export default function DashboarHomePage() {
             Congratulations, Henery!
             </h2>
             <p className="text-black font-['Montserrat'] mt-2">
-            You have done <span className="font-semibold">72% more habits</span> today.
+            You have done <span className="font-semibold">{completedPercentage} more habits</span> today.
             <br></br>
             Check your total habit progress in your dashboard.
             </p>
@@ -35,18 +83,18 @@ export default function DashboarHomePage() {
         <div className="px-10 flex justify-end">
           <div className="bg-[#b0a7f8] rounded-[20px] px-[12px] py-[22px] gap-[30px]    inline-flex flex-col justify-start items-center h-[160px] mr-10">
             <div className="text-black text-xl font-medium font-['Jost'] text-center">Upcoming Habit</div>
-            <div className="text-black text-[26px] font-medium font-['Jost']">10</div>
+            <div className="text-black text-[26px] font-medium font-['Jost']">{upcomingHabit}</div>
           </div>
           <div className="bg-[#b0a7f8] rounded-[20px] px-[22px] py-[22px] gap-[30px] inline-flex flex-col justify-start items-center h-[160px]">
             <div className="text-black text-xl font-medium font-['Jost'] text-center">Total Habit</div>
-            <div className="text-black text-[26px] font-medium font-['Jost']">37</div>
+            <div className="text-black text-[26px] font-medium font-['Jost']">{totalHabit}</div>
           </div>
         </div>
       </div>
 
 {/* Recent Habits Section */}
-    <h2 className="text-xl font-bold mt-10 mb-4 ml-10 font-[Jost]">Recent Habits</h2>
-    <div className="bg-white ml-10 mr-10">
+    <h2 className="text-xl font-bold mt-10 mb-4 font-[Jost]">Recent Habits</h2>
+    <div className="bg-white mr-10">
         <table className="w-full text-center border-collapse mr-0">
           <thead>
             <tr className="bg-[#b0a7f8]">
@@ -59,44 +107,38 @@ export default function DashboarHomePage() {
             </tr>
           </thead>
           <tbody>
-            {/* Example of dynamic data rows */}
-            <tr>
-              <td className="p-3 text-black font-[Jost] font-normal">1</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Play Games</td>
-              <td className="p-3 text-black font-[Jost] font-normal">2th Jan, 2025</td>
-              <td className="p-3 text-black font-[Jost] font-normal">3th Jan, 2025</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Relax</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Completed</td>
-            </tr>
-            <tr>
-              <td className="p-3 text-black font-[Jost] font-normal">2</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Yoga</td>
-              <td className="p-3 text-black font-[Jost] font-normal">6th Jan, 2025</td>
-              <td className="p-3 text-black font-[Jost] font-normal">8th Jan, 2025</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Exercise</td>
-              <td className="p-3 text-black font-[Jost] font-normal">In Progress</td>
-            </tr>
-            <tr>
-              <td className="p-3 text-black font-[Jost] font-normal">3</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Water Intake</td>
-              <td className="p-3 text-black font-[Jost] font-normal">9th Jan, 2025</td>
-              <td className="p-3 text-black font-[Jost] font-normal">12th Jan, 2025</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Hydration</td>
-              <td className="p-3 text-black font-[Jost] font-normal">Uncompleted</td>
-            </tr>
+            {habits.map((habit, index) => (
+              <tr key={habit.id}>
+                <td className="p-3 text-black font-[Jost] font-normal">{index + 1}</td>
+                <td className="p-3 text-black font-[Jost] font-normal">{habit.name}</td>
+                <td className="p-3 text-black font-[Jost] font-normal">{habit.startDate}</td>
+                <td className="p-3 text-black font-[Jost] font-normal">{habit.endDate}</td>
+                <td className="p-3 text-black font-[Jost] font-normal">{habit.category}</td>
+                <td className="p-3 text-black font-[Jost] font-normal">{habit.status}</td>
+              </tr>
+            ))}
           </tbody>
           
         </table>
-        <div className="flex justify-between mt-5"> 
-              <p className="font-[Jost] ml-5">Showing Pairs of 1-3</p>
-              <button className="px-10 py-2 bg-[#6859ff] rounded-[10px] text-white mr-5 mb-5">Next</button>
+        {/* Pagination */}
+        <div className="flex justify-between mt-5">
+          <p className="font-[Jost] ml-5">Showing {habits.length} Habits</p>
+          {hasMore && (
+            <button
+              onClick={() => setPage(page + 1)}
+              className="px-10 py-2 bg-[#6859ff] rounded-[10px] text-white mr-5 mb-5"
+            >
+              Next
+            </button>
+          )}
         </div>
       </div>
-      <div className="m-10 flex flex-col-reverse justify-normal">
-        <div>
-        <PieChart />
-        </div>
+
+      {/* Pie Chart Section*/}
+      <div>
+        <HomeDataChart />
       </div>
+    
     </div>
   );
 }

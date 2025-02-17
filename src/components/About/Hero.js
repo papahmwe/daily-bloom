@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <div>
       {/* Hero Section */}
-      <div className="flex justify-between items-center gap-[70px] mx-20 mt-20 px-5 py-20 h-[449px] mb-16">
+      <div className="flex justify-between items-center gap-[70px] mt-20 px-10 py-20 h-[449px] mb-16">
         {/* image section*/}
         <div>
           <Image

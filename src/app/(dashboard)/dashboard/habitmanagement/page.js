@@ -177,7 +177,7 @@ export default function HabitsPage() {
 
 
   return (
-    <div className='p-6 font-jost'>
+    <div className=' font-jost'>
       <div className='mb-6'>
         <div className='flex justify-between items-center'>
           <div className='relative'>

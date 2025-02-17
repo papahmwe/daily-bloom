@@ -39,7 +39,7 @@ const formatSubtitle = (text) => {
   return text
 }
 
-export default function LoginPage() {
+export default function LoginPage({ isModal = false, onClose, onLogin, onSignup    }) {
   const { data: session, status } = useSession();
   const router = useRouter();
   useEffect(() => {
@@ -70,6 +70,9 @@ export default function LoginPage() {
       if (result?.error) {
         setError(result.error);
       } else {
+        if (isModal && onClose) {
+          onClose();
+        }
         router.push('/dashboard');
       }
     } catch (error) {
@@ -78,12 +81,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='min-h-screen bg-backgroundPrimary flex items-center justify-center p-4'>
+    <div className={`${isModal ? '' : 'min-h-screen'} bg-backgroundPrimary flex items-center justify-center p-4 rounded-lg`}>
       <div className='p-3 w-full max-w-5xl bg-backgroundForm rounded-lg overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-2'>
         {/* Left side */}
         <div className='p-3 bg-backgroundPrimary rounded-lg'>
-          <div className='relative flex flex-col items-center justify-center overflow-hidden'>
-            <div className='relative w-full aspect-square max-w-md '>
+          <div className='relative flex flex-col items-center justify-center h-full'>
+            <div className='relative w-full h-[300px] md:h-[400px]'>
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -91,7 +94,7 @@ export default function LoginPage() {
                             ${
                               index === currentSlide
                                 ? 'opacity-100 translate-x-0'
-                                : index < currentSlide
+                                  : index < currentSlide
                                 ? 'opacity-0 -translate-x-full'
                                 : 'opacity-0 translate-x-full'
                             }`}
@@ -101,6 +104,7 @@ export default function LoginPage() {
                     alt={slide.title}
                     fill
                     className='object-contain'
+                    priority={index === 0}
                   />
                 </div>
               ))}
@@ -121,11 +125,11 @@ export default function LoginPage() {
                 />
               ))}
             </div>
-            <div className='text-center mt-6 space-y-2'>
-              <h2 className='text-xl font-semibold'>
+            <div className='text-center mt-6 space-y-2 h-[80px] flex flex-col justify-center'>
+              <h2 className='text-xl font-semibold truncate'>
                 {slides[currentSlide].title}
               </h2>
-              <p className='text-gray-600'>
+              <p className='text-gray-600 min-h-[24px]'>
                 {formatSubtitle(slides[currentSlide].subtitle)}
               </p>
             </div>
@@ -133,8 +137,8 @@ export default function LoginPage() {
         </div>
 
         {/* Right side */}
-        <div className='bg-backgroundForm p-8'>
-          <div className='space-y-6'>
+        <div className='bg-backgroundForm p-8 flex items-center justify-center'>
+          <div className='space-y-6 w-full max-w-[400px]'>
             <div className='text-center space-y-2'>
               <h1 className='text-3xl font-bold text-backgroundPrimary'>
                 Welcome Back
@@ -242,9 +246,9 @@ export default function LoginPage() {
 
             <p className='text-center text-white/90'>
               Not a member?{' '}
-              <Link href='/signup' className='text-white hover:underline'>
+                <button onClick={onSignup} className='text-white hover:underline'>
                 Register now
-              </Link>
+              </button>
             </p>
           </div>
         </div>

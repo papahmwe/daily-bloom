@@ -20,12 +20,12 @@ const slides = [
   },
   {
     image: '/assets/images/auth/signup3.png',
-    title: 'Consistency Unlocks Rewards Rewards',
+    title: 'Consistency Unlocks Rewards',
     subtitle: 'Start Blooming with DailyBloom',
   },
 ]
 
-export default function SignupPage() {
+export default function SignupPage({ isModal = false, onClose, onLogin   }) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [error, setError] = useState("");
@@ -85,7 +85,6 @@ export default function SignupPage() {
         throw new Error(data.message || 'Something went wrong');
       }
 
-      // If signup successful, sign in automatically
       const result = await signIn('credentials', {
         email: formData.get('email'),
         password: formData.get('password'),
@@ -95,6 +94,9 @@ export default function SignupPage() {
       if (result?.error) {
         setError(result.error);
       } else {
+        if (isModal && onClose) {
+          onClose();
+        }
         router.push('/dashboard');
       }
     } catch (error) {
@@ -103,11 +105,11 @@ export default function SignupPage() {
   };
 
   return (
-    <div className='min-h-screen bg-backgroundPrimary flex items-center justify-center p-4'>
+    <div className={`${isModal ? '' : 'min-h-screen'} bg-backgroundPrimary flex items-center justify-center p-4 rounded-lg`}>
       <div className='p-3 w-full max-w-5xl bg-backgroundForm rounded-lg overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-2'>
         {/* Left side*/}
-        <div className='bg-backgroundForm p-8'>
-          <div className=' space-y-8'>
+        <div className='bg-backgroundForm p-8 flex items-center justify-center'>
+          <div className='space-y-6 w-full max-w-[400px]'>
             <div>
               <h1 className='text-4xl font-bold text-white'>Logo</h1>
             </div>
@@ -115,44 +117,44 @@ export default function SignupPage() {
             <div>
               <h2 className='text-3xl font-bold text-white'>Get Started</h2>
               <p className='text-white/90 mt-2'>
-                already have an account? <Link href='/login'>sign in</Link>
+                already have an account? <button onClick={onLogin} className='text-white hover:underline'>sign in</button>
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className='space-y-8'>
-              <div className='relative'>
+            <form onSubmit={handleSubmit} className='space-y-6'>
+              <div className='relative w-[350px] mx-auto'>
                 <input
                   type='text'
                   placeholder='username'
                   name='username'
                   required
-                  className='w-full px-4 py-5 rounded-lg bg-white/80  
+                  className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
                 />
                 <User className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
               </div>
 
-              <div className='relative'>
+              <div className='relative w-[350px] mx-auto'>
                 <input
                   type='email'
                   placeholder='email'
                   name='email'
                   required
-                  className='w-full px-4 py-5 rounded-lg bg-white/80  
+                  className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
                 />
                 <Mail className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
               </div>
 
-              <div className='relative'>
+              <div className='relative w-[350px] mx-auto'>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder='password'
                   name='password'
                   required
-                  className='w-full px-4 py-5 rounded-lg bg-white/80  
+                  className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
                 />
@@ -169,13 +171,15 @@ export default function SignupPage() {
                 </button>
               </div>
 
-              <button
-                type='submit'
-                className='w-full py-4 px-4 bg-white text-2xl text-backgroundForm font-bold rounded-lg
-                  hover:bg-white/90'
-              >
-                Sign up
-              </button>
+              <div className='relative w-[350px] mx-auto'>
+                <button
+                  type='submit'
+                  className='w-full py-4 px-4 bg-white text-2xl text-backgroundForm font-bold rounded-lg
+                    hover:bg-white/90'
+                >
+                  Sign up
+                </button>
+              </div>
             </form>
             {error && <div className="text-red-500 text-sm">{error}</div>}
           </div>
@@ -183,8 +187,8 @@ export default function SignupPage() {
 
         {/* Right side*/}
         <div className='p-3 bg-backgroundPrimary rounded-lg'>
-          <div className='relative flex flex-col items-center justify-center overflow-hidden'>
-            <div className='relative w-full aspect-square max-w-md '>
+          <div className='relative flex flex-col items-center justify-center h-full'>
+            <div className='relative w-full h-[300px] md:h-[400px]'>
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -202,13 +206,12 @@ export default function SignupPage() {
                     alt={slide.title}
                     fill
                     className='object-contain'
+                    priority={index === 0}
                   />
                 </div>
               ))}
             </div>
             <div className='flex gap-3 mt-6'>
-              {' '}
-              {/* Increased gap between dots */}
               {slides.map((value, index) => (
                 <button
                   key={index}
@@ -222,11 +225,11 @@ export default function SignupPage() {
                 />
               ))}
             </div>
-            <div className='text-center mt-6 space-y-2'>
-              <h2 className='text-xl font-semibold'>
+            <div className='text-center mt-6 space-y-2 h-[80px] flex flex-col justify-center'>
+              <h2 className='text-xl font-semibold truncate'>
                 {slides[currentSlide].title}
               </h2>
-              <p className='text-gray-600'>
+              <p className='text-gray-600 min-h-[24px]'>
                 {formatSubtitle(slides[currentSlide].subtitle)}
               </p>
             </div>

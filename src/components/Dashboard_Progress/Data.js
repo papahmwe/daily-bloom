@@ -97,12 +97,12 @@ export default function Data() {
         </h1>
 
         {/* Display Data Section */}
-        <div className="w-[951.71px] h-[722.46px] flex flex-1 flex-wrap gap-6 ">
+        <div className="w-auto h-[722.46px] flex flex-1 flex-wrap gap-6 ">
           {completedData.map((data, index) => {
             return (
               <div
                 key={data.id}
-                className={`w-[463px] h-[348px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
+                className={`lg:w-[463px] w-auto h-[348px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
                 ${
                   data.id === 2 || data.id === 4
                     ? "flex-row-reverse "

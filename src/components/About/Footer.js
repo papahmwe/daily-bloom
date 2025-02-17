@@ -20,7 +20,7 @@ export default function Footer() {
     <div>
       {/* Footer */}
       <div className="h-[478px] mt-20 px-10">
-        <div className="w-[1308px] h-[394.18px] flex justify-center items-center gap-[100px]">
+        <div className="w-full h-[394.18px] flex justify-between items-center ">
           {/* first */}
           <div className=" w-[469px] ">
             <div className="flex flex-col gap-[19px] justify-center items-center">
@@ -58,62 +58,58 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* second, third */}
+          {/* second */}
+          <div className="w-[189px] h-[281px] flex flex-col justify-start gap-[24px]">
+            <h1 className="w-[189px] h-[29px] font-montserrat font-[700] text-[24px] text-[#F5F5F5] leading-[29.26px] ">
+              Quick Use Link
+            </h1>
+            <div className="w-[151px] h-[228px] ">
+              <ul className="  flex flex-col gap-[10px]">
+                {footerItems.map((item, index) => (
+                  <li
+                    key={index}
+                    className="hover:text-mainPrimary list-none font-jost font-[500] text-[18px] text-[#F5F5F5]  leading-[26.01px] uppercase cursor-pointer duration-700 transition-all"
+                  >
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-          <div className="w-[739px] h-[281px] flex justify-start gap-[100px]">
-            {/* second */}
-            <div className="w-[189px] h-[281px] flex flex-col justify-start gap-[24px]">
-              <h1 className="w-[189px] h-[29px] font-montserrat font-[700] text-[24px] text-[#F5F5F5] leading-[29.26px] ">
-                Quick Use Link
-              </h1>
-              <div className="w-[151px] h-[228px] ">
-                <ul className="  flex flex-col gap-[10px]">
-                  {footerItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="hover:text-mainPrimary list-none font-jost font-[500] text-[18px] text-[#F5F5F5]  leading-[26.01px] uppercase cursor-pointer duration-700 transition-all"
-                    >
-                      {item.name}
-                    </li>
-                  ))}
+          {/* third */}
+          <div className=" w-[450px] h-[280px] ">
+            <div className="flex flex-col gap-[50px]">
+              <div className="flex flex-col gap-[24px]">
+                {/* header */}
+                <h1 className="w-[189px] h-[29px] font-montserrat font-[700] text-[24px] text-[#F5F5F5] leading-[29.26px] ">
+                  Contact
+                </h1>
+                {/* list */}
+                <ul className=" list-none font-jost font-[400] text-[18px] text-[#F5F5F5] leading-[26.01px] uppercase flex flex-col gap-[12px]">
+                  <li>2715 Ash Dr. San Jose, South Dakota 83475</li>
+                  <li>Email : felicia.reid@example.com</li>
+                  <li>Phone : (201) 555-0124</li>
                 </ul>
               </div>
-            </div>
-
-            {/* third */}
-            <div className=" w-[450px] h-[280px] ">
-              <div className="flex flex-col gap-[50px]">
-                <div className="flex flex-col gap-[24px]">
-                  {/* header */}
-                  <h1 className="w-[189px] h-[29px] font-montserrat font-[700] text-[24px] text-[#F5F5F5] leading-[29.26px] ">
-                    Contact
-                  </h1>
-                  {/* list */}
-                  <ul className=" list-none font-jost font-[400] text-[18px] text-[#F5F5F5] leading-[26.01px] uppercase flex flex-col gap-[12px]">
-                    <li>2715 Ash Dr. San Jose, South Dakota 83475</li>
-                    <li>Email : felicia.reid@example.com</li>
-                    <li>Phone : (201) 555-0124</li>
-                  </ul>
-                </div>
-                {/* social */}
-                <div className="w-[287px] h-[70px] flex justify-between items-center">
-                  {data.map((item, index) => (
-                    <div
-                      key={index}
-                      className="w-[73px] h-[70px] flex flex-col justify-center items-center gap-[4px]"
-                    >
-                      <Image
-                        src={item.image}
-                        alt={item.text}
-                        width={40}
-                        height={40}
-                      />
-                      <h3 className="h-[26px] font-jost font-[400] text-[18px] text-[#F5F5F5] leading-[26.01px] text-center">
-                        {item.text}
-                      </h3>
-                    </div>
-                  ))}
-                </div>
+              {/* social */}
+              <div className="w-[287px] h-[70px] flex justify-between items-center">
+                {data.map((item, index) => (
+                  <div
+                    key={index}
+                    className="w-[73px] h-[70px] flex flex-col justify-center items-center gap-[4px]"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.text}
+                      width={40}
+                      height={40}
+                    />
+                    <h3 className="h-[26px] font-jost font-[400] text-[18px] text-[#F5F5F5] leading-[26.01px] text-center">
+                      {item.text}
+                    </h3>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

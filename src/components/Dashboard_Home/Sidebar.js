@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 const sideBarItemLists = [
   {
@@ -50,11 +52,17 @@ const sideBarItemLists = [
 ];
 
 export default function Sidebar() {
+  const router = useRouter();
   const pathname = usePathname();
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/");
+    console.log("Logout");
+  };
 
   return (
     <div>
-      <div className="w-[333px] h-[1024px] flex flex-col justify-start items-center gap-[40px] bg-backgroundPrimary shadow-sm">
+      <div className="w-[333px] h-full flex flex-col justify-start items-center gap-[40px] bg-backgroundPrimary shadow-sm">
         {/* Logo */}
         <Image
           src="/assets/home/logo.png"
@@ -87,7 +95,7 @@ export default function Sidebar() {
                   className="object-cover "
                 />
                 <span
-                  className={`font-montserrat font-[500] text-[16px] text-[#000000] leading-[24.38px] ${
+                  className={`font-montserrat font-[500] text-[16px] text-[#000000] tracking-wide leading-[24.38px] ${
                     pathname === sideBar.route
                       ? "text-backgroundPrimary"
                       : "text-[#000000]"
@@ -101,16 +109,21 @@ export default function Sidebar() {
 
           {/* Log Out */}
           <div className=" h-[48px] flex justify-start items-center cursor-pointer rounded-[10px] px-[14px] py-[16px] gap-[20px]">
-            <Image
-              src="/assets/dashboard_home/LogOut.png"
-              alt="LogOut"
-              width={17}
-              height={18}
-              className="object-cover"
-            />
-            <h3 className="font-montserrat font-[500] text-[16px] text-[#FF0000] leading-[24.38px]">
-              Log Out
-            </h3>
+            <button
+              onClick={handleLogout}
+              className="flex justify-start items-center gap-[20px]"
+            >
+              <Image
+                src="/assets/dashboard_home/LogOut.png"
+                alt="LogOut"
+                width={17}
+                height={18}
+                className="object-cover"
+              />
+              <h3 className="font-montserrat font-[500] text-[16px] text-[#FF0000] leading-[24.38px]">
+                Log Out
+              </h3>
+            </button>
           </div>
         </div>
       </div>

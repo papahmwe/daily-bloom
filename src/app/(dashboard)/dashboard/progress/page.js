@@ -8,9 +8,9 @@ import WithoutData from "@/components/Dashboard_Progress/WithoutData";
 export default function ProgressPage() {
   const [data, setData] = useState(null);
 
-  useEffect(() => {
-    setData("take a rest");
-  }, []);
+  // useEffect(() => {
+  //   setData("take a rest");
+  // }, []);
 
   return (
     <div>

@@ -1,10 +1,11 @@
 'use client'
 
-import { Eye, EyeOff, User } from 'lucide-react'
+import { Eye, EyeOff, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation'
 
 const slides = [
   {
@@ -38,9 +39,18 @@ const formatSubtitle = (text) => {
   return text
 }
 
-export default function LoginPage() {
+export default function LoginPage({ isModal = false, onClose, onLogin, onSignup    }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (session) {
+      router.push('/dashboard');
+    }
+  }, [session, router]);
+
   const [currentSlide, setCurrentSlide] = useState(0)
   const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -49,13 +59,34 @@ export default function LoginPage() {
     return () => clearInterval(timer)
   }, [])
 
+  const handleSubmit = async (formData) => {
+    try {
+      const result = await signIn("credentials", {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        if (isModal && onClose) {
+          onClose();
+        }
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      setError("An error occurred during login");
+    }
+  };
+
   return (
-    <div className='min-h-screen bg-backgroundPrimary flex items-center justify-center p-4'>
+    <div className={`${isModal ? '' : 'min-h-screen'} bg-backgroundPrimary flex items-center justify-center p-4 rounded-lg`}>
       <div className='p-3 w-full max-w-5xl bg-backgroundForm rounded-lg overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-2'>
         {/* Left side */}
         <div className='p-3 bg-backgroundPrimary rounded-lg'>
-          <div className='relative flex flex-col items-center justify-center overflow-hidden'>
-            <div className='relative w-full aspect-square max-w-md '>
+          <div className='relative flex flex-col items-center justify-center h-full'>
+            <div className='relative w-full h-[300px] md:h-[400px]'>
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -63,7 +94,7 @@ export default function LoginPage() {
                             ${
                               index === currentSlide
                                 ? 'opacity-100 translate-x-0'
-                                : index < currentSlide
+                                  : index < currentSlide
                                 ? 'opacity-0 -translate-x-full'
                                 : 'opacity-0 translate-x-full'
                             }`}
@@ -73,6 +104,7 @@ export default function LoginPage() {
                     alt={slide.title}
                     fill
                     className='object-contain'
+                    priority={index === 0}
                   />
                 </div>
               ))}
@@ -93,11 +125,11 @@ export default function LoginPage() {
                 />
               ))}
             </div>
-            <div className='text-center mt-6 space-y-2'>
-              <h2 className='text-xl font-semibold'>
+            <div className='text-center mt-6 space-y-2 h-[80px] flex flex-col justify-center'>
+              <h2 className='text-xl font-semibold truncate'>
                 {slides[currentSlide].title}
               </h2>
-              <p className='text-gray-600'>
+              <p className='text-gray-600 min-h-[24px]'>
                 {formatSubtitle(slides[currentSlide].subtitle)}
               </p>
             </div>
@@ -105,8 +137,8 @@ export default function LoginPage() {
         </div>
 
         {/* Right side */}
-        <div className='bg-backgroundForm p-8'>
-          <div className='space-y-6'>
+        <div className='bg-backgroundForm p-8 flex items-center justify-center'>
+          <div className='space-y-6 w-full max-w-[400px]'>
             <div className='text-center space-y-2'>
               <h1 className='text-3xl font-bold text-backgroundPrimary'>
                 Welcome Back
@@ -117,22 +149,23 @@ export default function LoginPage() {
               <p className='text-backgroundPrimary/90'>every sigle day!</p>
             </div>
 
-            <form className='space-y-6'>
+            <form className='space-y-6' action={handleSubmit}>
               <div className='relative w-[350px] mx-auto'>
                 <input
-                  type='text'
-                  placeholder='username'
+                  type='email'
+                  placeholder='email'
+                  name='email'
                   className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
                 />
-                <User className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
+                <Mail className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
               </div>
-
               <div className='relative w-[350px] mx-auto'>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder='password'
+                  name='password'
                   className='w-full px-4 py-4 rounded-lg bg-white/80  
                     border border-white/30 text-black/60 placeholder:text-black/60
                     focus:outline-none focus:border-white/50'
@@ -170,6 +203,8 @@ export default function LoginPage() {
               </div>
             </form>
 
+            {error && <div className="text-red-500">{error}</div>}
+
             <div className='relative'>
               <div className='absolute inset-0 flex items-center'>
                 <div className='w-full border-t border-white/20' />
@@ -183,23 +218,37 @@ export default function LoginPage() {
 
             <div className='flex justify-center items-center gap-10'>
               <button>
-
-                <Image src='/assets/images/auth/google.png' alt='google' width={36} height={36}/>
+                <Image
+                  src='/assets/images/auth/google.png'
+                  alt='google'
+                  width={36}
+                  height={36}
+                />
               </button>
               <button className='p-3  transition-colors '>
-
-                <Image src='/assets/images/auth/facebook.png' alt='facebook' width={36} height={36} className='rounded-full'/>
+                <Image
+                  src='/assets/images/auth/facebook.png'
+                  alt='facebook'
+                  width={36}
+                  height={36}
+                  className='rounded-full'
+                />
               </button>
               <button className='p-3  transition-colors'>
-                <Image src='/assets/images/auth/instagram.png' alt='instagram' width={36} height={36}/>
+                <Image
+                  src='/assets/images/auth/instagram.png'
+                  alt='instagram'
+                  width={36}
+                  height={36}
+                />
               </button>
             </div>
 
             <p className='text-center text-white/90'>
               Not a member?{' '}
-              <Link href='/signup' className='text-white hover:underline'>
+                <button onClick={onSignup} className='text-white hover:underline'>
                 Register now
-              </Link>
+              </button>
             </p>
           </div>
         </div>

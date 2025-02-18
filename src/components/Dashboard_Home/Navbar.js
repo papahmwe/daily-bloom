@@ -25,7 +25,7 @@ export default function Navbar() {
   return (
     <div className="w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm">
       {/* Title Section */}
-      <h3 className="font-jost font-[600] text-[32px] text-[#000000] leading-[46.24px]">
+      <h3 className="font-jost font-[600] text-[32px] text-[#000000] tracking-wide leading-[46.24px]">
         {title}
       </h3>
 

@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Data from "@/components/Dashboard_Progress/Data";
 import WithoutData from "@/components/Dashboard_Progress/WithoutData";
 
 export default function ProgressPage() {
-  const [data, setData] = useState("take a rest");
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setData("take a rest");
+  }, []);
 
   return (
     <div>

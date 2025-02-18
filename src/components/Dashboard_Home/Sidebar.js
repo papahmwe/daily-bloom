@@ -19,7 +19,7 @@ const sideBarItemLists = [
     title: "Challenges",
     image: "/assets/dashboard_home/Challenges.png",
     activeImage: "/assets/dashboard_home/Challenges_White.png",
-    route: "/dashboard/challenges",
+    route: "/dashboard/challenge",
   },
   {
     id: 3,

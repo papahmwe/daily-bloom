@@ -134,7 +134,7 @@ export default function DashboarHomePage() {
         </div>
       </div>
 
-      {/* Pie Chart Section*/}
+      {/* Pie Chart Section */}
       <div>
         <HomeDataChart />
       </div>

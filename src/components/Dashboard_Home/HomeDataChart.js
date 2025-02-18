@@ -1,108 +1,57 @@
 "use client";
 
-// import DonutChart from "@/components/Dashboard_Progress/DonutPieWithData";
-import DonutChart from "@/components/Dashboard_Home/HomePieChart"
+import Image from "next/image";
+
+import DonutChart from "@/components/Dashboard_Progress/DonutPieWithData";
 
 export default function Data() {
-  const firstData = [
-    { name: "completed", value: 50, fill: "#f1e6b9" },
-    { name: "active", value: 50, fill: "#9409ff" },
-  ];
-  const secondData = [
-    { name: "consistency", value: 50, fill: "#ff7f50" },
-    { name: "skipped", value: 50, fill: "#55efc4" },
-  ];
-  const thirdData = [
-    { name: "on time", value: 50, fill: "#74b9ff" },
-    { name: "missed", value: 50, fill: "#fa1111" },
+  const goalData = [
+    { name: "Remaining", value: 20, fill: "#E2E8F0" },
+    { name: "Completed", value: 80, fill: "#FAA1D2" },
   ];
 
-  // const monthlyData = [
-  //   { name: "Lifestyle", value: 40, fill: "#FAA1D2" },
-  //   { name: "Health", value: 40, fill: "#90CDFC" },
-  // ];
+  const monthlyData = [
+    { name: "Lifestyle", value: 40, fill: "#FAA1D2" },
+    { name: "Health", value: 40, fill: "#90CDFC" },
+    { name: "Education", value: 20, fill: "#93FC90" },
+  ];
 
-  const percentage = 50;
+  
+  const percentage = 80;
 
   return (
-    <div className=" flex justify-start gap-[20px] ">
-      {/* First Card Section  */}
-      <div className="w-[330px] flex flex-col items-center p-5 bg-white rounded-2xl
-        shadow-md text-center mr-10 mt-10">
-        {/* Title Centered */}
-        <h3 className="text-lg font-semibold mb-4">Progress</h3>
+    <div className=" flex flex-col justify-start gap-[50px] ">
+      {/* Progress Section */}
+      <div className=" flex flex-col gap-[30px] ">
+        <h1 className="font-montserrat font-[700] text-[27px] text-[#000000] leading-[32.91px]">
+          The progress you&apos;ve already made.
+        </h1>
 
-        {/* Content Container */}
-        <div className="flex justify-between items-center w-full">
-          {/* Donut Chart Centered */}
-          <div className="flex-1 flex justify-center">
-          <DonutChart data={firstData} percentage={percentage} />
+        <div className="w-[660px] h-[269px] flex justify-start items-center gap-[40px] ">
+          <div className="flex justify-start items-center gap-[80px] ">
+            {/* First Donut Chart */}
+            <DonutChart data={goalData} percentage={percentage} />
+
+            {/* Second Donut Chart */}
+            <DonutChart data={monthlyData} percentage={"This Month"} />
           </div>
 
           {/* Legend on the Right */}
-          <div className="flex flex-col justify-center items-start gap-2">
-          {firstData.map((entry) => (
-          <div key={entry.name} className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full"
-            style={{ backgroundColor: entry.fill }} // Legend color
-            ></div>
-            <span className="font-jost text-sm text-black">{entry.name}</span>
-          </div>
-          ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Second Card Section*/}
-      <div className="w-[330px] flex flex-col items-center p-5 bg-white rounded-2xl
-        shadow-md text-center mr-10 mt-10">
-        {/* Title Centered */}
-        <h3 className="text-lg font-semibold mb-4">Consistency</h3>
-
-        {/* Content Container */}
-        <div className="flex justify-between items-center w-full">
-          {/* Donut Chart Centered */}
-          <div className="flex-1 flex justify-center">
-          <DonutChart data={secondData} percentage={percentage} />
-          </div>
-
-          {/* Legend on the Right */}
-          <div className="flex flex-col justify-center items-start gap-2">
-          {secondData.map((entry) => (
-          <div key={entry.name} className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full"
-            style={{ backgroundColor: entry.fill }} // Legend color
-            ></div>
-            <span className="font-jost text-sm text-black">{entry.name}</span>
-          </div>
-          ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Third Card Section*/}
-      <div className="w-[330px] flex flex-col items-center p-5 bg-white rounded-2xl
-        shadow-md text-center mr-10 mt-10">
-        {/* Title Centered */}
-        <h3 className="text-lg font-semibold mb-4">Habit Completion</h3>
-
-        {/* Content Container */}
-        <div className="flex justify-between items-center w-full">
-          {/* Donut Chart Centered */}
-          <div className="flex-1 flex justify-center">
-          <DonutChart data={thirdData} percentage={percentage} />
-          </div>
-
-          {/* Legend on the Right */}
-          <div className="flex flex-col justify-center items-start gap-2">
-          {thirdData.map((entry) => (
-          <div key={entry.name} className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full"
-            style={{ backgroundColor: entry.fill }} // Legend color
-            ></div>
-            <span className="font-jost text-sm text-black">{entry.name}</span>
-          </div>
-          ))}
+          <div className="flex flex-col justify-center items-start gap-[10px] ">
+            {monthlyData.map((entry, index) => (
+              <div
+                key={entry.name}
+                className="flex justify-center items-center gap-[8px]"
+              >
+                <div
+                  className="w-[20px] h-[20px] rounded-full"
+                  style={{ backgroundColor: entry.fill }} // Use the color defined in the data
+                ></div>
+                <span className="font-jost font-[400] text-[16px] text-[#000000] leading-[17.34px]">
+                  {entry.name}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

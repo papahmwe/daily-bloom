@@ -1,175 +1,84 @@
-"use client";
-import Image from "next/image";
-import { Pencil, Flame, Droplets, Dumbbell } from "lucide-react";
-import { Camera } from "lucide-react";
-import { useState } from "react";
-import { ChangePasswordDialog } from "@/components/Dashboard_Home/change-password-box";
-import { DeleteAccountDialog } from "@/components/Dashboard_Home/delete_account";
-import { AchievementDialog } from "@/components/Dashboard_Home/achievement";
+import React from 'react';
 
-export default function UserProfile() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpen_delete, setIsOpen_delete] = useState(false);
-  const [isOpen_notification, setIsOpen_notification] = useState(true);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
+const DashboardPage = () => {
+    // Dummy data for habit tracking
+    const habits = [
+        { id: 1, name: 'Exercise', completed: 25, target: 30 },
+        { id: 2, name: 'Read', completed: 7, target: 7 },
+        { id: 3, name: 'Meditate', completed: 20, target: 30 },
+    ];
 
-  const handleOpen_delete = () => {
-    setIsOpen_delete(true);
-  };
+    return (
+        <div className="container mx-auto p-6">
+            <h1 className="text-3xl font-bold text-gray-800 mb-5">Habit Tracking Dashboard</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Habit Summary Cards */}
+                {habits.map(habit => (
+                    <div key={habit.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <div className="p-5">
+                            <div className="flex items-center">
+                                <div className="w-2/3">
+                                    <div className="text-gray-700 font-semibold text-lg">{habit.name}</div>
+                                    <div className="text-2xl font-bold text-gray-900">{habit.completed}/{habit.target}</div>
+                                </div>
+                                <div className="w-1/3 text-right">
+                                    {/* Placeholder for progress indicator */}
+                                    <svg className="h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-gray-100 px-5 py-3 text-sm text-gray-600">
+                            Progress: {(habit.completed / habit.target * 100).toFixed(0)}%
+                        </div>
+                    </div>
+                ))}
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
-      <div className="mx-auto max-w-3xl space-y-6">
-        {/* Header Section */}
-        <div className="p-6 border-2 border-purple-200 rounded-xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Image
-                  src="/assets/images/auth/signup1.png"
-                  alt="User avatar"
-                  width={80}
-                  height={80}
-                  className="rounded-full object-cover"
-                />
-                <button className="absolute bottom-0 right-0 rounded-full bg-white p-1.5 shadow-lg">
-                  <Camera className="h-4 w-4 text-gray-600" />
-                </button>
-              </div>
-              <div className="space-y-1">
-                <h2 className="text-xl font-semibold">User Name</h2>
-                <div className="flex items-center gap-2 rounded-lg bg-purple-100 px-4 py-2">
-                  <Flame className="h-4 w-4 text-orange-500" />
-                  <span className="text-sm text-purple-600">1250 Points</span>
+                {/* Recent Activity Card */}
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden md:col-span-2 lg:col-span-1">
+                    <div className="p-5">
+                        <div className="text-gray-700 font-semibold text-lg mb-3">Recent Activity</div>
+                        <ul>
+                            <li className="py-2 border-b border-gray-200">
+                                <div className="text-gray-800">Completed Exercise</div>
+                                <div className="text-sm text-gray-500">5 minutes ago</div>
+                            </li>
+                            <li className="py-2 border-b border-gray-200">
+                                <div className="text-gray-800">Read for 30 minutes</div>
+                                <div className="text-sm text-gray-500">30 minutes ago</div>
+                            </li>
+                            <li className="py-2">
+                                <div className="text-gray-800">Meditated</div>
+                                <div className="text-sm text-gray-500">1 hour ago</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-              </div>
+
+                {/* Reports Card */}
+                <div className="bg-white shadow-lg rounded-lg overflow-hidden lg:col-span-1">
+                    <div className="p-5">
+                        <div className="text-gray-700 font-semibold text-lg mb-3">Reports</div>
+                        <div className="text-gray-600">
+                            <p>Weekly Progress: <a href="#" className="text-blue-500 hover:underline">Download</a></p>
+                            <p>Monthly Summary: <a href="#" className="text-blue-500 hover:underline">Download</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button
-              variant="outline"
-              size="sm"
-              className="hidden sm:flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-purple-300 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-90">
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit
-            </button>
-          </div>
+            {/* Additional Content */}
+            <div className="mt-6 bg-white shadow-lg rounded-lg overflow-hidden">
+                <div className="p-6">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4">Habit Analytics</h2>
+                    {/* Placeholder for charts or graphs */}
+                    <div className="text-gray-600">
+                        Detailed habit analytics and visualizations will be displayed here.
+                    </div>
+                </div>
+            </div>
         </div>
+    );
+};
 
-        {/* Personal Information */}
-        <div className="p-6 border-2 border-purple-200 rounded-xl">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold">Personal Information</h3>
-            <button
-              variant="outline"
-              size="sm"
-              className="hidden sm:flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-purple-300 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-90">
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit
-            </button>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm text-gray-500">Full Name</label>
-              <p className="font-medium">Scarlet Latter</p>
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm text-gray-500">Password</label>
-              <p className="font-medium">********</p>
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm text-gray-500">Email</label>
-              <p className="font-medium">scarlet@gmail.com</p>
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm text-gray-500">Gender</label>
-              <p className="font-medium">Female</p>
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
-            <button
-              className="sm:order-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-white hover:bg-red-600 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md active:scale-95 border border-red-600"
-              onClick={handleOpen_delete}>
-              Delete Account
-            </button>
-            <button
-              className="px-4 py-2 text-sm font-medium text-white bg-[#8678FB] hover:bg-[#8678FB]-1000 rounded-xl transition-all duration-200 ease-in-out shadow-sm hover:shadow-md active:scale-95"
-              onClick={handleOpen}>
-              Change Password
-            </button>
-          </div>
-        </div>
-
-        {/* Achievements */}
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-semibold">Achievements</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="bg-gradient-to-t to-purple-40 from-purple-200 p-4 rounded-xl border border-purple-100 shadow-md">
-              <div className="mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-medium tracking-tight">
-                    Achievement Unlocked
-                  </span>
-                  <span role="img" aria-label="party popper">
-                    🎉
-                  </span>
-                </div>
-                <p className="text-sm text-gray-500 font-light mt-5">
-                  Habit Formation Complete
-                </p>
-              </div>
-              <div className="flex items-center justify-between mt-5">
-                <div className="flex items-center gap-3">
-                  <Droplets className="h-5 w-5 text-blue-500" />
-                  <span className="font-medium text-gray-800">Drink Water</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Flame className="h-4 w-4 text-orange-500" />
-                  <span className="font-medium text-gray-700">x 30 Days</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-t to-purple-40 from-purple-200 p-4 rounded-xl border border-purple-100 shadow-md">
-              <div className="mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-medium tracking-tight">
-                    Achievement Unlocked
-                  </span>
-                  <span role="img" aria-label="party popper">
-                    🎉
-                  </span>
-                </div>
-                <p className="text-sm text-gray-500 font-light mt-5">
-                  Habit Formation Complete
-                </p>
-              </div>
-              <div className="flex items-center justify-between mt-5">
-                <div className="flex items-center gap-3">
-                  <Dumbbell className="h-5 w-5 text-blue-500" />
-                  <span className="font-medium text-gray-800">Drink Water</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Flame className="h-4 w-4 text-orange-500" />
-                  <span className="font-medium text-gray-700">x 30 Days</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ChangePasswordDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-      <DeleteAccountDialog
-        isOpen_delete={isOpen_delete}
-        setIsOpen_delete={setIsOpen_delete}
-      />
-      <AchievementDialog
-        isOpen_notification={isOpen_notification}
-        setIsOpen_notification={setIsOpen_notification}
-      />
-    </div>
-  );
-}
+export default DashboardPage;

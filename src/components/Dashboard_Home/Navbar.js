@@ -11,6 +11,7 @@ const pageTitles = {
   "/dashboard/habitmanagement": "Habit Management",
   "/dashboard/tracking": "Tracking",
   "/dashboard/rewards": "Rewards",
+  "/dashboard/profile": "Profile",
 };
 
 export default function Navbar() {

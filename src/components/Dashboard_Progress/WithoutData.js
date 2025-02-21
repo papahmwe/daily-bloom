@@ -21,7 +21,7 @@ export default function WithoutData() {
       </div>
 
       {/* Encouraging Message */}
-      <div className="w-auto h-[600px] flex flex-col justify-between items-center mt-14">
+      <div className="w-auto h-auto flex flex-col justify-between items-center mt-8">
         <Image
           src="/assets/Progress/ProgressDafault.svg"
           alt="ProgressDafault"
@@ -29,12 +29,12 @@ export default function WithoutData() {
           height={300}
           className="w-auto h-auto object-contain"
         />
-        <div className="w-auto flex flex-col justify-between items-center">
-          <span className="font-jost font-[500] text-[28px] text-[#000000] leading-[41.91px] text-center">
+        <div className="w-auto flex flex-col justify-between items-center mt-10">
+          <span className="font-jost font-[500] text-[28px] text-[#000000] leading-[41.91px] tracking-wide opacity-80 text-center">
             Here is where you&apos;ll track your progress and build better
             habits.
           </span>
-          <span className="font-jost font-[400] text-[28px] text-[#000000] leading-[41.91px] text-center">
+          <span className="font-jost font-[400] text-[28px] text-[#000000] leading-[41.91px] tracking-wide opacity-80 text-center mt-2">
             Start your first habit today and keep the streak going! 🔥
           </span>
         </div>

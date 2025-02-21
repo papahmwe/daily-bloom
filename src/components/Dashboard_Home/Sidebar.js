@@ -19,7 +19,7 @@ const sideBarItemLists = [
     title: "Challenges",
     image: "/assets/dashboard_home/Challenges.png",
     activeImage: "/assets/dashboard_home/Challenges_White.png",
-    route: "/dashboard/challenges",
+    route: "/dashboard/challenge",
   },
   {
     id: 3,
@@ -67,9 +67,9 @@ export default function Sidebar() {
         <Image
           src="/assets/home/logo.png"
           alt="Logo_Images"
-          width={156}
-          height={105.49}
-          className="mt-10"
+          width={140}
+          height={100}
+          className="mt-10 object-contain"
         />
 
         {/* Menu */}
@@ -79,7 +79,7 @@ export default function Sidebar() {
 
             return (
               <Link
-                className={`h-[48px] flex justify-start items-center cursor-pointer rounded-[10px] px-[14px] py-[16px] gap-[20px] ${
+                className={` flex justify-start items-center cursor-pointer rounded-[10px] px-5 py-4 gap-[20px] ${
                   pathname === sideBar.route
                     ? "bg-mainSecondary"
                     : "bg-transparent"
@@ -95,10 +95,10 @@ export default function Sidebar() {
                   className="object-cover "
                 />
                 <span
-                  className={`font-montserrat font-[500] text-[16px] text-[#000000] tracking-wide leading-[24.38px] ${
+                  className={`font-montserrat font-[500] text-[17px] text-[#000000] tracking-wide opacity-80 leading-[24.38px] ${
                     pathname === sideBar.route
-                      ? "text-backgroundPrimary"
-                      : "text-[#000000]"
+                      ? "text-backgroundPrimary "
+                      : "text-[#000000] "
                   }`}
                 >
                   {sideBar.title}
@@ -120,7 +120,7 @@ export default function Sidebar() {
                 height={18}
                 className="object-cover"
               />
-              <h3 className="font-montserrat font-[500] text-[16px] text-[#FF0000] leading-[24.38px]">
+              <h3 className="font-montserrat font-[500] text-[17px] text-[#FF0000] opacity-80 leading-[24.38px]">
                 Log Out
               </h3>
             </button>

@@ -5,7 +5,6 @@ import Navbar from "@/components/Home/Navbar";
 import Image from "next/image";
 
 export default function ContactUs() {
-  const [agreed, setAgreed] = useState(false);
   return (
     <div className="min-h-screen bg-white">
       {/* <Navbar /> */}

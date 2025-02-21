@@ -2,13 +2,12 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
 import Popup from "../Rewards/Popup";
 
 const pageTitles = {
   "/dashboard": "Overview",
-  "/dashboard/challenges": "Challenges",
+  "/dashboard/challenge": "Challenges",
   "/dashboard/progress": "Progress",
   "/dashboard/habitmanagement": "Habit Management",
   "/dashboard/tracking": "Tracking",
@@ -23,16 +22,16 @@ export default function Navbar() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
-    <div className="w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm">
+    <div className="w-[calc(100vw-333px)] max-w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm">
       {/* Title Section */}
-      <h3 className="font-jost font-[600] text-[32px] text-[#000000] tracking-wide leading-[46.24px]">
+      <h3 className="font-jost font-[500] text-[30px] text-[#000000] opacity-80 tracking-wide leading-[46.24px]">
         {title}
       </h3>
 
       {/* Show "About Rewards" button only on Rewards page */}
       {pathname === "/dashboard/rewards" && (
         <li
-          className="border border-mainLight text-mainLight font-montserrat text-[20px] font-[600] leading-[24.38px] py-4 px-8 rounded-2xl list-none hover:text-backgroundPrimary hover:bg-mainLight transition-all duration-700 cursor-pointer"
+          className="border border-mainLight text-mainLight font-montserrat text-[17px] font-[600] tracking-wide px-5 py-3 rounded-[10px] list-none hover:text-backgroundPrimary hover:bg-mainLight transition-all duration-700 cursor-pointer"
           onClick={() => setIsPopupOpen(true)}
         >
           About rewards
@@ -66,10 +65,10 @@ export default function Navbar() {
             />
 
             <div className="w-auto h-[67px] flex flex-col justify-center items-start">
-              <h3 className="font-jost font-[500] text-[16px] text-black leading-[21.68px]">
+              <h3 className="font-jost font-[500] text-[16px] text-black opacity-80 tracking-wide leading-[21.68px]">
                 Henery
               </h3>
-              <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
+              <h3 className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide leading-[18.79px]">
                 User Account
               </h3>
             </div>

@@ -1,3 +1,9 @@
-export default function DashboardHomePage() {
-  return <div className="bg-backgroundSecondary ">Dashboard Home Page</div>;
+import Home from "@/app/(dashboard)/dashboard/home/page";
+
+export default function dashboard(){
+  return (
+    <div>
+      <Home />
+    </div>
+  );
 }

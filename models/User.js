@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   streak: { type: Number, default: 0 },
   points: { type: Number, default: 0 },
   profilePicture: { type: String, default: "/assets/images/profile/default-profile.png" },
-  gender: { type: String, enum: ["male", "female", "other"] },
+  gender: { type: String },
   
 }, {
   timestamps: true 

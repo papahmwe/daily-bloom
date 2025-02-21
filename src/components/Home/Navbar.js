@@ -14,9 +14,6 @@ const NavItems = [
 
 const Nav = () => {
   const pathname = usePathname()
-  const [isAuthOpen, setIsAuthOpen] = useState(false)
-  const [authMode, setAuthMode] = useState('login')
-  const { data: session } = useSession()
 
   const openLogin = () => {
     setAuthMode('login')

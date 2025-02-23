@@ -9,7 +9,7 @@ export default function DonutPieWithData({ data, percentage }) {
   const showPercentage = data && data.length > 0 && percentage !== "This Month";
 
   return (
-    <div className="relative w-[201.24px] h-[201.24px]">
+    <div className="relative w-[201.24px] h-[201.24px] ">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie

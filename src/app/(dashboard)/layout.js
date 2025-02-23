@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
           <Sidebar />
 
           <div className="relative w-full h-[100vh] bg-[#F3F2F7]">
+          <div className="relative w-full h-[100vh] bg-[#F3F2F7]">
             <Navbar />
             <div className="w-full h-full overflow-y-auto pt-[130px] pb-[80px] pl-14">
               {children}

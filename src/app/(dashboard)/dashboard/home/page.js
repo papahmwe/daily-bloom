@@ -2,20 +2,29 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import PieChart from "@/components/Dashboard_Home/HomePieChart";
-import HomeDataChart from "@/components/Dashboard_Home/HomeDataChart";
+
+import Data from "@/components/Dashboard_Home/Data";
+import WithoutData from "@/components/Dashboard_Home/HomeWithoutDataChart";
 
 // components/HomePage.jsx
 export default function DashboarHomePage() {
-  // Habit Section
+  // // Habit Section
   const [upcomingHabit, setUpcomingHabit] = useState(0);
   const [totalHabit, setTotalHabit] = useState(0);
   const [completedPercentage, setCompletedPercentage] = useState(0);
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setData(null);
+    // setData("1");
+  }, []);
 
   // Recent Habits Section
   const [habits, setHabits] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+
 
   useEffect(() => {
     async function fetchHabitData() {
@@ -55,36 +64,50 @@ export default function DashboarHomePage() {
   }, [page]);
 
   return (
-    <div className="">
+    <div>
       {/* Card Section */}
       <div className="flex justify-around mb-3 r-0">
         <div className="bg-white rounded-[20px] p-6 flex justify-start items-center space-x-6 shadow-lg">
-          {/* Left: Text Content */}
+        {/* Left: Text Content */}
           <div className="flex flex-col mr-20">
+            {completedPercentage === 0 || !completedPercentage ? (
+             // Welcome message for first-time users with no data
+              <>
             <h2 className="text-black text-xl font-semibold font-['Montserrat']">
-              Congratulations, Henery!
+            Welcome, Henry!
             </h2>
             <p className="text-black font-['Montserrat'] mt-2">
-              You have done{" "}
-              <span className="font-semibold">
-                {completedPercentage} more habits
-              </span>{" "}
-              today.
-              <br></br>
+              Let's get started on building great habits today!
+            <br />
+              Track your habits and see your progress here.
+            </p>
+            </>
+            ) : (
+            // Congratulations message when data exists
+            <>
+           <h2 className="text-black text-xl font-semibold font-['Montserrat']">
+              Congratulations, Henry!
+            </h2>
+            <p className="text-black font-['Montserrat'] mt-2">
+              You have done <span className="font-semibold">{completedPercentage} more habits</span> today.
+              <br />
               Check your total habit progress in your dashboard.
             </p>
+            </>
+            )}
           </div>
-          {/* Right: Image */}
-          <div className="flex-shrink ml-20">
-            <Image
-              src="/assets/dashboard images/man.png"
-              alt="Man"
-              width={150}
-              height={150}
-              className="rounded-full"
-            />
-          </div>
-        </div>
+
+    {/* Right: Image */}
+    <div className="flex-shrink ml-20">
+      <Image
+        src="/assets/dashboard images/man.png"
+        alt="Man"
+        width={150}
+        height={150}
+        className="rounded-full"
+      />
+    </div>
+  </div>
 
         <div className="px-10 flex justify-end">
           <div className="bg-[#b0a7f8] rounded-[20px] px-[12px] py-[22px] gap-[30px]    inline-flex flex-col justify-start items-center h-[160px] mr-10">
@@ -173,9 +196,10 @@ export default function DashboarHomePage() {
         </div>
       </div>
 
-      {/* Pie Chart Section*/}
+      {/* Pie Chart Section */}
       <div>
-        <HomeDataChart />
+        {/* Conditional Rendering Based on Data */}
+        {data && data.length > 0 ? <Data /> : <WithoutData />}
       </div>
     </div>
   );

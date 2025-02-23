@@ -47,11 +47,19 @@ export default function Nav() {
 
         {/* Button */}
         <li className="md:w-[120px] lg:w-[168px] h-[52px] border-2 rounded-[10px] flex justify-center items-center border-mainPrimary md:text-[20px] lg:text-[24px] font-jost font-[600] text-mainPrimary hover:text-backgroundPrimary hover:bg-mainPrimary transition-all duration-700 cursor-pointer">
+<<<<<<< HEAD
           <Link href={"/signup"}>SING UP</Link>
         </li>
 
         <li className="md:w-[120px] lg:w-[168px] h-[52px] border-2 rounded-[10px] flex justify-center items-center border-mainPrimary md:text-[20px] lg:text-[24px] font-jost font-[600] text-backgroundPrimary bg-mainPrimary hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 cursor-pointer">
           <Link href={"/login"}>LOGIN</Link>
+=======
+          <Link href={"/sign-up"}>SING UP</Link>
+        </li>
+
+        <li className="md:w-[120px] lg:w-[168px] h-[52px] border-2 rounded-[10px] flex justify-center items-center border-mainPrimary md:text-[20px] lg:text-[24px] font-jost font-[600] text-backgroundPrimary bg-mainPrimary hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 cursor-pointer">
+          <Link href={"/sign-up"}>LOGIN</Link>
+>>>>>>> 4a72d29cb48eff20e11b65d6082357811d78b644
         </li>
       </ul>
     </nav>

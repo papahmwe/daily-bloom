@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+<<<<<<< HEAD
 const dataItems = [
   {
     id: "1",
@@ -33,6 +34,8 @@ const dataItems = [
   },
 ];
 
+=======
+>>>>>>> 4a72d29cb48eff20e11b65d6082357811d78b644
 export default function Popup({ open, onChange }) {
   if (!open) return null;
 
@@ -40,12 +43,20 @@ export default function Popup({ open, onChange }) {
     <div className="w-[100vw] h-[100vh] absolute top-0 left-[-333px] z-[1000]">
       {/* Popup overlay */}
       <div
+<<<<<<< HEAD
         className="w-full h-full bg-mainLight opacity-60"
+=======
+        className="w-full h-full bg-backgroundSecondary opacity-40"
+>>>>>>> 4a72d29cb48eff20e11b65d6082357811d78b644
         onClick={() => onChange(!open)}
       />
 
       {/* Popup box */}
+<<<<<<< HEAD
       <div className="w-[550px] h-[400px] bg-backgroundPrimary rounded-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 pt-4">
+=======
+      <div className="w-[400px] h-[500px] bg-backgroundPrimary rounded-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 pt-4">
+>>>>>>> 4a72d29cb48eff20e11b65d6082357811d78b644
         <div className="flex justify-end items-center">
           <Image
             src={"/assets/rewards/rewards-icon.svg"}
@@ -58,6 +69,7 @@ export default function Popup({ open, onChange }) {
         </div>
 
         {/* For content */}
+<<<<<<< HEAD
         <div className="flex flex-col justify-center items-center gap-5">
           <Image
             src={"/assets/rewards/reward-badge.svg"}
@@ -89,6 +101,10 @@ export default function Popup({ open, onChange }) {
               );
             })}
           </div>
+=======
+        <div>
+          <h1>Popup Content</h1>
+>>>>>>> 4a72d29cb48eff20e11b65d6082357811d78b644
         </div>
       </div>
     </div>

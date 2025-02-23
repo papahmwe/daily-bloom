@@ -1,3 +1,9 @@
+import RewardsMain from "@/components/Rewards/RewardsMain";
+
 export default function Rewards() {
-  return <div>Rewards</div>;
+  return (
+    <div>
+      <RewardsMain />
+    </div>
+  );
 }

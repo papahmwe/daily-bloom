@@ -9,7 +9,7 @@ export default function DonutPieWithData({ data, percentage }) {
   const showPercentage = data && data.length > 0 && percentage !== "This Month";
 
   return (
-    <div className="relative w-[201.24px] h-[201.24px] ">
+    <div className="relative w-[201.24px] h-[201.24px]">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -35,14 +35,14 @@ export default function DonutPieWithData({ data, percentage }) {
       <div className="absolute inset-0 flex items-center justify-center">
         {/* Conditionally render percentage */}
         {showPercentage ? (
-          <p className=" flex flex-col justify-center items-center font-jost font-[600] text-[22px] text-[#000000] leading-[31.79px]">
+          <p className=" flex flex-col justify-center items-center font-jost font-[600] text-[20px] opacity-80 text-[#000000] tracking-wide leading-[31.79px]">
             {percentage}%
-            <span className="font-jost font-[500] text-[18px] text-[#000000] leading-[26.01px]">
+            <span className="font-jost font-[500] text-[18px] text-[#000000] opacity-80 tracking-wide leading-[26.01px]">
               Goals
             </span>
           </p>
         ) : (
-          <p className="font-jost font-[500] text-[18px] text-[#000000] leading-[26.01px]">
+          <p className="font-jost font-[500] text-[18px] text-[#000000] opacity-80 tracking-wide leading-[26.01px]">
             {percentage}
           </p>
         )}

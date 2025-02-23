@@ -30,6 +30,7 @@ const RadialChart = () => {
         fontFamily="Jost"
         fontSize="20px"
         fontWeight="500"
+        className="opacity-80"
       >
         0%
       </text>
@@ -42,6 +43,7 @@ const RadialChart = () => {
         fontSize="18px"
         fontWeight="500"
         fill="#000000"
+        className="opacity-80 tracking-wide"
       >
         Empty
       </text>

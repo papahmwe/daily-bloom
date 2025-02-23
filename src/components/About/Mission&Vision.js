@@ -6,7 +6,7 @@ export default function MissionVision() {
       {/* Mission & Vision Section*/}
       <div className="w-full h-[893px] rounded rounded-t-[150px] bg-backgroundPrimary mt-[-50px] pt-20 gap-[20px] flex flex-col">
         {/* Mission */}
-        <div className="flex justify-between items-center gap-[70px] mx-20 px-5 ">
+        <div className="flex justify-between items-center gap-[70px] px-10 ">
           {/* image */}
           <Image
             src="/assets/about/mission_image.png"

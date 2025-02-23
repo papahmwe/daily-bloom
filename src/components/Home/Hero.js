@@ -1,36 +1,35 @@
-import Image from 'next/image'
-
+import Image from "next/image";
 
 export default function Hero() {
   return (
-    <div>
-      <div className='flex justify-between items-center w-[1340px] h-[593px] mx-auto'>
-        {/* first section*/}
-        <div className='w-[547px] h-[427px] flex flex-col gap-[40px]'>
-          <div className='flex flex-col gap-[25px]'>
-            <h1 className='w-[547px] h-[201px] font-montserrat font-[700] text-[55px] text-mainSecondary leading-[67.05px] uppercase'>
-              your Journey to Productivity starts here
-            </h1>
+    <div className="w-full h-[593px] flex justify-between px-10">
+      <div className="w-1/2 flex flex-col justify-center items-start gap-7">
+        {/* Text */}
+        <h1 className="xl:text-[55px] lg:text-[45px] text-[35px] font-[700] font-montserrat text-mainSecondary uppercase leading-[67px]">
+          your Journey <br />
+          to Productivity
+          <br /> starts here
+        </h1>
+        <article className="xl:text-[28px] lg:text-[25px] text-[20px] text-[#000000] font-[400] font-jost capitalize leading-10">
+          Track daily habits, visualize progress, and <br /> build a better you
+        </article>
 
-            <h3 className='w-[522px] h-[80px] font-jost font-[400] text-[28px] text-[#000000] leading-[40.46px] capitalize'>
-              Track daily habits, visualize progress, and build a better you
-            </h3>
-          </div>
+        {/* Button */}
+        <button className="py-3 px-5 font-montserrat font-[600] text-[24px] text-backgroundPrimary capitalize leading-[34.13px] border outline-none bg-mainPrimary hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 rounded-[10px]">
+          Start tracking today
+        </button>
+      </div>
 
-          <button className='w-[327px] h-[74px] font-montserrat font-[600] text-[28px] text-backgroundPrimary capitalize leading-[34.13px] border outline-none bg-mainPrimary hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 rounded-[10px]'>
-            Start tracking today
-          </button>
-        </div>
-
-        {/* second section*/}
+      {/* Image */}
+      <div className="w-1/2 flex justify-center items-center">
         <Image
-          src='/assets/home/hero_image.png'
-          alt='hero_image'
-          width={778}
-          height={593}
-          className='object-cover'
+          src={"/assets/home/hero_image.png"}
+          alt="hero_image"
+          width={650}
+          height={500}
+          className="w-auto h-auto object-contain"
         />
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import Navbar from "@/components/Dashboard_Home/Navbar";
 import Sidebar from "@/components/Dashboard_Home/Sidebar";
 import "../../styles/globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Daily Bloom",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
             <Navbar />
             <div className="w-full h-full overflow-y-auto pt-[130px] pb-[80px] pl-14">
               {children}
+              <Toaster />
             </div>
           </div>
         </main>

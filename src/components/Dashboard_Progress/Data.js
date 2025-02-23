@@ -94,12 +94,12 @@ export default function Data({ data }) {
         </h1>
 
         {/* Display Data Section */}
-        <div className="w-auto h-auto flex flex-1 flex-wrap gap-4">
+        <div className="w-[90%] h-auto flex flex-1 flex-wrap gap-5">
           {completedData.map((data, index) => {
             return (
               <div
                 key={index}
-                className={`lg:w-[400px] w-auto h-[300px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer px-5 py-7
+                className={` w-[48%] h-[290px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
                   ${
                     index === 1 || index === 3 || index % 2 === 1
                       ? "flex-row-reverse items-end"

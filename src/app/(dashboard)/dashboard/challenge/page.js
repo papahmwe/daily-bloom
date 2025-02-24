@@ -2,31 +2,8 @@
 
 import Popup from "@/components/Challenge/Popup";
 import Image from "next/image";
-import { useState } from "react";
-
-const Datas = [
-  {
-    id: 1,
-    name: "Practice English podcast for 30 minutes",
-    image: "/assets/challenge_images/challenge-eg-1.svg",
-    time: "30 mins",
-    points: "20 points",
-  },
-  {
-    id: 2,
-    name: "Visit Museum or an exhibition",
-    image: "/assets/challenge_images/challenge-eg-2.svg",
-    time: "50 mins",
-    points: "20 points",
-  },
-  {
-    id: 3,
-    name: "Write a journal about my Day",
-    image: "/assets/challenge_images/challenge-eg-3.svg",
-    time: "15 mins",
-    points: "20 points",
-  },
-];
+import { useCallback, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const ChallengesIdeas = [
   {
@@ -87,7 +64,112 @@ const ChallengesIdeas = [
 
 export default function Challenge() {
   const [isOpen, setIsOpen] = useState(false);
-  const [challenges, setChallenges] = useState(["hi"]);
+  const { data: session, status } = useSession();
+  const [challenges, setChallenges] = useState([]);
+  const [newChallenge, setNewChallenge] = useState({
+    name: "",
+    duration: "",
+    time_of_day: "",
+    days: [],
+    challenge_img: "",
+    notification: false,
+    user: session?.user?.id || "",
+  });
+
+  // Url
+  // const fetchUrl =
+  //   "http://localhost:3000/api/challenges/67ab9f0c0f0b428730cd43f7";
+  // const createUrl = "http://localhost:3000/api/challenges/create";
+
+  // Create a new challenge
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      console.log("Submitting Challenge:", newChallenge);
+
+      try {
+        const url = "http://localhost:3000/api/challenges/create";
+        const body = {
+          name: newChallenge.name,
+          duration: Number(newChallenge.duration),
+          time_of_day: "Morning",
+          date_to_do: "2023-10-15",
+          user: newChallenge.user,
+          challenge_img: "http://example.com/image.jpg",
+        };
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+        if (response.ok) {
+        }
+      } catch (error) {
+        console.error("Error creating challenge:", error);
+      }
+    },
+    [newChallenge]
+  );
+
+  // Fetching data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url =
+          "http://localhost:3000/api/challenges/67ab9f0c0f0b428730cd43f7";
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("data", data);
+        setChallenges(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Delete a challenge
+  const deleteChallenge = useCallback(async (_id) => {
+    if (!_id) {
+      console.error("Challenge ID is missing!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/challenges/delete/${_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Deleted challenge:", data);
+
+      // Remove deleted challenge
+      setChallenges((prevChallenges) =>
+        prevChallenges.filter((challenge) => challenge._id !== _id)
+      );
+    } catch (error) {
+      console.log("Error deleting challenge:", error);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col justify-start gap-[50px]">
@@ -99,25 +181,30 @@ export default function Challenge() {
 
         {/* Data */}
         {challenges.length > 0 ? (
-          <div className="flex justify-start items-center gap-5">
-            {Datas.map((challenge, index) => (
+          <div className="flex justify-start items-center flex-wrap gap-5">
+            {challenges.map((challenge, index) => (
               <div
                 key={index}
                 className="w-1/4 h-[240px] flex flex-col justify-center items-center bg-mainLight hover:bg-mainPrimary bg-opacity-50 hover:bg-opacity-60 transition-all ease-in-out duration-1000 cursor-pointer rounded-[10px] border border-mainSecondary p-3"
               >
-                <div className="flex justify-center items-center gap-5 w-full h-[45px]">
+                <div className="flex justify-between items-center gap-5 w-full h-[45px]">
                   <h3 className="text-[#000000] opacity-80 text-[15px] font-montserrat font-[600] tracking-wide ">
                     {challenge.name}
                   </h3>
-                  <Image
-                    src={"/assets/challenge_images/Delete.svg"}
-                    alt="Image"
-                    width={15}
-                    height={17}
-                  />
+                  <button
+                    className="bg-backgroundPrimary bg-opacity-80 rounded-full p-3 w-[40px] h-[40px] flex justify-center items-center"
+                    onClick={() => deleteChallenge(challenge._id)}
+                  >
+                    <Image
+                      src={"/assets/challenge_images/Delete.svg"}
+                      alt="Image"
+                      width={17}
+                      height={17}
+                    />
+                  </button>
                 </div>
                 <Image
-                  src={challenge.image}
+                  src={challenge.challenge_img}
                   alt={challenge.name}
                   width={80}
                   height={80}
@@ -132,11 +219,11 @@ export default function Challenge() {
                       height={15}
                     />
                     <h3 className="text-[#636363] text-[14px] font-montserrat font-[600] tracking-wide">
-                      {challenge.time}
+                      {challenge.duration} mins
                     </h3>
                   </div>
                   <h3 className="text-[#000000] opacity-80 text-[14px] font-montserrat font-[600] tracking-wide">
-                    {challenge.points}
+                    20 points
                   </h3>
                 </div>
               </div>
@@ -201,7 +288,15 @@ export default function Challenge() {
       </div>
 
       {/* Show Popup when isOpen is true */}
-      {isOpen && <Popup open={isOpen} onChange={() => setIsOpen(false)} />}
+      {isOpen && (
+        <Popup
+          open={isOpen}
+          onChange={() => setIsOpen(false)}
+          handleSubmit={handleSubmit}
+          newChallenge={newChallenge}
+          setNewChallenge={setNewChallenge}
+        />
+      )}
 
       {/* Second Section */}
       <div className="flex flex-col justify-start gap-[50px]">

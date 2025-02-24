@@ -1,5 +1,11 @@
+"use client";
+
+import { toast } from "sonner";
+
 import Image from "next/image";
 import { CarouselSize } from "./Slide";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const LoginRewards = [
   {
@@ -15,6 +21,33 @@ const LoginRewards = [
 ];
 
 export default function RewardsMain() {
+  const [data, setData] = useState({});
+  const { data: session, status } = useSession();
+
+  console.log("data from user", data);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/users/profile/67ab9f0c0f0b428730cd43f7"
+        );
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch user data");
+        // }
+        const result = await response.json();
+
+        console.log("res", result);
+
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [session, status]);
+
   return (
     <div className="flex flex-col gap-7">
       {/* First */}
@@ -95,7 +128,25 @@ export default function RewardsMain() {
                   <h2 className="font-montserrat font-[500] text-[14px] text-[#B7B0F1] tracking-wide">
                     {data.name}
                   </h2>
-                  <button className="bg-[#FBE452] font-montserrat font-[600] text-[16px] text-[#000000] rounded-[10px] tracking-wide px-7 py-1 cursor-pointer hover:text-[#FBE452] hover:bg-[#000000] duration-700 transition-all ">
+                  <button
+                    className="bg-[#FBE452] font-montserrat font-[600] text-[16px] text-[#000000] rounded-[10px] tracking-wide px-7 py-1 cursor-pointer hover:text-[#FBE452] hover:bg-[#000000] duration-700 transition-all "
+                    onClick={() =>
+                      toast("Claimed Successfully! 🎉", {
+                        duration: 1000,
+                        style: {
+                          backgroundColor: "#8778FB",
+                          color: "#FFFFFF",
+                          letterSpacing: "0.025rem",
+                          borderRadius: "10px",
+                          outline: "none",
+                          border: "none",
+                          padding: " 18px",
+                          fontSize: "16px",
+                          fontFamily: "Montserrat, sans-serif",
+                        },
+                      })
+                    }
+                  >
                     Claim
                   </button>
                 </div>

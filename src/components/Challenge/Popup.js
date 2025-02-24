@@ -1,20 +1,40 @@
 import { toast } from "sonner";
+import { Calendar } from "@/components/ui/calendar";
+
 import { Switch } from "@/components/ui/switch";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import Image from "next/image";
 import TimeDropdown from "./TimeDropdown ";
 
-const Dates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-export default function Popup({ open, onChange }) {
+export default function Popup({
+  open,
+  onChange,
+  handleSubmit,
+  newChallenge,
+  setNewChallenge,
+}) {
   const [isChecked, setIsChecked] = useState(false);
-
+  const [date, setDate] = useState(new Date());
   if (!open) return null;
 
   const handleSwitchChange = (checked) => {
-    setIsChecked(checked);
+    setNewChallenge((prevChallenge) => ({
+      ...prevChallenge,
+      notification: checked,
+    }));
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setNewChallenge((prevChallenge) => ({
+        ...prevChallenge,
+        challenge_img: imageUrl,
+      }));
+    }
   };
 
   return (
@@ -26,11 +46,21 @@ export default function Popup({ open, onChange }) {
       />
 
       {/* Popup box */}
-      <div className="w-[500px] h-[550px] bg-backgroundPrimary rounded-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8">
+      <form
+        onSubmit={handleSubmit}
+        className="w-[500px] h-[570px] bg-backgroundPrimary rounded-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8"
+      >
         {/* For content */}
         <div className="space-y-7">
           <input
             type="text"
+            value={newChallenge.name}
+            onChange={(e) =>
+              setNewChallenge({
+                ...newChallenge,
+                name: e.target.value,
+              })
+            }
             placeholder="Challenge Name"
             className="cursor-pointer font-montserrat font-[500] text-[16px] text-[#868686] border border-mainPrimary outline-none rounded-[10px] p-3 w-full tracking-wide"
           />
@@ -39,25 +69,32 @@ export default function Popup({ open, onChange }) {
 
             <input
               type="text"
+              value={newChallenge.duration}
+              onChange={(e) =>
+                setNewChallenge({
+                  ...newChallenge,
+                  duration: e.target.value,
+                })
+              }
               placeholder="Duration"
               className="cursor-pointer font-montserrat font-[500] text-[16px] text-[#868686] border border-mainPrimary outline-none rounded-[10px] p-3 w-1/2 tracking-wide"
             />
           </div>
 
           <div>
-            <h3 className="font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide">
-              On these Days
-            </h3>
             <div className="w-full flex justify-between items-center ">
-              {Dates.map((data, index) => {
-                return (
-                  <div key={index}>
-                    <button className="border outline-none border-mainPrimary w-12 h-12 p-2 self-center rounded-[10px] font-montserrat font-[500] text-[14px] text-[#868686] mt-3 tracking-wide">
-                      {data}
-                    </button>
-                  </div>
-                );
-              })}
+              <button
+                type="button"
+                className={`cursor-pointer font-montserrat font-[500] text-[16px] text-[#868686] border border-mainPrimary outline-none rounded-[10px] p-3 w-full tracking-wide`}
+              >
+                On these Days
+                {/* <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md border"
+                /> */}
+              </button>
             </div>
           </div>
 
@@ -66,59 +103,100 @@ export default function Popup({ open, onChange }) {
               Switch the notification
             </h3>
             <Switch
-              checked={isChecked}
+              checked={newChallenge.notification}
               onCheckedChange={handleSwitchChange}
               style={{
-                backgroundColor: isChecked ? "#6859FF" : "#868686",
+                backgroundColor: newChallenge.notification
+                  ? "#6859FF"
+                  : "#868686",
               }}
-            ></Switch>
+            />
           </div>
 
-          <div className="border border-mainPrimary outline-none rounded-[10px] w-full h-auto p-5 flex flex-col justify-center items-center gap-3 cursor-pointer">
-            <Image
-              src={"/assets/challenge_images/Upload.svg"}
-              alt="Image"
-              width={25}
-              height={25}
-            />
+          {/* Image Upload Section */}
+          <div
+            className="border border-mainPrimary outline-none rounded-[10px] w-full h-auto p-5 flex flex-col justify-center items-center gap-3 cursor-pointer"
+            onClick={() => document.getElementById("imageUpload").click()} // Trigger file input on div click
+          >
+            {newChallenge.challenge_img ? (
+              <Image
+                src={newChallenge.challenge_img}
+                alt="Uploaded Image"
+                width={30}
+                height={30}
+                className="rounded-[10px]"
+              />
+            ) : (
+              <Image
+                src="/assets/challenge_images/Upload.svg"
+                alt="Image"
+                width={30}
+                height={30}
+              />
+            )}
             <h3 className="font-montserrat font-[500] text-[15px] text-[#868686] tracking-wide">
               Tap to select or upload image
             </h3>
+            <input
+              id="imageUpload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
           </div>
 
           <div className="flex justify-center items-center gap-5">
             <button
               className="font-montserrat font-[600] text-[18px] text-[#000000] opacity-80 tracking-wide bg-[#E1E1E1] rounded-[10px] w-32 h-12"
               onClick={() => onChange(!open)}
+              type="reset"
             >
               Cancel
             </button>
 
             <button
+              type="submit"
               className="font-montserrat font-[600] text-[18px] text-backgroundPrimary opacity-80 tracking-wide bg-mainPrimary rounded-[10px] w-32 h-12"
-              onClick={() => {
-                onChange(!open);
-                toast("Challenge Created! 🎉", {
-                  duration: 5000,
-                  style: {
-                    backgroundColor: "#8778FB",
-                    color: "#FFFFFF",
-                    letterSpacing: "0.025rem",
-                    borderRadius: "10px",
-                    outline: "none",
-                    border: "none",
-                    padding: " 18px",
-                    fontSize: "16px",
-                    fontFamily: "Montserrat, sans-serif",
-                  },
-                });
-              }}
+              // onClick={async () => {
+              //   try {
+              //     // Close the popup
+              //     onChange(false);
+
+              //     // Show success toast
+              //     toast("Challenge Created! 🎉", {
+              //       duration: 1000,
+              //       style: {
+              //         backgroundColor: "#8778FB",
+              //         color: "#FFFFFF",
+              //         letterSpacing: "0.025rem",
+              //         borderRadius: "10px",
+              //         outline: "none",
+              //         border: "none",
+              //         padding: "18px",
+              //         fontSize: "16px",
+              //         fontFamily: "Montserrat, sans-serif",
+              //       },
+              //     });
+              //   } catch (error) {
+              //     console.error("Error creating challenge:", error);
+
+              //     // Show error toast if creation fails
+              //     toast("Failed to create challenge. Try again!", {
+              //       duration: 1000,
+              //       style: {
+              //         backgroundColor: "#FF4C4C",
+              //         color: "#FFFFFF",
+              //       },
+              //     });
+              //   }
+              // }}
             >
               Save
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

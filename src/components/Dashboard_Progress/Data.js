@@ -34,42 +34,16 @@ export default function Data({ data }) {
     '/assets/Progress/Reading.svg',
   ]
 
-  const completedData = [
-    {
-      id: 1,
-      name: 'Workout',
-      progress: '100%',
-      progressTitleOne: 'Completed',
-      progressTitleTwo: 'Active',
-      image: '/assets/Progress/Workout.svg',
-    },
-    {
-      id: 2,
-      name: 'Yoga',
-      progress: '100%',
-      progressTitleOne: 'Completed',
-      progressTitleTwo: 'Active',
-      image: '/assets/Progress/Yoga.svg',
-    },
-    {
-      id: 3,
-      name: 'Drinking',
-      progress: '100%',
-      progressTitleOne: 'Completed',
-      progressTitleTwo: 'Active',
-      image: '/assets/Progress/Drinking.svg',
-    },
-    {
-      id: 4,
-      name: 'Reading',
-      progress: '100%',
-      progressTitleOne: 'Completed',
-      progressTitleTwo: 'Active',
-      image: '/assets/Progress/Reading.svg',
-    },
-  ]
+  const completedData = data.recentlyCompletedHabits.map((habit, index) => ({
+    id: index,
+    name: habit.name,
+    progress: '100%',
+    progressTitleOne: 'Completed',
+    progressTitleTwo: 'Active',
+    image: '/assets/Progress/Workout.svg',
+  }))
 
-  const percentage = 80
+  const percentage = data.completedHabitsPercentage
 
   return (
     <div className=' flex flex-col justify-start gap-[50px] '>

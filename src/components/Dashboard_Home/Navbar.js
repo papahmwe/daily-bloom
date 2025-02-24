@@ -3,7 +3,11 @@
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import Popup from '../Rewards/Popup'
+import { Toaster } from 'sonner'
+
+import axios from 'axios'
 
 const pageTitles = {
   '/dashboard': 'Overview',
@@ -14,167 +18,37 @@ const pageTitles = {
   '/dashboard/rewards': 'Rewards',
 }
 
-const messages = [
-  {
-    id: 1,
-    text: 'Take a deep breath and relax for a moment.',
-    time: new Date().toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 2,
-    text: 'Remember to stretch and take a short walk!',
-    time: new Date(Date.now() - 1 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 3,
-    text: 'Hydration is key—drink some water now.',
-    time: new Date(Date.now() - 2 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 4,
-    text: 'Small steps lead to big changes. Keep going!',
-    time: new Date(Date.now() - 3 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 5,
-    text: "Take a break, you've earned it!",
-    time: new Date(Date.now() - 4 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 6,
-    text: 'You are capable of amazing things.',
-    time: new Date(Date.now() - 5 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 7,
-    text: 'Smile! It’s a brand new day full of opportunities.',
-    time: new Date(Date.now() - 6 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 8,
-    text: "Believe in yourself, you're doing great.",
-    time: new Date(Date.now() - 7 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 9,
-    text: 'Your hard work will pay off—stay focused!',
-    time: new Date(Date.now() - 8 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 10,
-    text: 'Kindness goes a long way. Spread some today!',
-    time: new Date(Date.now() - 9 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 11,
-    text: 'Take care of your mind and body. They need you!',
-    time: new Date(Date.now() - 10 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 12,
-    text: 'Progress is progress, no matter how small.',
-    time: new Date(Date.now() - 11 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 13,
-    text: 'Be patient with yourself; growth takes time.',
-    time: new Date(Date.now() - 12 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 14,
-    text: "Don't forget to fuel your body with good food!",
-    time: new Date(Date.now() - 13 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 15,
-    text: 'You are stronger than you think.',
-    time: new Date(Date.now() - 14 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 16,
-    text: 'Challenges make you stronger—embrace them!',
-    time: new Date(Date.now() - 15 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 17,
-    text: 'A little self-care goes a long way!',
-    time: new Date(Date.now() - 16 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 18,
-    text: 'Take it one step at a time. You got this!',
-    time: new Date(Date.now() - 17 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-  {
-    id: 19,
-    text: 'Celebrate your small wins today!',
-    time: new Date(Date.now() - 18 * 60000).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  },
-]
 export default function Navbar() {
+  const { data: session } = useSession()
+  const userId = session?.user.id
+
+  const [messages, setMessages] = useState([])
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/notifications/${userId}`
+        )
+        console.log(res.data)
+        setMessages(res.data.notifications)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchNotifications()
+  }, [userId])
+
   const [showNotifications, setShowNotifications] = useState(false)
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
 
   const pathname = usePathname()
   const title = pageTitles[pathname] || 'Dashboard'
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const getTime = (date) => {
+    const d = new Date(date)
+    return `${d.getHours()}:${d.getMinutes()}`
+  }
 
   return (
     <div className='w-[calc(100vw-333px)] max-w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm '>
@@ -259,17 +133,63 @@ export default function Navbar() {
                 return (
                   <div
                     key={index}
-                    className=' flex justify-start items-start gap-3 border-b border-b-black border-opacity-10 px-10 py-5 '
+                    className={`flex justify-start items-start gap-3 border-b border-b-black border-opacity-10 px-10 py-5 ${
+                      message.read ? 'bg-gray-200' : 'bg-white'
+                    }`}
                   >
                     <div className=' bg-mainLight rounded-full w-[6.5px] h-[6.5px] mt-2'></div>
-
                     <div className='flex flex-col justify-start items-start w-10/12 gap-1'>
                       <p className='font-jost font-[400] text-[16px] text-black opacity-80 tracking-wide'>
-                        {message.text}
+                        {message.message}
                       </p>
-                      <p className='font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide '>
-                        {message.time}
-                      </p>
+                      <div className='flex justify-between items-center w-full'>
+                        <p className='font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide '>
+                          {getTime(message.createdAt)}
+                        </p>
+                        {/* mark as read button */}
+                        <button
+                          className='font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide hover:text-mainPrimary transition-all duration-700'
+                          onClick={async () => {
+                            try {
+                              const res = await axios.put(
+                                `http://localhost:3000/api/notifications/update/${message._id}`
+                              )
+                              if (res.status === 200) {
+                                setMessages((prev) => {
+                                  const newMessages = prev.map((msg) => {
+                                    if (msg._id === message._id) {
+                                      return { ...msg, read: true }
+                                    }
+                                    return msg
+                                  })
+                                  return newMessages
+                                })
+                                Toaster.success('Notification marked as read')
+                              }
+                              console.log(res.data)
+                            } catch (error) {
+                              console.log(error)
+                            }
+                          }}
+                        >
+                          <div className='flex justify-between items-center'>
+                            <p>Mark as read</p>
+                            {message.read && (
+                              // checkmark icon from lucide icons
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                viewBox='0 0 24 24'
+                                width='16'
+                                height='16'
+                                className='text-mainPrimary'
+                                fill='currentColor'
+                              >
+                                <path d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' />
+                              </svg>
+                            )}
+                          </div>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )

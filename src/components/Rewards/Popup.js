@@ -7,7 +7,7 @@ export default function Popup({ open, onChange }) {
     <div className='w-[100vw] h-[100vh] absolute top-0 left-[-333px] z-[1000]'>
       {/* Popup overlay */}
       <div
-        className='w-full h-full bg-backgroundSecondary opacity-40'
+        className='w-full h-full bg-[#8F8F8F80] '
         onClick={() => onChange(!open)}
       />
 

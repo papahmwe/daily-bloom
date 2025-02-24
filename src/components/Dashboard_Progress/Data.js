@@ -115,38 +115,38 @@ export default function Data({ data }) {
         </h1>
 
         {/* Display Data Section */}
-        <div className='w-auto h-[722.46px] flex flex-1 flex-wrap gap-6 '>
+        <div className='w-[90%] h-auto flex flex-1 flex-wrap gap-5'>
           {completedData.map((data, index) => {
             return (
               <div
-                key={data.id}
-                className={`lg:w-[463px] w-auto h-[348px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
-                ${
-                  data.id === 2 || data.id === 4
-                    ? 'flex-row-reverse '
-                    : 'flex-row '
-                }
-                ${
-                  data.id === 1
-                    ? 'rounded-t-[10px] rounded-bl-[10px] rounded-br-[100px]'
-                    : ''
-                }
-                 ${
-                   data.id === 2
-                     ? 'rounded-t-[10px] rounded-bl-[100px] rounded-br-[10px]'
-                     : ''
-                 }
-                 ${
-                   data.id === 3
-                     ? 'rounded-tl-[10px] rounded-tr-[100px] rounded-b-[10px]'
-                     : ''
-                 }
-                 ${
-                   data.id === 4
-                     ? 'rounded-tl-[100px] rounded-tr-[10px] rounded-b-[10px]'
-                     : ''
-                 }
-               `}
+                key={index}
+                className={` w-[48%] h-[290px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
+                  ${
+                    index === 1 || index === 3 || index % 2 === 1
+                      ? 'flex-row-reverse items-end'
+                      : 'flex-row items-start'
+                  }
+                  ${
+                    index === 0
+                      ? 'rounded-t-[10px] rounded-bl-[10px] rounded-br-[100px]'
+                      : ''
+                  }
+                  ${
+                    index === 1
+                      ? 'rounded-t-[10px] rounded-bl-[100px] rounded-br-[10px]'
+                      : ''
+                  }
+                  ${
+                    index === 2
+                      ? 'rounded-tl-[10px] rounded-tr-[100px] rounded-b-[10px]'
+                      : ''
+                  }
+                  ${
+                    index === 3
+                      ? 'rounded-tl-[100px] rounded-tr-[10px] rounded-b-[10px]'
+                      : ''
+                  }
+                `}
               >
                 <div
                   className={`flex flex-col justify-between gap-28

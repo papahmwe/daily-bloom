@@ -1,155 +1,252 @@
-"use client";
-import { useRouter } from "next/navigation";  // Use this for the App Router instead
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Plus, Trash2 } from "lucide-react";
+'use client'
 
+import Popup from '@/components/Challenge/Popup'
+import Image from 'next/image'
+import { useState } from 'react'
+
+const Datas = [
+  {
+    id: 1,
+    name: 'Practice English podcast for 30 minutes',
+    image: '/assets/challenge_images/challenge-eg-1.svg',
+    time: '30 mins',
+    points: '20 points',
+  },
+  {
+    id: 2,
+    name: 'Visit Museum or an exhibition',
+    image: '/assets/challenge_images/challenge-eg-2.svg',
+    time: '50 mins',
+    points: '20 points',
+  },
+  {
+    id: 3,
+    name: 'Write a journal about my Day',
+    image: '/assets/challenge_images/challenge-eg-3.svg',
+    time: '15 mins',
+    points: '20 points',
+  },
+]
+
+const ChallengesIdeas = [
+  {
+    id: 1,
+    name: 'Yoga',
+    time: '30 mins',
+    image: '/assets/challenge_images/Yoga.svg',
+  },
+  {
+    id: 2,
+    name: 'Read Books',
+    time: '40 mins',
+    image: '/assets/challenge_images/Reading-books.svg',
+  },
+  {
+    id: 3,
+    name: 'Meditate ',
+    time: '20 mins',
+    image: '/assets/challenge_images/Meditate.svg',
+  },
+  {
+    id: 4,
+    name: 'Brainstorm ideas',
+    time: '15 mins',
+    image: '/assets/challenge_images/Brainstorm-ideas.svg',
+  },
+  {
+    id: 5,
+    name: 'Workout',
+    time: '30 mins',
+    image: '/assets/challenge_images/Workout.svg',
+  },
+  {
+    id: 6,
+    name: 'Cycling',
+    time: '45 mins',
+    image: '/assets/challenge_images/Cycling.svg',
+  },
+  {
+    id: 7,
+    name: 'Make To-do List',
+    time: '10 mins',
+    image: '/assets/challenge_images/MakeTo-doList.svg',
+  },
+  {
+    id: 8,
+    name: 'Devotional',
+    time: '50 mins',
+    image: '/assets/challenge_images/Devotional.svg',
+  },
+  {
+    id: 9,
+    name: 'Tidy Up',
+    time: '20 mins',
+    image: '/assets/challenge_images/TidyUp.svg',
+  },
+]
 
 export default function Challenge() {
-  const [challenges, setChallenges] = useState([]);
-  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false)
+  const [challenges, setChallenges] = useState(['hi'])
 
-  // Fetch challenges from Firebase
-  useEffect(() => {
-    async function fetchChallenges() {
-      const querySnapshot = await getDocs(collection(db, "challenges"));
-      const challengeData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setChallenges(challengeData);
-    }
+  return (
+    <div className='flex flex-col justify-start gap-[50px]'>
+      <div className='flex flex-col gap-[30px]'>
+        {/* Title */}
+        <h1 className='font-montserrat font-[600] text-[24px] opacity-80 text-[#000000] leading-[32.91px]'>
+          Create your own habit that you want to challenge.
+        </h1>
 
-    fetchChallenges();
-  }, []);
-
-  // Navigate to the challenge creation page
-  const handleAddChallenge = () => {
-    router.push("/create-challenge"); // Assuming you have a route for challenge creation
-  };
-
-  return(
-    <div className="-200 min-h-screen">
-      <h1 className="text-[22px] font-medium font-['Montserrat']">Creater Your Own Habit that you want to Challenge.</h1>
-
-      {/* Empty State Card Section */}
-      <div className="p-6 flex gap-6 items-stretch">
-        <div className="bg-[#d7d7d7;] rounded-[20px] border border-[#6859ff] flex flex-col p-6 mt-10">
-          <div className="flex justify-center mt-auto">
-            <Image src="/assets/challenge_images/empty.png" alt="Podcast" width={100} height={100} />
+        {/* Data */}
+        {challenges.length > 0 ? (
+          <div className='flex justify-start items-center gap-5'>
+            {Datas.map((challenge, index) => (
+              <div
+                key={index}
+                className='w-1/4 h-[240px] flex flex-col justify-center items-center bg-mainLight hover:bg-mainPrimary bg-opacity-50 hover:bg-opacity-60 transition-all ease-in-out duration-1000 cursor-pointer rounded-[10px] border border-mainSecondary p-3'
+              >
+                <div className='flex justify-center items-center gap-5 w-full h-[45px]'>
+                  <h3 className='text-[#000000] opacity-80 text-[15px] font-montserrat font-[600] tracking-wide '>
+                    {challenge.name}
+                  </h3>
+                  <Image
+                    src={'/assets/challenge_images/Delete.svg'}
+                    alt='Image'
+                    width={15}
+                    height={17}
+                  />
+                </div>
+                <Image
+                  src={challenge.image}
+                  alt={challenge.name}
+                  width={80}
+                  height={80}
+                  className=' w-[90px] h-[90px] mt-2 mb-2'
+                />
+                <div className='flex justify-between items-center gap-5 w-full h-[40px]'>
+                  <div className='flex justify-start items-center gap-2'>
+                    <Image
+                      src={'/assets/challenge_images/Clock.svg'}
+                      alt='Image'
+                      width={15}
+                      height={15}
+                    />
+                    <h3 className='text-[#636363] text-[14px] font-montserrat font-[600] tracking-wide'>
+                      {challenge.time}
+                    </h3>
+                  </div>
+                  <h3 className='text-[#000000] opacity-80 text-[14px] font-montserrat font-[600] tracking-wide'>
+                    {challenge.points}
+                  </h3>
+                </div>
+              </div>
+            ))}
+            <div
+              className='bg-mainLight hover:bg-mainPrimary bg-opacity-50 hover:bg-opacity-60 transition-all ease-in-out duration-1000 p-3 rounded-full cursor-pointer'
+              onClick={() => {
+                setIsOpen(true)
+              }}
+            >
+              <Image
+                src={'/assets/challenge_images/Plus.svg'}
+                alt='Plus'
+                width={20}
+                height={20}
+                className='opacity-80 object-contain'
+              />
+            </div>
           </div>
-          <h1 className="text-center font-semibold mt-2">Start to create a good habit.</h1>
-          <p className="text-center text-sm mt-2">Set challenges that matter to you <br></br>and stay on course towards.</p>
-        </div>
-        {/* Plus (+) Add Button */}
-        <div className="mt-20">
-          <button className="w-16 h-16 bg-[#6859ff] text-white rounded-full flex items-center justify-center hover:bg-[#543de5] transition shadow-lg">
-          <Plus className="w-8 h-8" />
-          </button>
-        </div>
+        ) : (
+          <div className='flex flex-col gap-[30px]'>
+            {/* No Data */}
+
+            <div className='flex justify-start items-center gap-9'>
+              {/* Left */}
+              <div className='w-1/4 h-[230px] flex flex-col justify-center items-center bg-[#D8D8D8] rounded-[10px] p-2 gap-4'>
+                <Image
+                  src={'/assets/challenge_images/ChallengeDefault.svg'}
+                  alt='Image'
+                  width={110}
+                  height={110}
+                />
+                <div className='flex flex-col justify-center items-center gap-1'>
+                  <h3 className='text-[#333333] opacity-95 text-[16px] font-montserrat font-[600] tracking-wide text-center'>
+                    Start to create good habit.
+                  </h3>
+                  <h3 className='text-[#878787] text-[14px] font-montserrat font-[600] tracking-wide text-center'>
+                    Set challenges that matter to you <br /> and stay on course
+                    towards.
+                  </h3>
+                </div>
+              </div>
+
+              {/* Right */}
+              <div
+                className='bg-[#D8D8D8] p-3 rounded-full cursor-pointer'
+                onClick={() => {
+                  setIsOpen(true)
+                }}
+              >
+                <Image
+                  src={'/assets/challenge_images/Plus.svg'}
+                  alt='Plus'
+                  width={20}
+                  height={20}
+                  className='opacity-80 object-contain'
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      
-      {/* With Data Card Section */}
-      {/* Card Section */}
-      <div className="p-6 flex gap-6 justify-between items-stretch">
-      {/* Podcast Card */}
-        <div className="bg-[#d3cff7] rounded-[20px] border border-[#6859ff] flex flex-col flex-grow p-6">
-          <div className="flex justify-between items-start">
-            <div className="text-sm font-semibold font-['Montserrat']">
-              Practice English Podcast for 30 minutes.
-            </div>
-            <button className="p-2 text-red-600 rounded-lg hover:text-white">
-            <Trash2 className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="flex justify-center mt-auto">
-            <Image src="/assets/challenge_images/podcast.png" alt="Podcast" width={150} height={150} />
-          </div>
-          <div className="flex justify-between mt-auto">
-            <div className="p-4 text-xs font-semibold font-['Montserrat']">50 points</div>
-            <button className="px-6 py-2 bg-white rounded-[10px] hover:bg-black hover:text-white text-xs font-semibold">
-              Due Today
-            </button>
-          </div>
-        </div>
 
-      {/* Museum Card */}
-        <div className="bg-[#d3cff7] rounded-[20px] border border-[#6859ff] flex flex-col flex-grow p-6">
-          <div className="flex justify-between items-start">
-            <div className="text-sm font-semibold font-['Montserrat']">Visit a Museum or Exhibition</div>
-            <button className="p-2 text-red-600 rounded-lg hover:text-white">
-            <Trash2 className="w-5 h-5" />
-            </button>
-            </div>
-          <div className="flex justify-center mt-auto">
-            <Image src="/assets/challenge_images/museum.png" alt="Museum" width={150} height={150} />
-          </div>
-          <div className="flex justify-between mt-auto">
-            <div className="p-4 text-xs font-semibold font-['Montserrat']">50 points</div>
-            <button className="px-6 py-2 bg-white rounded-[10px] hover:bg-black hover:text-white text-xs font-semibold">
-              Due on 28
-            </button>
-          </div>
-        </div>
+      {/* Show Popup when isOpen is true */}
+      {isOpen && <Popup open={isOpen} onChange={() => setIsOpen(false)} />}
 
-      {/* Journal Card */}
-        <div className="bg-[#d3cff7] rounded-[20px] border border-[#6859ff] flex flex-col flex-grow p-6">
-          <div className="flex justify-between items-start">
-            <div className="text-sm font-semibold font-['Montserrat']">Write a Journal about My Day</div>
-            <button className="p-2 text-red-600 rounded-lg hover:text-white">
-            <Trash2 className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="flex justify-center mt-auto">
-            <Image src="/assets/challenge_images/journal.png" alt="Journal" width={150} height={150} />
-          </div>
-          <div className="flex justify-between mt-auto">
-            <div className="p-4 text-xs font-semibold font-['Montserrat']">50 points</div>
-            <button className="px-6 py-2 bg-white rounded-[10px] hover:bg-black hover:text-white text-xs font-semibold">
-              Due Today
-            </button>
-          </div>
-        </div>
-      {/* Plus (+) Add Button */}
-        <div className="mt-20">
-          <button className="w-16 h-16 bg-[#6859ff] text-white rounded-full flex items-center justify-center hover:bg-[#543de5] transition shadow-lg">
-          <Plus className="w-8 h-8" />
-          </button>
-        </div>
-      </div>
-      {/* Challenge Ideas */}
-      <h1 className="pl-6 font-['Montserrat'] text-[22px] font-bold">Challenge Ideas For You</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 p-6">
-      {/* Challenge Card Template */}
-      {[
-        { image: "/assets/challenge_images/Yoga.jpg", title: "Yoga", duration: "30 mins" },
-        { image: "/assets/challenge_images/reading.jpg", title: "Read Books", duration: "40     mins" },
-        { image: "/assets/challenge_images/meditate.jpg", title: "Meditate", duration: "20    mins" },
-        { image: "/assets/challenge_images/brain.jpg", title: "Brainstorm Ideas", duration:     "15 mins" },
-        { image: "/assets/challenge_images/workout.jpg", title: "Workout", duration: "30    mins" },
-        { image: "/assets/challenge_images/cycling.jpg", title: "Cycling", duration: "45    mins" },
-        { image: "/assets/challenge_images/tdl.jpg", title: "Make To-Do List", duration:     "10 mins" },
-        { image: "/assets/challenge_images/devotional.jpg", title: "Devotional", duration:    "50 mins" },
-        { image: "/assets/challenge_images/tidy.jpg", title: "Tidy Up", duration: "20     mins" }
-      ].map((challenge, index) => (
-        <div key={index} className="relative flex flex-col w-full h-[250px] rounded-lg overflow-hidden shadow-lg">
-          <Image
-            src={challenge.image}
-            alt={challenge.title}
-            width={300}
-            height={250}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-start justify-between p-3">
-            <div>
-              <p className="text-white text-sm font-semibold">{challenge.title}</p>
-              <p className="text-white text-sm font-semibold">{challenge.duration}</p>
+      {/* Second Section */}
+      <div className='flex flex-col justify-start gap-[50px]'>
+        {/* Title */}
+        <h1 className='font-montserrat font-[600] text-[24px] opacity-80 text-[#000000] leading-[32.91px]'>
+          Challenges Ideas For you
+        </h1>
+
+        <div className='w-[90%] grid grid-cols-3 gap-5'>
+          {ChallengesIdeas.map((data, index) => (
+            <div
+              key={index}
+              className='w-[300px] h-[220px] object-cover rounded-[10px] flex flex-col justify-between p-4 cursor-pointer transition-transform duration-700 ease-in-out hover:scale-105'
+              style={{
+                backgroundImage: `url(${data.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className=''>
+                <h1 className='font-montserrat font-[500] text-[18px] text-backgroundPrimary leading-[32.91px]'>
+                  {data.name}
+                </h1>
+                <div className='flex justify-start items-center gap-2'>
+                  <Image
+                    src={'/assets/challenge_images/White-clock.svg'}
+                    alt='Image'
+                    width={15}
+                    height={15}
+                  />
+                  <h3 className='text-backgroundPrimary text-[14px] font-montserrat font-[400] tracking-wide'>
+                    {data.time}
+                  </h3>
+                </div>
+              </div>
+
+              <div className='flex justify-end items-end'>
+                <span className='text-backgroundPrimary bg-backgroundSecondary bg-opacity-50 px-3 py-2 rounded-[10px] text-[14px] font-montserrat font-[500] tracking-wide '>
+                  Reward - 20 points
+                </span>
+              </div>
             </div>
-            <p className="text-white text-sm font-semibold p-1 flex">Reward - 20 points</p>
-          </div>
+          ))}
         </div>
-      ))}
       </div>
     </div>
-  );
+  )
 }

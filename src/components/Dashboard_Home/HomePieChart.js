@@ -1,52 +1,52 @@
 "use client";
 
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { RadialBarChart, RadialBar } from "recharts";
 
-export default function HomeDataChart({ data, percentage }) {
-  // Conditional logic: you can modify this condition based on your requirements
-  // For example, if the percentage is not 'This Month', show it
+const data = [{ name: "Empty", value: 0, fill: "#E3E0F8" }];
 
-  const showPercentage = data && data.length > 0 && percentage !== "This Month";
-
+const RadialChart = () => {
   return (
-    <div className="relative w-[201.24px] h-[201.24px]">
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius={70}
-            outerRadius={90}
-            cornerRadius={50} // Smooth edges
-            paddingAngle={-10}
-            barSize={22}
-            dataKey="value"
-            stroke="none"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.fill} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-
-      {/* Centered Text */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        {/* Conditionally render percentage */}
-        {showPercentage ? (
-          <p className=" flex flex-col justify-center items-center font-jost font-[600] text-[22px] text-[#000000] leading-[31.79px]">
-            {percentage}%
-            {/* <span className="font-jost font-[500] text-[18px] text-[#000000] leading-[26.01px]">
-              Goals
-            </span> */}
-          </p>
-        ) : (
-          <p className="font-jost font-[500] text-[18px] text-[#000000] leading-[26.01px]">
-            {percentage}
-          </p>
-        )}
-      </div>
-    </div>
+    <RadialBarChart
+      width={250}
+      height={250}
+      cx="50%"
+      cy="50%"
+      innerRadius="70%"
+      outerRadius="100%"
+      barSize={22}
+      data={data}
+    >
+      <RadialBar
+        minAngle={15}
+        background={{ fill: "#E3E0F8" }}
+        clockWise
+        dataKey="value"
+      />
+      <text
+        x="50%"
+        y="45%"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontFamily="Jost"
+        fontSize="20px"
+        fontWeight="500"
+      >
+        0%
+      </text>
+      <text
+        x="50%"
+        y="60%"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontFamily="Jost"
+        fontSize="18px"
+        fontWeight="500"
+        fill="#000000"
+      >
+        Empty
+      </text>
+    </RadialBarChart>
   );
-}
+};
+
+export default RadialChart;

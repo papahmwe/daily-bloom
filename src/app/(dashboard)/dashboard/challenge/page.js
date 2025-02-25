@@ -4,12 +4,14 @@ import Popup from "@/components/Challenge/Popup";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const ChallengesIdeas = [
   {
     id: 1,
     name: "Yoga",
-    time: "30 mins",
+    time: "2 mins",
     image: "/assets/challenge_images/Yoga.svg",
   },
   {
@@ -63,6 +65,7 @@ const ChallengesIdeas = [
 ];
 
 export default function Challenge() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { data: session, status } = useSession();
   const [challenges, setChallenges] = useState([]);
@@ -70,7 +73,7 @@ export default function Challenge() {
     name: "",
     duration: "",
     time_of_day: "",
-    days: [],
+    days: null,
     challenge_img: "",
     notification: false,
     user: session?.user?.id || "",
@@ -81,12 +84,28 @@ export default function Challenge() {
   //   "http://localhost:3000/api/challenges/67ab9f0c0f0b428730cd43f7";
   // const createUrl = "http://localhost:3000/api/challenges/create";
 
+  const fetchData = useCallback(async () => {
+    try {
+      if (session?.user?.id) {
+        const url = "http://localhost:3000/api/challenges/" + session.user.id;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("data", data);
+        setChallenges(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [session]);
+
   // Create a new challenge
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-
-      console.log("Submitting Challenge:", newChallenge);
 
       try {
         const url = "http://localhost:3000/api/challenges/create";
@@ -94,10 +113,12 @@ export default function Challenge() {
           name: newChallenge.name,
           duration: Number(newChallenge.duration),
           time_of_day: "Morning",
-          date_to_do: "2023-10-15",
-          user: newChallenge.user,
-          challenge_img: "http://example.com/image.jpg",
+          date_to_do: new Date(newChallenge.days),
+          user: session?.user?.id || "",
+          challenge_img: newChallenge.challenge_img,
         };
+
+        console.log(body, "body in challenge");
 
         const response = await fetch(url, {
           method: "POST",
@@ -108,68 +129,51 @@ export default function Challenge() {
         });
 
         if (response.ok) {
+          await fetchData();
+          setIsOpen(false);
         }
       } catch (error) {
         console.error("Error creating challenge:", error);
       }
     },
-    [newChallenge]
+    [newChallenge, fetchData, session]
   );
 
   // Fetching data
   useEffect(() => {
-    const fetchData = async () => {
+    fetchData();
+  }, [fetchData]);
+
+  // Delete a challenge
+  const deleteChallenge = useCallback(
+    async (_id) => {
+      if (!_id) {
+        console.log("Challenge ID is missing!");
+        return;
+      }
+
       try {
-        const url =
-          "http://localhost:3000/api/challenges/67ab9f0c0f0b428730cd43f7";
-        const response = await fetch(url);
+        const response = await fetch(
+          `http://localhost:3000/api/challenges/delete/${_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const data = await response.json();
-        console.log("data", data);
-        setChallenges(data);
+
+        await fetchData();
       } catch (error) {
-        console.log(error);
+        console.log("Error deleting challenge:", error);
       }
-    };
-    fetchData();
-  }, []);
-
-  // Delete a challenge
-  const deleteChallenge = useCallback(async (_id) => {
-    if (!_id) {
-      console.error("Challenge ID is missing!");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/challenges/delete/${_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Deleted challenge:", data);
-
-      // Remove deleted challenge
-      setChallenges((prevChallenges) =>
-        prevChallenges.filter((challenge) => challenge._id !== _id)
-      );
-    } catch (error) {
-      console.log("Error deleting challenge:", error);
-    }
-  }, []);
+    },
+    [fetchData]
+  );
 
   return (
     <div className="flex flex-col justify-start gap-[50px]">
@@ -307,7 +311,11 @@ export default function Challenge() {
 
         <div className="w-[90%] grid grid-cols-3 gap-5">
           {ChallengesIdeas.map((data, index) => (
-            <div
+            <Link
+              href={{
+                pathname: `/dashboard/challenge/${data.id}`,
+                query: { time: data.time, text: data.name },
+              }}
               key={index}
               className="w-[300px] h-[220px] object-cover rounded-[10px] flex flex-col justify-between p-4 cursor-pointer transition-transform duration-700 ease-in-out hover:scale-105"
               style={{
@@ -316,7 +324,7 @@ export default function Challenge() {
                 backgroundPosition: "center",
               }}
             >
-              <div className="">
+              <div>
                 <h1 className="font-montserrat font-[500] text-[18px] text-backgroundPrimary leading-[32.91px]">
                   {data.name}
                 </h1>
@@ -338,7 +346,7 @@ export default function Challenge() {
                   Reward - 20 points
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

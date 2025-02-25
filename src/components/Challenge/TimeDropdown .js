@@ -30,7 +30,7 @@ const TimeDropdown = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="cursor-pointer font-montserrat font-medium text-lg text-gray-600 border border-mainPrimary rounded-lg p-3 flex justify-between items-center"
       >
-        <span>
+        <span className="font-montserrat font-[500] text-[16px] text-[#868686]">
           {selectedHour === "12" &&
           selectedMinute === "00" &&
           selectedAMPM === "AM"
@@ -53,14 +53,14 @@ const TimeDropdown = () => {
 
       {/* Time Picker Dropdown */}
       {isOpen && (
-        <div className="absolute mt-2 left-0 z-10 bg-white border border-mainPrimary rounded-lg shadow-lg w-full p-2">
-          <div className="flex items-center space-x-2">
+        <div className="absolute mt-2 left-0 z-10 bg-backgroundPrimary border border-mainPrimary rounded-[10px] w-full p-2">
+          <div className="flex justify-center items-center ">
             {/* Hour Scroll */}
-            <div className="w-1/3 overflow-y-auto max-h-32 scrollbar-hide">
+            <div className="w-1/3 overflow-y-auto max-h-32 scrollbar-hide ">
               {hours.map((hour) => (
                 <div
                   key={hour}
-                  className="p-2 text-center text-lg cursor-pointer hover:bg-gray-200 rounded-lg"
+                  className="p-2 text-center cursor-pointer hover:bg-gray-200 rounded-lg font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide "
                   onClick={() => handleSelect(hour, "hour")}
                 >
                   {hour}
@@ -73,7 +73,7 @@ const TimeDropdown = () => {
               {minutes.map((minute) => (
                 <div
                   key={minute}
-                  className="p-2 text-center text-lg cursor-pointer hover:bg-gray-200 rounded-lg"
+                  className="p-2 text-center cursor-pointer hover:bg-gray-200 rounded-lg font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide "
                   onClick={() => handleSelect(minute, "minute")}
                 >
                   {minute}
@@ -84,9 +84,9 @@ const TimeDropdown = () => {
             {/* AM/PM Toggle */}
             <div className="flex flex-col w-1/3">
               <button
-                className={`p-2 text-lg ${
+                className={`p-2 font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide  ${
                   selectedAMPM === "AM"
-                    ? "bg-mainLight bg-opacity-50 rounded-lg"
+                    ? "bg-mainLight bg-opacity-80 rounded-lg font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide "
                     : ""
                 }`}
                 type="button"
@@ -95,9 +95,9 @@ const TimeDropdown = () => {
                 AM
               </button>
               <button
-                className={`p-2 text-lg ${
+                className={`p-2 font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide opacity-80 ${
                   selectedAMPM === "PM"
-                    ? "bg-mainLight bg-opacity-50 rounded-lg"
+                    ? "bg-mainLight bg-opacity-80 rounded-lg font-montserrat font-[500] text-[16px] text-[#868686] tracking-wide "
                     : ""
                 }`}
                 type="button"

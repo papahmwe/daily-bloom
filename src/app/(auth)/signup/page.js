@@ -1,6 +1,6 @@
 'use client'
 
-import { Eye, EyeOff, User, Mail  } from 'lucide-react'
+import { Eye, EyeOff, User, Mail, ArrowDown  } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -76,6 +76,7 @@ export default function SignupPage() {
           username: formData.get('username'),
           email: formData.get('email'),
           password: formData.get('password'),
+          gender: formData.get('gender'),
         }),
       });
 
@@ -167,6 +168,22 @@ export default function SignupPage() {
                     <Eye className='w-5 h-5' />
                   )}
                 </button>
+              </div>
+              <div className='relative'>
+                <select
+                  name='gender'
+                  required
+                  className='w-full px-4 py-5 rounded-lg bg-white/80  
+                    border border-white/30 text-black/60 placeholder:text-black/60
+                    focus:outline-none focus:border-white/50 appearance-none'
+                >
+                  <option value='' disabled selected>Select Gender</option>
+                  <option value='male'>Male</option>
+                  <option value='female'>Female</option>
+                  <option value='non-binary'>Non-binary</option>
+                  <option value='prefer-not-to-say'>Prefer not to say</option>
+                </select>
+                <ArrowDown className='absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/60' />
               </div>
 
               <button

@@ -1,10 +1,9 @@
 import { toast } from "sonner";
 import { Calendar } from "@/components/ui/calendar";
-
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
-
-import { useCallback, useState } from "react";
-
+import { useState } from "react";
 import Image from "next/image";
 import TimeDropdown from "./TimeDropdown ";
 
@@ -15,9 +14,8 @@ export default function Popup({
   newChallenge,
   setNewChallenge,
 }) {
-  const [isChecked, setIsChecked] = useState(false);
-  const [date, setDate] = useState(new Date());
-  if (!open) return null;
+  const [selectedDates, setSelectedDates] = useState(null); // ✅ Always an array
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const handleSwitchChange = (checked) => {
     setNewChallenge((prevChallenge) => ({
@@ -48,10 +46,10 @@ export default function Popup({
       {/* Popup box */}
       <form
         onSubmit={handleSubmit}
-        className="w-[500px] h-[570px] bg-backgroundPrimary rounded-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8"
+        className="w-[500px] h-auto bg-backgroundPrimary rounded-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8"
       >
         {/* For content */}
-        <div className="space-y-7">
+        <div className="space-y-7" onClick={() => console.log("working...")}>
           <input
             type="text"
             value={newChallenge.name}
@@ -63,12 +61,13 @@ export default function Popup({
             }
             placeholder="Challenge Name"
             className="cursor-pointer font-montserrat font-[500] text-[16px] text-[#868686] border border-mainPrimary outline-none rounded-[10px] p-3 w-full tracking-wide"
+            required
           />
           <div className="flex gap-3">
             <TimeDropdown />
 
             <input
-              type="text"
+              type="number"
               value={newChallenge.duration}
               onChange={(e) =>
                 setNewChallenge({
@@ -78,23 +77,44 @@ export default function Popup({
               }
               placeholder="Duration"
               className="cursor-pointer font-montserrat font-[500] text-[16px] text-[#868686] border border-mainPrimary outline-none rounded-[10px] p-3 w-1/2 tracking-wide"
+              required
             />
           </div>
 
           <div>
             <div className="w-full flex justify-between items-center ">
-              <button
-                type="button"
-                className={`cursor-pointer font-montserrat font-[500] text-[16px] text-[#868686] border border-mainPrimary outline-none rounded-[10px] p-3 w-full tracking-wide`}
-              >
-                On these Days
-                {/* <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  className="rounded-md border"
-                /> */}
-              </button>
+              <div className="relative w-full">
+                {/* Button to toggle calendar */}
+                <button
+                  type="button"
+                  onClick={() => setShowCalendar((prev) => !prev)}
+                  className="cursor-pointer border border-mainPrimary font-montserrat font-[500] text-[16px] text-[#868686] outline-none rounded-[10px] p-3 w-full tracking-wide flex justify-between items-center"
+                >
+                  <div className="w-[70%] text-start">
+                    {/* {selectedDates.length > 0
+                      ? selectedDates
+                          .map((date) => format(date, "EEE MMMM d, yyyy"))
+                          .join(", ")
+                      : "On these Days"} */}
+                    {selectedDates
+                      ? format(selectedDates, "MM/dd/yyyy")
+                      : "On these days"}
+                  </div>
+                  <CalendarIcon className="ml-2 h-6 w-6 text-mainPrimary" />
+                </button>
+
+                {/* Calendar (conditionally rendered) */}
+                {showCalendar && (
+                  <div className="absolute mt-2 right-0 font-montserrat font-[500] text-[16px] text-[#868686] bg-backgroundPrimary shadow-inner rounded-[10px] p-2 border z-50">
+                    <Calendar
+                      mode="single"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      required
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -158,39 +178,22 @@ export default function Popup({
             <button
               type="submit"
               className="font-montserrat font-[600] text-[18px] text-backgroundPrimary opacity-80 tracking-wide bg-mainPrimary rounded-[10px] w-32 h-12"
-              // onClick={async () => {
-              //   try {
-              //     // Close the popup
-              //     onChange(false);
-
-              //     // Show success toast
-              //     toast("Challenge Created! 🎉", {
-              //       duration: 1000,
-              //       style: {
-              //         backgroundColor: "#8778FB",
-              //         color: "#FFFFFF",
-              //         letterSpacing: "0.025rem",
-              //         borderRadius: "10px",
-              //         outline: "none",
-              //         border: "none",
-              //         padding: "18px",
-              //         fontSize: "16px",
-              //         fontFamily: "Montserrat, sans-serif",
-              //       },
-              //     });
-              //   } catch (error) {
-              //     console.error("Error creating challenge:", error);
-
-              //     // Show error toast if creation fails
-              //     toast("Failed to create challenge. Try again!", {
-              //       duration: 1000,
-              //       style: {
-              //         backgroundColor: "#FF4C4C",
-              //         color: "#FFFFFF",
-              //       },
-              //     });
-              //   }
-              // }}
+              onClick={() =>
+                toast("Claimed Successfully! 🎉", {
+                  duration: 1000,
+                  style: {
+                    backgroundColor: "#8778FB",
+                    color: "#FFFFFF",
+                    letterSpacing: "0.025rem",
+                    borderRadius: "10px",
+                    outline: "none",
+                    border: "none",
+                    padding: " 18px",
+                    fontSize: "16px",
+                    fontFamily: "Montserrat, sans-serif",
+                  },
+                })
+              }
             >
               Save
             </button>

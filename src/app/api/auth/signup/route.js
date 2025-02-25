@@ -4,9 +4,9 @@ import connectDB from '../../../../lib/db'
 
 export async function POST(req) {
   try {
-    const { username, email, password } = await req.json();
+    const { username, email, password, gender } = await req.json();
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !gender) {
       return new Response(
         JSON.stringify({ message: "Please fill all fields" }), 
         { status: 400 }
@@ -28,6 +28,7 @@ export async function POST(req) {
       username,
       email,
       password: hashedPassword,
+      gender,
     });
 
     return new Response(

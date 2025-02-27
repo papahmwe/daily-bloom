@@ -4,8 +4,10 @@ import { toast } from "sonner";
 
 import Image from "next/image";
 import { CarouselSize } from "./Slide";
+
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const LoginRewards = [
   {
@@ -21,33 +23,34 @@ const LoginRewards = [
 ];
 
 export default function RewardsMain() {
-  const [data, setData] = useState({});
   const { data: session, status } = useSession();
-
-  console.log("data from user", data);
+  const [user, setUser] = useState(null);
+  const [rewards, setRewards] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/api/users/profile/67ab9f0c0f0b428730cd43f7"
+    const fetchUser = async () => {
+      if (session) {
+        const response = await axios.get(
+          `/api/users/profile/${session.user.id}`
         );
-        // if (!response.ok) {
-        //   throw new Error("Failed to fetch user data");
-        // }
-        const result = await response.json();
-
-        console.log("res", result);
-
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        setUser(response.data);
       }
     };
 
-    fetchData();
-  }, [session, status]);
+    const fetchRewards = async () => {
+      if (session) {
+        const response = await axios.get(`/api/rewards/${session.user.id}`);
+        setRewards(response.data);
+      }
+    };
 
+    fetchRewards();
+    fetchUser();
+  }, [session]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-7">
       {/* First */}
@@ -56,16 +59,16 @@ export default function RewardsMain() {
         <div className=" w-1/3 h-[300px] flex flex-col justify-center items-center bg-opacity-80 bg-mainLight gap-5 rounded-[10px]">
           <div className="flex flex-col justify-center items-center ">
             <Image
-              src={"/assets/rewards/User-Image.svg"}
+              src={user?.image || "/assets/rewards/user.svg"}
               alt="User Image"
               width={70}
               height={70}
             />
             <h1 className="font-montserrat font-[700] text-[28px] text-backgroundPrimary tracking-wide">
-              James
+              {user?.username}
             </h1>
             <h3 className="font-montserrat font-[400] text-[16px] text-backgroundPrimary tracking-wide">
-              james@gmail.com
+              {user?.email}
             </h3>
           </div>
           <div className="flex justify-center items-center bg-backgroundPrimary px-8 py-1 rounded-[10px] gap-2">
@@ -76,7 +79,7 @@ export default function RewardsMain() {
               height={40}
             />
             <h1 className="text-[#857BE5] text-[30px] font-montserrat font-[600] tracking-wide">
-              1520
+              {user?.points || 0}
             </h1>
           </div>
         </div>
@@ -98,7 +101,7 @@ export default function RewardsMain() {
       <div className="w-[90%] flex flex-col gap-5">
         {/* Second */}
         <div className="bg-mainLight bg-opacity-80 rounded-[10px] w-[90%] h-auto px-5 py-12 ">
-          <CarouselSize />
+          <CarouselSize rewards={rewards.challenges} />
         </div>
 
         {/* Third */}

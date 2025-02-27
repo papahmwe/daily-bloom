@@ -11,10 +11,10 @@ export default function HeroFooter() {
       <ul className="w-full h-full flex justify-evenly items-center">
         {footerItems.map((item, index) => (
           <li key={index} className="flex flex-col justify-center items-center">
-            <span className="text-[22px] font-[900] font-montserrat text-backgroundPrimary">
+            <span className="text-[22px] font-[700] font-montserrat text-backgroundPrimary tracking-wide">
               {item.count}
             </span>
-            <span className="text-[22px] font-[800] font-montserrat text-backgroundPrimary">
+            <span className="text-[22px] font-[600] font-montserrat text-backgroundPrimary tracking-wide">
               {item.title}
             </span>
           </li>

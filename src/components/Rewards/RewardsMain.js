@@ -141,7 +141,25 @@ export default function RewardsMain() {
                   <h2 className="font-montserrat font-[500] text-[14px] text-[#B7B0F1] tracking-wide">
                     {data.name}
                   </h2>
-                  <button className="bg-[#FBE452] font-montserrat font-[600] text-[16px] text-[#000000] rounded-[10px] tracking-wide px-7 py-1 cursor-pointer hover:text-[#FBE452] hover:bg-[#000000] duration-700 transition-all ">
+                  <button
+                    className="bg-[#FBE452] font-montserrat font-[600] text-[16px] text-[#000000] rounded-[10px] tracking-wide px-7 py-1 cursor-pointer hover:text-[#FBE452] hover:bg-[#000000] duration-700 transition-all "
+                    onClick={() =>
+                      toast("Claimed Successfully! 🎉", {
+                        duration: 1000,
+                        style: {
+                          backgroundColor: "#8778FB",
+                          color: "#FFFFFF",
+                          letterSpacing: "0.025rem",
+                          borderRadius: "10px",
+                          outline: "none",
+                          border: "none",
+                          padding: " 18px",
+                          fontSize: "16px",
+                          fontFamily: "Montserrat, sans-serif",
+                        },
+                      })
+                    }
+                  >
                     Claim
                   </button>
                 </div>

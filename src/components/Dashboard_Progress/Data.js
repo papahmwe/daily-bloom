@@ -34,13 +34,18 @@ export default function Data({ data }) {
     "/assets/Progress/Reading.svg",
   ];
 
+  const progressData = "100%";
+  const progressTitleOneData = "Completed";
+  const progressTitleTwoData = "Active";
+
+  // Completed Data List
   const completedData = data.recentlyCompletedHabits.map((habit, index) => ({
-    id: index,
+    id: habit.id,
     name: habit.name,
-    progress: "100%",
-    progressTitleOne: "Completed",
-    progressTitleTwo: "Active",
-    image: "/assets/Progress/Workout.svg",
+    progress: progressData,
+    progressTitleOne: progressTitleOneData,
+    progressTitleTwo: progressTitleTwoData,
+    image: images[index % images.length],
   }));
 
   const percentage = data.completedHabitsPercentage;
@@ -53,7 +58,7 @@ export default function Data({ data }) {
           The progress you&apos;ve already made.
         </h1>
 
-        <div className="w-[660px] h-[269px] flex justify-start items-center gap-[40px] ">
+        <div className="w-auto h-auto flex justify-start items-center gap-[40px] ">
           <div className="flex justify-start items-center gap-[80px] ">
             {/* First Donut Chart */}
             <DonutChart data={goalData} percentage={percentage} />
@@ -89,7 +94,7 @@ export default function Data({ data }) {
         </h1>
 
         {/* Display Data Section */}
-        <div className="w-[90%] h-full flex flex-1 flex-wrap gap-5">
+        <div className="w-[90%] h-auto flex flex-1 flex-wrap gap-5">
           {completedData.map((data, index) => {
             return (
               <div
@@ -123,34 +128,36 @@ export default function Data({ data }) {
                 `}
               >
                 <div
-                  className={`flex flex-col justify-between gap-28
-                ${data.id === 2 || data.id === 4 ? "items-end" : "items-start"}
+                  className={`h-full flex flex-col justify-between
+                  ${index % 2 === 1 ? "items-end" : "items-start"}
                 `}
                 >
                   {/* Title */}
-                  {/* <h1 className="font-montserrat font-[600] text-[40px] text-[#F5F5F5]">
-                    {data.name}
-                  </h1> */}
-
-                  <h1 className="font-montserrat font-[600] text-[40px] text-[#F5F5F5] truncate">
+                  <h1
+                    className={`font-montserrat font-[500] text-[26px] tracking-wide text-[#F5F5F5] ${
+                      index === 1 || index === 3 || index % 2 === 1
+                        ? "text-end"
+                        : "text-start"
+                    }`}
+                  >
                     {data.name}
                   </h1>
 
                   {/* Bottom Data */}
-                  <div>
-                    <h3 className="font-montserrat font-[600] text-[36px] text-[#F5F5F5]">
+                  <div className="flex flex-col gap-2">
+                    <h3 className="font-montserrat font-[500] text-[22px] tracking-wide text-[#F5F5F5] text-start">
                       {data.progress}
                     </h3>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-1">
                       <div className="flex justify-start items-center gap-2">
                         <span className="inline-block w-[15px] h-[15px] border-2 border-mainPrimary rounded-full bg-[#F5F5F5]"></span>
-                        <h3 className="font-jost font-[400] text-[18px] text-[#F5F5F5]">
+                        <h3 className="font-jost font-[400] text-[16px] tracking-wide text-[#F5F5F5]">
                           {data.progressTitleOne}
                         </h3>
                       </div>
                       <div className="flex justify-start items-center gap-2">
                         <span className="inline-block w-[15px] h-[15px] border-2 border-mainPrimary rounded-full bg-[#F5F5F5]"></span>
-                        <h3 className="font-jost font-[400] text-[18px] text-[#F5F5F5]">
+                        <h3 className="font-jost font-[400] text-[16px] tracking-wide text-[#F5F5F5]">
                           {data.progressTitleTwo}
                         </h3>
                       </div>
@@ -158,13 +165,13 @@ export default function Data({ data }) {
                   </div>
                 </div>
 
-                {/* Image */}
+                {/* Images */}
                 <div>
                   <Image
                     src={data.image}
                     alt={data.name}
-                    width={250}
-                    height={250}
+                    width={200}
+                    height={200}
                     className="object-cover"
                   />
                 </div>

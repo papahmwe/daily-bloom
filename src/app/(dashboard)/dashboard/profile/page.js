@@ -1,13 +1,22 @@
 "use client";
 import Image from "next/image";
-import { Pencil, Flame, Droplets, Dumbbell, X, Check, Camera } from "lucide-react";
+import axios from "axios";
+
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 import { ChangePasswordDialog } from "@/components/Profile/ChangePasswordBox";
 import { DeleteAccountDialog } from "@/components/Profile/DeleteAccount";
 import { AchievementDialog } from "@/components/Profile/Achievement";
 
+import {
+  Pencil,
+  Flame,
+  Droplets,
+  Dumbbell,
+  X,
+  Check,
+  Camera,
+} from "lucide-react";
 
 const convertToBase64Client = (file) => {
   return new Promise((resolve, reject) => {
@@ -19,18 +28,17 @@ const convertToBase64Client = (file) => {
 };
 
 export default function UserProfile() {
-
   const { data: session, update: updateSession } = useSession();
   const userId = session?.user.id;
   // Dialog states
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen_delete, setIsOpen_delete] = useState(false);
   const [isOpen_notification, setIsOpen_notification] = useState(true);
-  
+
   // Edit mode states
   const [isEditingPersonal, setIsEditingPersonal] = useState(false);
   const [isEditingHeader, setIsEditingHeader] = useState(false);
-  
+
   // Form data state
   const [formData, setFormData] = useState({
     username: "",
@@ -44,11 +52,11 @@ export default function UserProfile() {
     username: "",
     profileImage: null,
   });
-  
+
   // Loading state for API calls
   const [isLoading, setIsLoading] = useState(false);
   const [isHeaderLoading, setIsHeaderLoading] = useState(false);
-  
+
   // Success/error message state
   const [statusMessage, setStatusMessage] = useState({ type: "", message: "" });
 
@@ -61,20 +69,22 @@ export default function UserProfile() {
     if (session?.user?.id) {
       const fetchUser = async () => {
         try {
-          const response = await axios.get(`/api/users/profile/${session.user.id}`);
+          const response = await axios.get(
+            `/api/users/profile/${session.user.id}`
+          );
           setFormData({
             username: response.data.username,
             email: response.data.email,
             gender: response.data.gender,
             points: response.data.points,
           });
-          console.log(response.data)
+          console.log(response.data);
           setHeaderData({
             username: response.data.username,
             profileImage: response.data.profilePicture,
           });
         } catch (error) {
-          console.error('Error fetching user:', error);
+          console.error("Error fetching user:", error);
         }
       };
       fetchUser();
@@ -92,18 +102,18 @@ export default function UserProfile() {
   // Handle input changes for personal info
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   // Handle input changes for header info
   const handleHeaderChange = (e) => {
     const { name, value } = e.target;
-    setHeaderData(prev => ({
+    setHeaderData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -151,32 +161,33 @@ export default function UserProfile() {
   const savePersonalChanges = async () => {
     setIsLoading(true);
     setStatusMessage({ type: "", message: "" });
-    
+
     try {
       // API endpoint for updating profile information
-      const response = await axios.put('/api/users/profile', {
+      const response = await axios.put("/api/users/profile", {
         username: formData.username,
         email: formData.email,
         gender: formData.gender,
         userId: userId,
       });
-      
-      if(response.status === 200) {
+
+      if (response.status === 200) {
         setFormData({
           username: response.data.username,
           email: response.data.email,
           gender: response.data.gender,
-        }); 
+        });
         setIsEditingPersonal(false);
-        setStatusMessage({ type: "success", message: "Profile updated successfully!" });
+        setStatusMessage({
+          type: "success",
+          message: "Profile updated successfully!",
+        });
       }
-      
-      
     } catch (error) {
-      console.error('Error updating profile:', error);
-      setStatusMessage({ 
-        type: "error", 
-        message: error.response?.data?.message || "Failed to update profile." 
+      console.error("Error updating profile:", error);
+      setStatusMessage({
+        type: "error",
+        message: error.response?.data?.message || "Failed to update profile.",
       });
     } finally {
       setIsLoading(false);
@@ -187,29 +198,39 @@ export default function UserProfile() {
   const saveHeaderChanges = async () => {
     setIsHeaderLoading(true);
     setStatusMessage({ type: "", message: "" });
-    
+
     try {
       const headerFormData = new FormData();
-      headerFormData.append('username', headerData.username);
+      headerFormData.append("username", headerData.username);
       if (headerData.profileImage) {
-        const base64Image = await convertToBase64Client(headerData.profileImage);
-        headerFormData.append('profileImage', base64Image);
+        const base64Image = await convertToBase64Client(
+          headerData.profileImage
+        );
+        headerFormData.append("profileImage", base64Image);
       }
-      headerFormData.append('userId', userId);
+      headerFormData.append("userId", userId);
 
-      const response = await axios.put('/api/users/profile-header', headerFormData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.put(
+        "/api/users/profile-header",
+        headerFormData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       setIsEditingHeader(false);
-      setStatusMessage({ type: "success", message: "Profile header updated successfully!" });
+      setStatusMessage({
+        type: "success",
+        message: "Profile header updated successfully!",
+      });
     } catch (error) {
-      console.error('Error updating profile header:', error);
+      console.error("Error updating profile header:", error);
       setStatusMessage({
         type: "error",
-        message: error.response?.data?.message || "Failed to update profile header.",
+        message:
+          error.response?.data?.message || "Failed to update profile header.",
       });
     } finally {
       setIsHeaderLoading(false);
@@ -227,11 +248,17 @@ export default function UserProfile() {
       <div className="mx-auto max-w-3xl space-y-6">
         {/* Status message */}
         {statusMessage.message && (
-          <div className={`p-4 rounded-lg ${statusMessage.type === "error" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+          <div
+            className={`p-4 rounded-lg ${
+              statusMessage.type === "error"
+                ? "bg-red-100 text-red-700"
+                : "bg-green-100 text-green-700"
+            }`}
+          >
             {statusMessage.message}
           </div>
         )}
-        
+
         {/* Header Section */}
         <div className="p-6 border-2 border-purple-200 rounded-xl">
           <div className="flex items-center justify-between">
@@ -245,12 +272,15 @@ export default function UserProfile() {
                   className="rounded-full object-cover"
                 />
                 {isEditingHeader && (
-                  <label htmlFor="profile-upload" className="absolute bottom-0 right-0 rounded-full bg-white p-1.5 shadow-lg cursor-pointer">
+                  <label
+                    htmlFor="profile-upload"
+                    className="absolute bottom-0 right-0 rounded-full bg-white p-1.5 shadow-lg cursor-pointer"
+                  >
                     <Camera className="h-4 w-4 text-gray-600" />
-                    <input 
-                      id="profile-upload" 
-                      type="file" 
-                      accept="image/*" 
+                    <input
+                      id="profile-upload"
+                      type="file"
+                      accept="image/*"
                       className="hidden"
                       onChange={handleImageChange}
                     />
@@ -281,19 +311,21 @@ export default function UserProfile() {
                 </div>
               </div>
             </div>
-            
+
             {isEditingHeader ? (
               <div className="flex gap-2">
                 <button
                   onClick={toggleEditHeader}
-                  className="flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 ease-in-out shadow-sm active:scale-95">
+                  className="flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 ease-in-out shadow-sm active:scale-95"
+                >
                   <X className="mr-1 h-4 w-4" />
                   Cancel
                 </button>
                 <button
                   onClick={saveHeaderChanges}
                   disabled={isHeaderLoading}
-                  className="flex items-center px-3 py-1.5 text-sm font-medium text-white bg-[#8678FB] rounded-lg hover:bg-[#7569ec] transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-95 disabled:opacity-70">
+                  className="flex items-center px-3 py-1.5 text-sm font-medium text-white bg-[#8678FB] rounded-lg hover:bg-[#7569ec] transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-95 disabled:opacity-70"
+                >
                   <Check className="mr-1 h-4 w-4" />
                   {isHeaderLoading ? "Saving..." : "Save"}
                 </button>
@@ -301,7 +333,8 @@ export default function UserProfile() {
             ) : (
               <button
                 onClick={toggleEditHeader}
-                className="hidden sm:flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-purple-300 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-90">
+                className="hidden sm:flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-purple-300 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-90"
+              >
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </button>
@@ -317,14 +350,16 @@ export default function UserProfile() {
               <div className="flex gap-2">
                 <button
                   onClick={toggleEditPersonal}
-                  className="flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 ease-in-out shadow-sm active:scale-95">
+                  className="flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 ease-in-out shadow-sm active:scale-95"
+                >
                   <X className="mr-1 h-4 w-4" />
                   Cancel
                 </button>
                 <button
                   onClick={savePersonalChanges}
                   disabled={isLoading}
-                  className="flex items-center px-3 py-1.5 text-sm font-medium text-white bg-[#8678FB] rounded-lg hover:bg-[#7569ec] transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-95 disabled:opacity-70">
+                  className="flex items-center px-3 py-1.5 text-sm font-medium text-white bg-[#8678FB] rounded-lg hover:bg-[#7569ec] transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-95 disabled:opacity-70"
+                >
                   <Check className="mr-1 h-4 w-4" />
                   {isLoading ? "Saving..." : "Save"}
                 </button>
@@ -332,7 +367,8 @@ export default function UserProfile() {
             ) : (
               <button
                 onClick={toggleEditPersonal}
-                className="hidden sm:flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-purple-300 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-90">
+                className="hidden sm:flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-purple-300 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-400 transition-all duration-200 ease-in-out shadow-sm hover:shadow active:scale-90"
+              >
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </button>
@@ -396,12 +432,14 @@ export default function UserProfile() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
             <button
               className="sm:order-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-white hover:bg-red-600 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md active:scale-95 border border-red-600"
-              onClick={handleOpen_delete}>
+              onClick={handleOpen_delete}
+            >
               Delete Account
             </button>
             <button
               className="px-4 py-2 text-sm font-medium text-white bg-[#8678FB] hover:bg-[#8678FB]-1000 rounded-xl transition-all duration-200 ease-in-out shadow-sm hover:shadow-md active:scale-95"
-              onClick={handleOpen}>
+              onClick={handleOpen}
+            >
               Change Password
             </button>
           </div>

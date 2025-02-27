@@ -19,9 +19,7 @@ export default function ProgressPage() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/progress/${session?.user.id}`
-        );
+        const response = await fetch(`/api/progress/${session?.user.id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch progress data");
         }

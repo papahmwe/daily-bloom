@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -7,14 +6,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Popup from "../Rewards/Popup";
 import { Toaster } from "sonner";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Popup from "../Rewards/Popup";
-import { Toaster } from "sonner";
 
-import axios from "axios";
 import axios from "axios";
 
 const pageTitles = {
@@ -73,18 +65,14 @@ export default function Navbar() {
 
   return (
     <div className="w-[calc(100vw-333px)] max-w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm ">
-    <div className="w-[calc(100vw-333px)] max-w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm ">
       {/* Title Section */}
-      <h3 className="font-jost font-[600] text-[32px] text-[#000000] leading-[46.24px]">
       <h3 className="font-jost font-[600] text-[32px] text-[#000000] leading-[46.24px]">
         {title}
       </h3>
 
       {/* Show "About Rewards" button only on Rewards page */}
       {pathname === "/dashboard/rewards" && (
-      {pathname === "/dashboard/rewards" && (
         <li
-          className="border border-mainLight text-mainLight font-montserrat text-[20px] font-[600] leading-[24.38px] py-4 px-8 rounded-2xl list-none hover:text-backgroundPrimary hover:bg-mainLight transition-all duration-700 cursor-pointer"
           className="border border-mainLight text-mainLight font-montserrat text-[20px] font-[600] leading-[24.38px] py-4 px-8 rounded-2xl list-none hover:text-backgroundPrimary hover:bg-mainLight transition-all duration-700 cursor-pointer"
           onClick={() => setIsPopupOpen(true)}
         >
@@ -95,9 +83,6 @@ export default function Navbar() {
       {/* Popup */}
       <Popup open={isPopupOpen} onChange={setIsPopupOpen} />
 
-      {pathname !== "/dashboard/rewards" && (
-        <div className="flex justify-end items-center gap-6 ">
-          <div className="w-auto h-[67px] flex justify-between items-center gap-6">
       {pathname !== "/dashboard/rewards" && (
         <div className="flex justify-end items-center gap-6 ">
           <div className="w-auto h-[67px] flex justify-between items-center gap-6">
@@ -114,7 +99,6 @@ export default function Navbar() {
                 {user?.username}
               </h3>
               <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
-              <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
                 User Account
               </h3>
             </div>
@@ -123,19 +107,14 @@ export default function Navbar() {
           {/* Notification */}
           <div
             className="cursor-pointer flex justify-center items-center "
-            className="cursor-pointer flex justify-center items-center "
             onClick={() => setShowNotifications(true)}
           >
-            <div className="flex justify-center">
             <div className="flex justify-center">
               <Image
                 src="/assets/dashboard_home/Notification.png"
                 alt="Notification"
-                src="/assets/dashboard_home/Notification.png"
-                alt="Notification"
                 width={25}
                 height={25}
-                className="object-cover"
                 className="object-cover"
               />
             </div>
@@ -145,11 +124,8 @@ export default function Navbar() {
           <div
             className={`absolute top-0 right-0 max-h-[100vh] bg-backgroundPrimary z-50 w-[40%] h-auto transition-all duration-200 ease-linear ${
               showNotifications ? "translate-x-0" : "translate-x-full"
-              showNotifications ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="bg-backgroundPrimary flex justify-between items-center w-[100%] h-[96px] px-10 border-b border-b-black border-opacity-50">
-              <span className="text-[#000000] opacity-80 text-[22px] tracking-wide font-jost font-[500]">
             <div className="bg-backgroundPrimary flex justify-between items-center w-[100%] h-[96px] px-10 border-b border-b-black border-opacity-50">
               <span className="text-[#000000] opacity-80 text-[22px] tracking-wide font-jost font-[500]">
                 Notifications
@@ -159,16 +135,12 @@ export default function Navbar() {
                 <Image
                   src={"/assets/rewards/rewards-icon.svg"}
                   alt="Image"
-                  src={"/assets/rewards/rewards-icon.svg"}
-                  alt="Image"
                   width={10}
                   height={10}
-                  className="bg-mainLight rounded-full w-7 h-7 p-2 hover:bg-mainSecondary transition-all duration-700"
                   className="bg-mainLight rounded-full w-7 h-7 p-2 hover:bg-mainSecondary transition-all duration-700"
                 />
               </button>
             </div>
-            <div className="overflow-y-auto scrollbar-hide w-full max-h-[calc(100vh-96px)]">
             <div className="overflow-y-auto scrollbar-hide w-full max-h-[calc(100vh-96px)]">
               {messages.map((message, index) => {
                 return (
@@ -176,12 +148,8 @@ export default function Navbar() {
                     key={index}
                     className={`flex justify-start items-start gap-3 border-b border-b-black border-opacity-10 px-10 py-5 ${
                       message.read ? "bg-gray-200" : "bg-white"
-                      message.read ? "bg-gray-200" : "bg-white"
                     }`}
                   >
-                    <div className=" bg-mainLight rounded-full w-[6.5px] h-[6.5px] mt-2"></div>
-                    <div className="flex flex-col justify-start items-start w-10/12 gap-1">
-                      <p className="font-jost font-[400] text-[16px] text-black opacity-80 tracking-wide">
                     <div className=" bg-mainLight rounded-full w-[6.5px] h-[6.5px] mt-2"></div>
                     <div className="flex flex-col justify-start items-start w-10/12 gap-1">
                       <p className="font-jost font-[400] text-[16px] text-black opacity-80 tracking-wide">
@@ -189,25 +157,20 @@ export default function Navbar() {
                       </p>
                       <div className="flex justify-between items-center w-full">
                         <p className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide ">
-                      <div className="flex justify-between items-center w-full">
-                        <p className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide ">
                           {getTime(message.createdAt)}
                         </p>
                         {/* mark as read button */}
                         <button
-                          className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide hover:text-mainPrimary transition-all duration-700"
                           className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide hover:text-mainPrimary transition-all duration-700"
                           onClick={async () => {
                             try {
                               const res = await axios.put(
                                 `http://localhost:3000/api/notifications/update/${message._id}`
                               );
-                              );
                               if (res.status === 200) {
                                 setMessages((prev) => {
                                   const newMessages = prev.map((msg) => {
                                     if (msg._id === message._id) {
-                                      return { ...msg, read: true };
                                       return { ...msg, read: true };
                                     }
                                     return msg;
@@ -215,21 +178,13 @@ export default function Navbar() {
                                   return newMessages;
                                 });
                                 Toaster.success("Notification marked as read");
-                                    return msg;
-                                  });
-                                  return newMessages;
-                                });
-                                Toaster.success("Notification marked as read");
                               }
                               console.log(res.data);
-                              console.log(res.data);
                             } catch (error) {
-                              console.log(error);
                               console.log(error);
                             }
                           }}
                         >
-                          <div className="flex justify-between items-center">
                           <div className="flex justify-between items-center">
                             <p>Mark as read</p>
                             {message.read && (
@@ -241,14 +196,7 @@ export default function Navbar() {
                                 height="16"
                                 className="text-mainPrimary"
                                 fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width="16"
-                                height="16"
-                                className="text-mainPrimary"
-                                fill="currentColor"
                               >
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                               </svg>
                             )}
@@ -258,13 +206,11 @@ export default function Navbar() {
                     </div>
                   </div>
                 );
-                );
               })}
             </div>
           </div>
         </div>
       )}
     </div>
-  );
   );
 }

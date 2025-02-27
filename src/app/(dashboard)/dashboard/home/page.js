@@ -39,15 +39,7 @@ export default function DashboardHomePage() {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:3000/api/home/${userId}`);
-        console.log(res.data);
-        setHabits(res.data.habits);
-        setUpcomingHabit(res.data.upcomingHabits);
-        setTotalHabit(res.data.totalHabits);
-        setFailedHabit(res.data.failedHabits);
-        setCompletedHabit(res.data.completedHabits);
-        setOngoingHabit(res.data.onGoingHabits);
-        const res = await axios.get(`http://localhost:3000/api/home/${userId}`);
+        const res = await axios.get(`/api/home/${userId}`);
         console.log(res.data);
         setHabits(res.data.habits);
         setUpcomingHabit(res.data.upcomingHabits);
@@ -70,9 +62,6 @@ export default function DashboardHomePage() {
     const d = new Date(date);
     return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   };
-    const d = new Date(date);
-    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-  };
 
   // Determine the habits to display for the current page
   const indexOfLastHabit = page * habitsPerPage;
@@ -84,7 +73,7 @@ export default function DashboardHomePage() {
   }
 
   return (
-    <div className="w-[90%] h-auto flex flex-col justify-start items-center gap-12">
+    <div>
       {/* Card Section */}
       <div className="flex justify-around mb-3 r-0">
         <div className="bg-white rounded-[20px] p-6 flex justify-start items-center space-x-6 shadow-lg">
@@ -95,13 +84,12 @@ export default function DashboardHomePage() {
                 <h2 className="text-black text-xl font-semibold font-['Montserrat']">
                   Welcome back, {session?.user?.username} !
                 </h2>
-                <div>
-                  <p className="text-black font-montserrat opacity-80 text-[15px] font-[500] tracking-wide">
-                    Let&apos;s get started on building great habits today!
-                  </p>
-                  <p> Track your habits and see your progress here.</p>
-                </div>
-              </div>
+                <p className="text-black font-['Montserrat'] mt-2">
+                  Let's get started on building great habits today!
+                  <br />
+                  Track your habits and see your progress here.
+                </p>
+              </>
             ) : (
               <>
                 <h2 className="text-black text-xl font-semibold font-['Montserrat']">
@@ -116,7 +104,7 @@ export default function DashboardHomePage() {
                   <br />
                   Check your total habit progress in your dashboard.
                 </p>
-              </div>
+              </>
             )}
           </div>
 
@@ -137,7 +125,7 @@ export default function DashboardHomePage() {
             <div className="text-black text-xl font-medium font-['Jost'] text-center">
               Upcoming Habit
             </div>
-            <div className="text-black text-[18px] font-[600] font-jost tracking-wide opacity-80">
+            <div className="text-black text-[26px] font-medium font-['Jost']">
               {upcomingHabit}
             </div>
           </div>
@@ -145,7 +133,7 @@ export default function DashboardHomePage() {
             <div className="text-black text-xl font-medium font-['Jost'] text-center">
               Total Habit
             </div>
-            <div className="text-black text-[18px] font-[600] font-jost tracking-wide opacity-80">
+            <div className="text-black text-[26px] font-medium font-['Jost']">
               {totalHabit}
             </div>
           </div>
@@ -232,7 +220,7 @@ export default function DashboardHomePage() {
       </div>
 
       {/* Pie Chart Section */}
-      <div className="w-full">
+      <div>
         {habits && habits.length > 0 ? (
           <Data
             totalHabits={totalHabit}
@@ -246,6 +234,5 @@ export default function DashboardHomePage() {
         )}
       </div>
     </div>
-  );
   );
 }

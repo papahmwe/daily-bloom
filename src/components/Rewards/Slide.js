@@ -14,9 +14,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { set } from "mongoose";
+import { toast } from "sonner";
 
-export function CarouselSize({ rewards }) {
+export function CarouselSize({ rewards, loading, setLoading }) {
   console.log("rewards", rewards);
   const [chunkedRewards, setChunkedRewards] = useState([]);
 
@@ -28,11 +28,11 @@ export function CarouselSize({ rewards }) {
         newChunks.push(rewards.slice(i, i + chunkSize));
       }
     }
-
     setChunkedRewards(newChunks);
   }, [rewards]);
 
   const handleRewardClaim = async (rewardId) => {
+    setLoading(true);
     try {
       const response = await axios.put(`/api/rewards/claim/${rewardId}`);
       // filter chunked rewards to remove claimed reward
@@ -40,7 +40,8 @@ export function CarouselSize({ rewards }) {
         chunk.filter((reward) => reward._id !== rewardId)
       );
       setChunkedRewards(updatedRewards);
-      alert("Reward claimed successfully");
+      toast.success("Reward claimed successfully");
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }

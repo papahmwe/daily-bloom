@@ -24,8 +24,19 @@ export default function RewardsMain() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [rewards, setRewards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Custom full-page loader component
+  function CustomLoader() {
+    return (
+      <div className="flex justify-center items-center h-full ">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#7C5CFC]"></div>
+      </div>
+    );
+  }
 
   useEffect(() => {
+    setLoading(true);
     const fetchUser = async () => {
       if (session) {
         const response = await axios.get(
@@ -44,10 +55,11 @@ export default function RewardsMain() {
 
     fetchRewards();
     fetchUser();
+    setLoading(false);
   }, [session]);
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <CustomLoader />;
   }
   return (
     <div className="flex flex-col gap-7">

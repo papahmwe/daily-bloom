@@ -13,7 +13,6 @@ import AssignHabitModal from "@/components/Habits_Management/AssignHabitModal";
 import Modal from "@/components/Habits_Management/Modal";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { set } from "mongoose";
 
 const defaultCategories = [
   "Education",
@@ -189,6 +188,20 @@ export default function HabitsPage() {
     });
   };
 
+  const calculateStatus = (habit) => {
+    const startDate = new Date(habit.startDate);
+    const endDate = new Date(habit.endDate);
+    const currentDate = new Date();
+
+    if (currentDate < startDate) {
+      return "Pending";
+    } else if (currentDate > endDate) {
+      return "Failed";
+    } else {
+      return "Ongoing";
+    }
+  };
+
   // Custom full-page loader component
   function CustomLoader() {
     return (
@@ -208,7 +221,7 @@ export default function HabitsPage() {
   }
 
   return (
-    <div className="font-jost">
+    <div className="font-jost pr-8">
       <div className="mb-6 flex justify-between items-center">
         <div className="relative">
           <input
@@ -286,29 +299,17 @@ export default function HabitsPage() {
                   key={index}
                   className="border-b border-gray-200 hover:bg-gray-50"
                 >
-                  <td className="px-6 py-4 text-sm">
-                    {startIndex + index + 1}
-                  </td>
-                  <td className="px-6 py-4 text-sm">{habit.name}</td>
-                  <td className="px-6 py-4 text-sm">
-                    {formatDate(habit.startDate)}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    {formatDate(habit.endDate)}
-                  </td>
-                  <td className="px-6 py-4 text-sm">{habit.category}</td>
-                  <td className="px-6 py-4 text-sm">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs ${
-                        habit.status === "completed"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}
-                    >
-                      {habit.status}
+                  <td className="px-6 py-4 ">{startIndex + index + 1}</td>
+                  <td className="px-6 py-4 ">{habit.name}</td>
+                  <td className="px-6 py-4 ">{formatDate(habit.startDate)}</td>
+                  <td className="px-6 py-4 ">{formatDate(habit.endDate)}</td>
+                  <td className="px-6 py-4 ">{habit.category}</td>
+                  <td className="px-6 py-4 ">
+                    <span className={`px-2 py-1 rounded-full`}>
+                      {calculateStatus(habit)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm">
+                  <td className="px-6 py-4 ">
                     <div className="flex space-x-2">
                       <button
                         onClick={() => handleEdit(habit)}

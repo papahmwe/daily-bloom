@@ -8,6 +8,7 @@ import Popup from "../Rewards/Popup";
 import { Toaster } from "sonner";
 
 import axios from "axios";
+import Link from "next/link";
 
 const pageTitles = {
   "/dashboard": "Overview",
@@ -16,6 +17,7 @@ const pageTitles = {
   "/dashboard/habitmanagement": "Habit Management",
   "/dashboard/tracking": "Tracking",
   "/dashboard/rewards": "Rewards",
+  "/dashboard/profile": "Profile Setting",
 };
 
 // Function to handle dynamic page titles
@@ -83,7 +85,10 @@ export default function Navbar() {
 
       {pathname !== "/dashboard/rewards" && (
         <div className="flex justify-end items-center gap-6 ">
-          <div className="w-auto h-[67px] flex justify-between items-center gap-6">
+          <Link
+            href={"/dashboard/profile"}
+            className="w-auto h-[67px] flex justify-between items-center gap-6"
+          >
             <Image
               src="/assets/dashboard_home/Profile_Img.png"
               alt="Profile_Image"
@@ -100,7 +105,7 @@ export default function Navbar() {
                 User Account
               </h3>
             </div>
-          </div>
+          </Link>
 
           {/* Notification */}
           <div

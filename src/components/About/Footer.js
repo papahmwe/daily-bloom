@@ -49,7 +49,7 @@ export default function Footer() {
                 </div>
               </div>
               {/* text */}
-              <h3 className="w-[469px] h-[201px] font-jost font-[400] text-[26px] text-[#F5F5F5] leading-[37.57px] text-center">
+              <h3 className="w-[469px] h-[201px] font-jost font-[400] text-[20px] text-[#F5F5F5] leading-[37.57px] text-center tracking-wide">
                 Our habit tracker is designed to help you build and maintain
                 positive routines, supporting your personal goals with a
                 balanced and sustainable approach to productivity and
@@ -59,8 +59,8 @@ export default function Footer() {
           </div>
 
           {/* second */}
-          <div className="w-[189px] h-[281px] flex flex-col justify-start gap-[24px]">
-            <h1 className="w-[189px] h-[29px] font-montserrat font-[700] text-[24px] text-[#F5F5F5] leading-[29.26px] ">
+          <div className="w-[200px] h-[281px] flex flex-col justify-start gap-[24px]">
+            <h1 className="w-[200px] h-[29px] font-montserrat font-[600] text-[24px] text-[#F5F5F5] leading-[29.26px] tracking-wide">
               Quick Use Link
             </h1>
             <div className="w-[151px] h-[228px] ">
@@ -68,7 +68,7 @@ export default function Footer() {
                 {footerItems.map((item, index) => (
                   <li
                     key={index}
-                    className="hover:text-mainPrimary list-none font-jost font-[500] text-[18px] text-[#F5F5F5]  leading-[26.01px] uppercase cursor-pointer duration-700 transition-all"
+                    className="hover:text-mainPrimary list-none font-jost font-[400] text-[16px] text-[#F5F5F5]  leading-[26.01px] uppercase cursor-pointer duration-700 transition-all tracking-wide"
                   >
                     {item.name}
                   </li>
@@ -82,11 +82,11 @@ export default function Footer() {
             <div className="flex flex-col gap-[50px]">
               <div className="flex flex-col gap-[24px]">
                 {/* header */}
-                <h1 className="w-[189px] h-[29px] font-montserrat font-[700] text-[24px] text-[#F5F5F5] leading-[29.26px] ">
+                <h1 className="w-[189px] h-[29px] font-montserrat font-[600] text-[24px] text-[#F5F5F5] leading-[29.26px] tracking-wide">
                   Contact
                 </h1>
                 {/* list */}
-                <ul className=" list-none font-jost font-[400] text-[18px] text-[#F5F5F5] leading-[26.01px] uppercase flex flex-col gap-[12px]">
+                <ul className=" list-none font-jost font-[400] text-[16px] text-[#F5F5F5] leading-[26.01px] uppercase flex flex-col gap-[12px] tracking-wide">
                   <li>2715 Ash Dr. San Jose, South Dakota 83475</li>
                   <li>Email : felicia.reid@example.com</li>
                   <li>Phone : (201) 555-0124</li>
@@ -105,7 +105,7 @@ export default function Footer() {
                       width={40}
                       height={40}
                     />
-                    <h3 className="h-[26px] font-jost font-[400] text-[18px] text-[#F5F5F5] leading-[26.01px] text-center">
+                    <h3 className="h-[26px] font-jost font-[400] text-[16px] text-[#F5F5F5] leading-[26.01px] text-center tracking-wide cursor-pointer">
                       {item.text}
                     </h3>
                   </div>

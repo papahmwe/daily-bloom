@@ -4,6 +4,8 @@ import * as React from "react";
 import Image from "next/image";
 
 import { useState, useEffect } from "react";
+
+import { toast } from "sonner";
 import axios from "axios";
 
 import { Card, CardContent } from "@/components/Rewards/Card";

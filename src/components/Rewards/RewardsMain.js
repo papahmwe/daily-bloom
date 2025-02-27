@@ -1,5 +1,7 @@
 "use client";
 
+import { toast } from "sonner";
+
 import Image from "next/image";
 import { CarouselSize } from "./Slide";
 
@@ -58,8 +60,8 @@ export default function RewardsMain() {
     setLoading(false);
   }, [session]);
 
-  if (loading) {
-    return <CustomLoader />;
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
   return (
     <div className="flex flex-col gap-7">

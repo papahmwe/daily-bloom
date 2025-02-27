@@ -99,7 +99,7 @@ export default function Data({ data }) {
             return (
               <div
                 key={index}
-                className={` w-[48%] h-[290px] flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
+                className={` w-[48%] h-full flex justify-between items-center bg-mainLight hover:bg-mainPrimary transition-all duration-700 cursor-pointer p-7
                   ${
                     index === 1 || index === 3 || index % 2 === 1
                       ? "flex-row-reverse items-end"

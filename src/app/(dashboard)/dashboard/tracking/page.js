@@ -159,7 +159,7 @@ export default function TrackingPage() {
   }
 
   return (
-    <div className="p-6 font-jost">
+    <div className="font-jost pr-8">
       <Toaster position="top-center" />
       <div className="flex items-center justify-between mb-6">
         <div className="flex space-x-8">
@@ -311,10 +311,11 @@ export default function TrackingPage() {
               {currentHabits.map((habit, index) => {
                 const progress = calculateProgress(habit);
                 return (
-                  <tr key={index} className="border-b">
+                  <tr key={index} className="border-b ">
                     <td className="px-6 py-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm">{progress.percentage}%</span>
+                      <div className="flex items-center justify-center gap-2">
+                        <span>{progress.percentage}%</span>
+                        <div className="w-3 h-3  rounded-full border border-black"></div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -323,7 +324,7 @@ export default function TrackingPage() {
                           setSelectedHabit(habit);
                           setShowCalendar(true);
                         }}
-                        className="flex items-center space-x-2 text-sm text-black"
+                        className="flex items-center space-x-2  text-black"
                       >
                         <span>
                           {new Date(habit.startDate).toLocaleDateString()} -{" "}
@@ -338,7 +339,7 @@ export default function TrackingPage() {
                           type="checkbox"
                           className="rounded border-gray-300"
                         />
-                        <span className="text-sm">{habit.name}</span>
+                        <span>{habit.name}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -347,24 +348,13 @@ export default function TrackingPage() {
                           type="checkbox"
                           className="rounded border-gray-300"
                         />
-                        <span className="text-sm">{habit.category}</span>
+                        <span>{habit.category}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          habit.status === "completed"
-                            ? "bg-green-100 text-green-800"
-                            : habit.status === "ongoing"
-                            ? "bg-blue-100 text-blue-800"
-                            : habit.status === "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : habit.status === "failed"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {habit.status}
+                      <span>
+                        {habit.status.charAt(0).toUpperCase() +
+                          habit.status.slice(1)}
                       </span>
                     </td>
                   </tr>

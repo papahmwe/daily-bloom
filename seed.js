@@ -165,7 +165,9 @@ const sampleChallenges = [
   {
     name: "Morning Yoga Challenge",
     duration: 30,
-    time_of_day: "Morning",
+    time: "08:00",
+    time_period: "AM",
+    notification: true,
     date_to_do: new Date("2025-03-01"),
     user: userId,
     challenge_img:
@@ -177,7 +179,9 @@ const sampleChallenges = [
   {
     name: "Afternoon Run Challenge",
     duration: 45,
-    time_of_day: "Afternoon",
+    time: "15:00",
+    time_period: "PM",
+    notification: true,
     date_to_do: new Date("2025-03-02"),
     user: userId,
     challenge_img:
@@ -189,7 +193,9 @@ const sampleChallenges = [
   {
     name: "Evening Meditation Challenge",
     duration: 20,
-    time_of_day: "Evening",
+    time: "20:00",
+    time_period: "PM",
+    notification: true,
     date_to_do: new Date("2025-03-03"),
     user: userId,
     challenge_img:
@@ -201,7 +207,9 @@ const sampleChallenges = [
   {
     name: "Morning Walk Challenge",
     duration: 60,
-    time_of_day: "Morning",
+    time: "06:00",
+    time_period: "AM",
+    notification: true,
     date_to_do: new Date("2025-03-04"),
     user: userId,
     challenge_img:
@@ -213,7 +221,9 @@ const sampleChallenges = [
   {
     name: "Afternoon HIIT Challenge",
     duration: 30,
-    time_of_day: "Afternoon",
+    time: "15:00",
+    time_period: "PM",
+    notification: true,
     date_to_do: new Date("2025-03-05"),
     user: userId,
     challenge_img:
@@ -225,7 +235,9 @@ const sampleChallenges = [
   {
     name: "Evening Stretch Challenge",
     duration: 15,
-    time_of_day: "Evening",
+    time: "20:00",
+    time_period: "PM",
+    notification: true,
     date_to_do: new Date("2025-03-06"),
     user: userId,
     challenge_img:
@@ -237,7 +249,9 @@ const sampleChallenges = [
   {
     name: "Morning Strength Challenge",
     duration: 40,
-    time_of_day: "Morning",
+    time: "08:00",
+    time_period: "AM",
+    notification: true,
     date_to_do: new Date("2025-03-07"),
     user: userId,
     challenge_img:
@@ -249,7 +263,9 @@ const sampleChallenges = [
   {
     name: "Afternoon Dance Challenge",
     duration: 50,
-    time_of_day: "Afternoon",
+    time: "15:00",
+    time_period: "PM",
+    notification: true,
     date_to_do: new Date("2025-03-08"),
     user: userId,
     challenge_img:
@@ -261,7 +277,9 @@ const sampleChallenges = [
   {
     name: "Evening Cycling Challenge",
     duration: 55,
-    time_of_day: "Evening",
+    time: "20:00",
+    time_period: "PM",
+    notification: true,
     date_to_do: new Date("2025-03-09"),
     user: userId,
     challenge_img:
@@ -273,7 +291,9 @@ const sampleChallenges = [
   {
     name: "Morning Pilates Challenge",
     duration: 35,
-    time_of_day: "Morning",
+    time: "08:00",
+    time_period: "AM",
+    notification: true,
     date_to_do: new Date("2025-03-10"),
     user: userId,
     challenge_img:

@@ -1,22 +1,13 @@
 "use client";
 
-import axios from "axios";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 
 import Data from "@/components/Dashboard_Home/Data";
 import WithoutData from "@/components/Dashboard_Home/HomeWithoutDataChart";
-
-const data = [
-  "No.",
-  "Habit Name",
-  "Start Date",
-  "End Date",
-  "Category",
-  "Status",
-];
+import { set } from "mongoose";
 
 export default function DashboardHomePage() {
   // Habit Section
@@ -26,24 +17,29 @@ export default function DashboardHomePage() {
   const [completedHabit, setCompletedHabit] = useState(0);
   const [ongoingHabit, setOngoingHabit] = useState(0);
   const [completedPercentage, setCompletedPercentage] = useState(0);
-
-  // Recent Habits Section
   const [habits, setHabits] = useState([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
   const habitsPerPage = 3;
   const totalPages = Math.ceil(habits.length / habitsPerPage);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const userId = session?.user.id;
 
-  if (!session) {
-    redirect("/");
+  function CustomLoader() {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#7C5CFC]"></div>
+      </div>
+    );
   }
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:3000/api/home/${userId}`);
+        const res = await axios.get(`/api/home/${userId}`);
         console.log(res.data);
         setHabits(res.data.habits);
         setUpcomingHabit(res.data.upcomingHabits);
@@ -53,10 +49,14 @@ export default function DashboardHomePage() {
         setOngoingHabit(res.data.onGoingHabits);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchDashboardData();
-  }, [userId]);
+    if (session) {
+      fetchDashboardData();
+    }
+  }, [session]);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -68,66 +68,72 @@ export default function DashboardHomePage() {
   const indexOfFirstHabit = indexOfLastHabit - habitsPerPage;
   const currentHabits = habits.slice(indexOfFirstHabit, indexOfLastHabit);
 
+  if (status === "loading" || loading) {
+    return <CustomLoader />;
+  }
+
   return (
-    <div className="w-[90%] h-auto flex flex-col justify-start items-center gap-12">
+    <div>
       {/* Card Section */}
-      <div className="flex gap-7 w-full">
-        <div className="bg-backgroundPrimary rounded-[10px] flex justify-center items-center shadow-inner w-[60%] h-40">
+      <div className="flex justify-around mb-3 r-0">
+        <div className="bg-white rounded-[20px] p-6 flex justify-start items-center space-x-6 shadow-lg">
           {/* Left: Text Content */}
-          <div className="flex justify-start items-center gap-5">
+          <div className="flex flex-col mr-20">
             {completedPercentage === 0 || !completedPercentage ? (
-              <div>
-                <h2 className="text-black text-[24px] font-[600] font-montserrat tracking-wide mb-3">
-                  Welcome {session.user.username}
+              <>
+                <h2 className="text-black text-xl font-semibold font-['Montserrat']">
+                  Welcome back, {session?.user?.username} !
                 </h2>
-                <div>
-                  <p className="text-black font-montserrat opacity-80 text-[15px] font-[500] tracking-wide">
-                    Let&apos;s get started on building great habits today!
-                  </p>
-                  <p> Track your habits and see your progress here.</p>
-                </div>
-              </div>
+                <p className="text-black font-['Montserrat'] mt-2">
+                  Let's get started on building great habits today!
+                  <br />
+                  Track your habits and see your progress here.
+                </p>
+              </>
             ) : (
-              <div>
-                <h2 className="text-black font-montserrat opacity-80 text-[15px] font-[500]">
-                  Congratulations, {session.user.username}!
+              <>
+                <h2 className="text-black text-xl font-semibold font-['Montserrat']">
+                  Congratulations, {session?.user?.username} !
                 </h2>
-                <p className="text-black font-montserrat opacity-80 text-[15px] font-[500]">
-                  You have done
-                  <span className="">{completedPercentage} more habits</span>
+                <p className="text-black font-['Montserrat'] mt-2">
+                  You have done{" "}
+                  <span className="font-semibold">
+                    {completedPercentage} more habits
+                  </span>{" "}
                   today.
                   <br />
                   Check your total habit progress in your dashboard.
                 </p>
-              </div>
+              </>
             )}
-            {/* Right: Image */}
-            <div>
-              <Image
-                src="/assets/dashboard images/man.png"
-                alt="Man"
-                width={120}
-                height={120}
-                className="rounded-full object-cover"
-              />
-            </div>
+          </div>
+
+          {/* Right: Image */}
+          <div className="flex-shrink ml-20">
+            <Image
+              src="/assets/dashboard images/man.png"
+              alt="Man"
+              width={150}
+              height={150}
+              className="rounded-full"
+            />
           </div>
         </div>
 
-        <div className=" flex justify-end w-[40%] gap-5">
-          <div className="bg-mainLight hover:bg-mainPrimary duration-700 transition-all rounded-[10px] w-[50%] h-40 flex flex-col justify-center items-center space-y-12">
-            <div className="text-black text-[18px] font-[600] font-jost tracking-wide opacity-80">
+        <div className="px-10 flex justify-end">
+          <div className="bg-[#b0a7f8] rounded-[20px] px-[12px] py-[22px] gap-[30px] inline-flex flex-col justify-start items-center h-[160px] mr-10">
+            <div className="text-black text-xl font-medium font-['Jost'] text-center">
               Upcoming Habit
             </div>
-            <div className="text-black text-[18px] font-[600] font-jost tracking-wide opacity-80">
+            <div className="text-black text-[26px] font-medium font-['Jost']">
               {upcomingHabit}
             </div>
           </div>
-          <div className="bg-mainLight hover:bg-mainPrimary duration-700 transition-all rounded-[10px] w-[50%] h-40 flex flex-col justify-center items-center space-y-12 ">
-            <div className="text-black text-[18px] font-[600] font-jost tracking-wide opacity-80">
+          <div className="bg-[#b0a7f8] rounded-[20px] px-[22px] py-[22px] gap-[30px] inline-flex flex-col justify-start items-center h-[160px]">
+            <div className="text-black text-xl font-medium font-['Jost'] text-center">
               Total Habit
             </div>
-            <div className="text-black text-[18px] font-[600] font-jost tracking-wide opacity-80">
+            <div className="text-black text-[26px] font-medium font-['Jost']">
               {totalHabit}
             </div>
           </div>
@@ -135,80 +141,86 @@ export default function DashboardHomePage() {
       </div>
 
       {/* Recent Habits Section */}
-      <div className="w-full ">
-        <h2 className="text-black text-[24px] font-[600] font-jost opacity-80 tracking-wide mb-5">
-          Recent Habits
-        </h2>
-        <div className="bg-backgroundPrimary ">
-          <table className="w-full text-center border-collapse">
-            <thead>
-              <tr className="bg-mainLight ">
-                {data.map((data, index) => {
-                  return (
-                    <th
-                      key={index}
-                      className="text-black text-[18px] font-[500] font-jost opacity-80 tracking-wide p-3"
-                    >
-                      {data}
-                    </th>
-                  );
-                })}
+      <h2 className="text-xl font-bold mt-10 mb-4 font-[Jost]">
+        Recent Habits
+      </h2>
+      <div className="bg-white mr-10">
+        <table className="w-full text-center border-collapse mr-0">
+          <thead>
+            <tr className="bg-[#b0a7f8]">
+              <th className="p-3 text-lg font-bold font-[Jost] text-black">
+                No.
+              </th>
+              <th className="p-3 text-lg font-bold font-[Jost] text-black">
+                Habit Name
+              </th>
+              <th className="p-3 text-lg font-bold font-[Jost] text-black">
+                Start Date
+              </th>
+              <th className="p-3 text-lg font-bold font-[Jost] text-black">
+                End Date
+              </th>
+              <th className="p-3 text-lg font-bold font-[Jost] text-black">
+                Category
+              </th>
+              <th className="p-3 text-lg font-bold font-[Jost] text-black">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentHabits.map((habit, index) => (
+              <tr key={habit.id}>
+                <td className="p-3 text-black font-[Jost] font-normal">
+                  {index + 1 + indexOfFirstHabit}
+                </td>
+                <td className="p-3 text-black font-[Jost] font-normal">
+                  {habit.name}
+                </td>
+                <td className="p-3 text-black font-[Jost] font-normal">
+                  {formatDate(habit.startDate)}
+                </td>
+                <td className="p-3 text-black font-[Jost] font-normal">
+                  {formatDate(habit.endDate)}
+                </td>
+                <td className="p-3 text-black font-[Jost] font-normal">
+                  {habit.category}
+                </td>
+                <td className="p-3 text-black font-[Jost] font-normal">
+                  {habit.status}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {currentHabits.map((habit, index) => (
-                <tr key={habit.id}>
-                  <td className="p-3 text-black text-[16px] font-[400] font-jost opacity-80 tracking-wide">
-                    {index + 1 + indexOfFirstHabit}
-                  </td>
-                  <td className="p-3 text-black text-[16px] font-[400] font-jost opacity-80 tracking-wide">
-                    {habit.name}
-                  </td>
-                  <td className="p-3 text-black text-[16px] font-[400] font-jost opacity-80 tracking-wide">
-                    {formatDate(habit.startDate)}
-                  </td>
-                  <td className="p-3 text-black text-[16px] font-[400] font-jost opacity-80 tracking-wide">
-                    {formatDate(habit.endDate)}
-                  </td>
-                  <td className="p-3 text-black text-[16px] font-[400] font-jost opacity-80 tracking-wide">
-                    {habit.category}
-                  </td>
-                  <td className="p-3 text-black text-[16px] font-[400] font-jost opacity-80 tracking-wide">
-                    {habit.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* Pagination */}
-          <div className="flex justify-between mt-5">
-            <p className=" text-black text-[16px] font-[500] font-jost opacity-80 tracking-wide ml-5">
-              Showing {currentHabits.length} of {habits.length} Habits
-            </p>
-            <div className="flex space-x-4 mr-5 mb-5">
-              {page > 1 && (
-                <button
-                  onClick={() => setPage(page - 1)}
-                  className="px-8 py-2 bg-mainPrimary hover:bg-mainSecondary duration-700 transition-all rounded-[10px] text-backgroundPrimary text-[16px] font-[500] font-jost text-opacity-80 tracking-wide"
-                >
-                  Previous
-                </button>
-              )}
-              {page < totalPages && (
-                <button
-                  onClick={() => setPage(page + 1)}
-                  className="px-8 py-2 bg-mainPrimary hover:bg-mainSecondary duration-700 transition-all rounded-[10px] text-backgroundPrimary text-[16px] font-[500] font-jost text-opacity-80 tracking-wide"
-                >
-                  Next
-                </button>
-              )}
-            </div>
+            ))}
+          </tbody>
+        </table>
+        {/* Pagination */}
+        <div className="flex justify-between mt-5">
+          <p className="font-[Jost] ml-5">
+            Showing {currentHabits.length} of {habits.length} Habits
+          </p>
+          <div className="flex space-x-4 mr-5 mb-5">
+            {page > 1 && (
+              <button
+                onClick={() => setPage(page - 1)}
+                className="px-10 py-2 bg-[#6859ff] rounded-[10px] text-white"
+              >
+                Previous
+              </button>
+            )}
+            {page < totalPages && (
+              <button
+                onClick={() => setPage(page + 1)}
+                className="px-10 py-2 bg-[#6859ff] rounded-[10px] text-white"
+              >
+                Next
+              </button>
+            )}
           </div>
         </div>
       </div>
 
       {/* Pie Chart Section */}
-      <div className="w-full">
+      <div>
         {habits && habits.length > 0 ? (
           <Data
             totalHabits={totalHabit}

@@ -20,48 +20,50 @@ const pageTitles = {
   "/dashboard/profile": "Profile Setting",
 };
 
-// Function to handle dynamic page titles
-const getPageTitle = (pathname) => {
-  if (pageTitles[pathname]) {
-    return pageTitles[pathname];
-  }
-
-  // Handle dynamic challenge pages
-  if (pathname.startsWith("/dashboard/challenge/")) {
-    return "Challenges";
-  }
-
-  return "Dashboard"; // Default title
-};
-
 export default function Navbar() {
   const { data: session } = useSession();
+  const userId = session?.user.id;
 
   const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (session) {
+        const response = await axios.get(
+          `/api/users/profile/${session.user.id}`
+        );
+        setUser(response.data);
+        console.log(response.data);
+      }
+    };
+    const fetchNotifications = async () => {
+      if (session) {
+        try {
+          const res = await axios.get(
+            `http://localhost:3000/api/notifications/${userId}`
+          );
+          console.log(res.data);
+          // setMessages(res.data.notifications);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    fetchUser();
+    fetchNotifications();
+  }, [session]);
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const pathname = usePathname();
-  const title = getPageTitle(pathname); // Use the new function
+  const title = pageTitles[pathname] || "Dashboard";
 
   const getTime = (date) => {
     const d = new Date(date);
     return `${d.getHours()}:${d.getMinutes()}`;
   };
-
-  useEffect(() => {
-    const userId = session?.user.id;
-
-    if (userId) {
-      axios
-        .get(`http://localhost:3000/api/notifications/${userId}`)
-        .then((res) => {
-          setMessages(res.data.notifications);
-        })
-        .catch(console.log);
-    }
-  }, [session]);
 
   return (
     <div className="w-[calc(100vw-333px)] max-w-full h-[96px] flex justify-between items-center bg-backgroundPrimary px-10 absolute left-0 top-0 z-[100] shadow-sm ">
@@ -90,16 +92,16 @@ export default function Navbar() {
             className="w-auto h-[67px] flex justify-between items-center gap-6"
           >
             <Image
-              src="/assets/dashboard_home/Profile_Img.png"
+              src={user?.profilePicture || "/assets/rewards/user.svg"}
               alt="Profile_Image"
               width={30}
               height={30}
-              className="object-cover cursor-pointer"
+              className="object-contain cursor-pointer rounded-full"
             />
 
             <div className="w-auto h-[67px] flex flex-col justify-center items-start">
               <h3 className="font-jost font-[500] text-[16px] text-black leading-[21.68px]">
-                Henery
+                {user?.username}
               </h3>
               <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
                 User Account

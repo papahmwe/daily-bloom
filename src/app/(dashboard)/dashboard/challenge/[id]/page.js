@@ -11,7 +11,7 @@ export default function Timer() {
   const [isRunning, setIsRunning] = useState(false);
 
   const searchParams = useSearchParams();
-  const time = searchParams.get("time");
+  const time = searchParams.get("duration");
   const Title = searchParams.get("text");
 
   const getInitialTimeInSeconds = (timeString) => {
@@ -58,7 +58,7 @@ export default function Timer() {
             height={20}
           />
         </Link>
-        <h1 className="font-montserrat font-[500] text-[24px] text-[#000000] opacity-80 tracking-wide ">
+        <h1 className="font-montserrat font-[500] text-[24px] text-[#000000] opacity-80 tracking-wide capitalize">
           {Title}
         </h1>
       </div>

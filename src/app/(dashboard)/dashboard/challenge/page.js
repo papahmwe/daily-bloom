@@ -11,61 +11,60 @@ const ChallengesIdeas = [
   {
     id: 1,
     name: "Yoga",
-    time: "2 mins",
+    duration: "20 mins",
     image: "/assets/challenge_images/Yoga.svg",
   },
   {
     id: 2,
     name: "Read Books",
-    time: "40 mins",
+    duration: "40 mins",
     image: "/assets/challenge_images/Reading-books.svg",
   },
   {
     id: 3,
     name: "Meditate ",
-    time: "20 mins",
+    duration: "20 mins",
     image: "/assets/challenge_images/Meditate.svg",
   },
   {
     id: 4,
     name: "Brainstorm ideas",
-    time: "15 mins",
+    duration: "15 mins",
     image: "/assets/challenge_images/Brainstorm-ideas.svg",
   },
   {
     id: 5,
     name: "Workout",
-    time: "30 mins",
+    duration: "30 mins",
     image: "/assets/challenge_images/Workout.svg",
   },
   {
     id: 6,
     name: "Cycling",
-    time: "45 mins",
+    duration: "45 mins",
     image: "/assets/challenge_images/Cycling.svg",
   },
   {
     id: 7,
     name: "Make To-do List",
-    time: "10 mins",
+    duration: "10 mins",
     image: "/assets/challenge_images/MakeTo-doList.svg",
   },
   {
     id: 8,
     name: "Devotional",
-    time: "50 mins",
+    duration: "50 mins",
     image: "/assets/challenge_images/Devotional.svg",
   },
   {
     id: 9,
     name: "Tidy Up",
-    time: "20 mins",
+    duration: "20 mins",
     image: "/assets/challenge_images/TidyUp.svg",
   },
 ];
 
 export default function Challenge() {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { data: session, status } = useSession();
   const [challenges, setChallenges] = useState([]);
@@ -78,11 +77,6 @@ export default function Challenge() {
     notification: false,
     user: session?.user?.id || "",
   });
-
-  // Url
-  // const fetchUrl =
-  //   "http://localhost:3000/api/challenges/67ab9f0c0f0b428730cd43f7";
-  // const createUrl = "http://localhost:3000/api/challenges/create";
 
   const fetchData = useCallback(async () => {
     try {
@@ -187,12 +181,16 @@ export default function Challenge() {
         {challenges.length > 0 ? (
           <div className="flex justify-start items-center flex-wrap gap-5">
             {challenges.map((challenge, index) => (
-              <div
+              <Link
+                href={{
+                  pathname: `/dashboard/challenge/${challenge.id}`,
+                  query: { duration: challenge.duration, text: challenge.name },
+                }}
                 key={index}
                 className="w-1/4 h-[240px] flex flex-col justify-center items-center bg-mainLight hover:bg-mainPrimary bg-opacity-50 hover:bg-opacity-60 transition-all ease-in-out duration-1000 cursor-pointer rounded-[10px] border border-mainSecondary p-3"
               >
                 <div className="flex justify-between items-center gap-5 w-full h-[45px]">
-                  <h3 className="text-[#000000] opacity-80 text-[15px] font-montserrat font-[600] tracking-wide ">
+                  <h3 className="text-[#000000] opacity-80 text-[15px] font-montserrat font-[600] tracking-wide capitalize">
                     {challenge.name}
                   </h3>
                   <button
@@ -212,7 +210,7 @@ export default function Challenge() {
                   alt={challenge.name}
                   width={80}
                   height={80}
-                  className=" w-[90px] h-[90px] mt-2 mb-2"
+                  className=" w-[90px] h-[90px] mt-2 mb-2 object-cover rounded-[10px]"
                 />
                 <div className="flex justify-between items-center gap-5 w-full h-[40px]">
                   <div className="flex justify-start items-center gap-2">
@@ -230,7 +228,7 @@ export default function Challenge() {
                     20 points
                   </h3>
                 </div>
-              </div>
+              </Link>
             ))}
             <div
               className="bg-mainLight hover:bg-mainPrimary bg-opacity-50 hover:bg-opacity-60 transition-all ease-in-out duration-1000 p-3 rounded-full cursor-pointer"
@@ -314,7 +312,7 @@ export default function Challenge() {
             <Link
               href={{
                 pathname: `/dashboard/challenge/${data.id}`,
-                query: { time: data.time, text: data.name },
+                query: { duration: data.duration, text: data.name },
               }}
               key={index}
               className="w-[300px] h-[220px] object-cover rounded-[10px] flex flex-col justify-between p-4 cursor-pointer transition-transform duration-700 ease-in-out hover:scale-105"
@@ -325,7 +323,7 @@ export default function Challenge() {
               }}
             >
               <div>
-                <h1 className="font-montserrat font-[500] text-[18px] text-backgroundPrimary leading-[32.91px]">
+                <h1 className="font-montserrat font-[500] text-[18px] tracking-wide text-backgroundPrimary leading-[32.91px]">
                   {data.name}
                 </h1>
                 <div className="flex justify-start items-center gap-2">
@@ -336,7 +334,7 @@ export default function Challenge() {
                     height={15}
                   />
                   <h3 className="text-backgroundPrimary text-[14px] font-montserrat font-[400] tracking-wide">
-                    {data.time}
+                    {data.duration}
                   </h3>
                 </div>
               </div>

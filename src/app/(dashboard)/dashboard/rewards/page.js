@@ -70,10 +70,11 @@ export default function RewardsMain() {
         <div className=" w-full h-[300px] flex flex-col justify-center items-center bg-opacity-80 bg-mainLight gap-5 rounded-[10px]">
           <div className="flex flex-col justify-center items-center ">
             <Image
-              src={user?.image || "/assets/rewards/user.svg"}
+              src={user?.profilePicture || "/assets/rewards/user.svg"}
               alt="User Image"
               width={70}
               height={70}
+              className="rounded-full"
             />
             <h1 className="font-montserrat font-[700] text-[28px] text-backgroundPrimary tracking-wide">
               {user?.username}

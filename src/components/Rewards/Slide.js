@@ -33,9 +33,8 @@ export function CarouselSize({ rewards, loading, setLoading }) {
     setLoading(true);
     try {
       const response = await axios.put(`/api/rewards/claim/${rewardId}`);
-      // filter chunked rewards to remove claimed reward
-      const updatedRewards = chunkedRewards.map((chunk) =>
-        chunk.filter((reward) => reward._id !== rewardId)
+      const updatedRewards = rewards.filter(
+        (reward) => reward._id !== response.data.challenge._id
       );
       setChunkedRewards(updatedRewards);
       toast.success("Reward claimed successfully");

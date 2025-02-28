@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Goals() {
   return (
-    <div>
+    <section id="Goals">
       {/* Goals Section */}
       <div className="w-full h-[743px] ">
         <div className="flex flex-col justify-center items-center gap-[20px] py-20">
@@ -22,6 +22,6 @@ export default function Goals() {
           </h3>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

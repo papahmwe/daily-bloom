@@ -1,10 +1,9 @@
-import mongoose from 'mongoose'
-import { markAssetError } from 'next/dist/client/route-loader'
+import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   message: {
@@ -13,7 +12,7 @@ const notificationSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['reminder', 'streak', 'completion'],
+    enum: ["reminder", "streak", "completion"],
     required: true,
   },
 
@@ -25,10 +24,10 @@ const notificationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-})
+});
 
 const Notification =
   mongoose.models.Notification ||
-  mongoose.model('Notification', notificationSchema)
+  mongoose.model("Notification", notificationSchema);
 
-export default Notification
+export default Notification;

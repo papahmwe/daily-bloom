@@ -80,6 +80,7 @@ export default function Challenge() {
   const [loading, setLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
+    setLoading(true);
     try {
       if (session?.user?.id) {
         const url = "http://localhost:3000/api/challenges/" + session.user.id;
@@ -94,6 +95,8 @@ export default function Challenge() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, [session]);
 

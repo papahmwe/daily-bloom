@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -26,12 +27,16 @@ export default function Hero() {
             be more productive.
           </h3>
           <div className="w-[591px] flex justify-end items-center gap-[22px] mt-5">
-            <button className="py-2 px-7 border-[2px] rounded-[10px] bg-mainPrimary text-[#F5F5F5] font-montserrat font-[500] text-[20px] leading-[28.04px] hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 tracking-wide">
-              Goals
-            </button>
-            <button className="py-2 px-7 border-[2px] border-mainPrimary rounded-[10px] text-mainPrimary font-montserrat font-[500] text-[20px] leading-[28.04px] hover:text-backgroundPrimary hover:bg-mainPrimary transition-all duration-700 tracking-wide">
-              Mission & Vision
-            </button>
+            <Link href={"#Goals"}>
+              <button className="py-2 px-7 border-[2px] rounded-[10px] bg-mainPrimary text-[#F5F5F5] font-montserrat font-[500] text-[20px] leading-[28.04px] hover:text-mainPrimary hover:bg-backgroundPrimary hover:border-mainPrimary transition-all duration-700 tracking-wide">
+                Goals
+              </button>
+            </Link>
+            <Link href={"#MissionVision"}>
+              <button className="py-2 px-7 border-[2px] border-mainPrimary rounded-[10px] text-mainPrimary font-montserrat font-[500] text-[20px] leading-[28.04px] hover:text-backgroundPrimary hover:bg-mainPrimary transition-all duration-700 tracking-wide">
+                Mission & Vision
+              </button>
+            </Link>
           </div>
         </div>
       </div>

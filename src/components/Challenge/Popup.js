@@ -91,11 +91,6 @@ export default function Popup({
                   className="cursor-pointer border border-mainPrimary font-montserrat font-[500] text-[16px] text-[#868686] outline-none rounded-[10px] p-3 w-full tracking-wide flex justify-between items-center"
                 >
                   <div className="w-[70%] text-start">
-                    {/* {selectedDates.length > 0
-                      ? selectedDates
-                          .map((date) => format(date, "EEE MMMM d, yyyy"))
-                          .join(", ")
-                      : "On these Days"} */}
                     {selectedDates
                       ? format(selectedDates, "MM/dd/yyyy")
                       : "On these days"}

@@ -1,12 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const footerItems = [
-  { id: 1, name: "Home", route: "" },
-  { id: 2, name: "About Us", route: "" },
-  { id: 3, name: "Contact Us", route: "" },
-  { id: 4, name: "Help", route: "" },
-  { id: 5, name: "Sing Up", route: "" },
-  { id: 6, name: "Login", route: "" },
+  { id: 1, name: "Home", route: "/" },
+  { id: 2, name: "About Us", route: "/about" },
+  { id: 3, name: "Contact Us", route: "/contact_us" },
+  { id: 5, name: "Sing Up", route: "/signup" },
+  { id: 6, name: "Login", route: "/login" },
 ];
 
 const data = [
@@ -66,12 +66,11 @@ export default function Footer() {
             <div className="w-[151px] h-[228px] ">
               <ul className="  flex flex-col gap-[10px]">
                 {footerItems.map((item, index) => (
-                  <li
-                    key={index}
-                    className="hover:text-mainPrimary list-none font-jost font-[400] text-[16px] text-[#F5F5F5]  leading-[26.01px] uppercase cursor-pointer duration-700 transition-all tracking-wide"
-                  >
-                    {item.name}
-                  </li>
+                  <Link key={index} href={item.route}>
+                    <li className="hover:text-mainPrimary list-none font-jost font-[500] text-[16px] text-[#F5F5F5]  leading-[26.01px] uppercase cursor-pointer duration-700 transition-all tracking-wide">
+                      {item.name}
+                    </li>
+                  </Link>
                 ))}
               </ul>
             </div>

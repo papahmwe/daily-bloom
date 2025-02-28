@@ -17,6 +17,7 @@ const pageTitles = {
   "/dashboard/habitmanagement": "Habit Management",
   "/dashboard/tracking": "Tracking",
   "/dashboard/rewards": "Rewards",
+  "/dashboard/profile": "Profile Setting",
 };
 
 export default function Navbar() {
@@ -39,11 +40,9 @@ export default function Navbar() {
     const fetchNotifications = async () => {
       if (session) {
         try {
-          const res = await axios.get(
-            `http://localhost:3000/api/notifications/${userId}`
-          );
+          const res = await axios.get(`/api/notifications/${userId}`);
           console.log(res.data);
-          // setMessages(res.data.notifications);
+          setMessages(res.data.notifications);
         } catch (error) {
           console.log(error);
         }
@@ -51,7 +50,7 @@ export default function Navbar() {
     };
     fetchUser();
     fetchNotifications();
-  }, [session]);
+  }, [session, userId]);
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -98,12 +97,12 @@ export default function Navbar() {
             </Link>
 
             <div className="w-auto h-[67px] flex flex-col justify-center items-start">
-              <h3 className="font-jost font-[500] text-[16px] text-black leading-[21.68px]">
+              <h3 className="font-jost font-[500] text-[18px] tracking-wide text-black leading-[21.68px]">
                 {user?.username}
               </h3>
-              <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
+              {/* <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
                 User Account
-              </h3>
+              </h3> */}
             </div>
           </div>
 
@@ -144,70 +143,61 @@ export default function Navbar() {
                 />
               </button>
             </div>
-            <div className="overflow-y-auto scrollbar-hide w-full max-h-[calc(100vh-96px)]">
+            <div className="overflow-y-auto scrollbar-hide w-full h-[calc(100vh-96px)]">
               {messages.map((message, index) => {
                 return (
-                  <div
-                    key={index}
-                    className={`flex justify-start items-start gap-3 border-b border-b-black border-opacity-10 px-10 py-5 ${
-                      message.read ? "bg-gray-200" : "bg-white"
+                  message.read === false && (
+                    <div
+                      key={index}
+                      className={`flex justify-start items-start gap-3 border-b border-b-black border-opacity-10 px-10 py-5 
+                       "bg-white"
                     }`}
-                  >
-                    <div className=" bg-mainLight rounded-full w-[6.5px] h-[6.5px] mt-2"></div>
-                    <div className="flex flex-col justify-start items-start w-10/12 gap-1">
-                      <p className="font-jost font-[400] text-[16px] text-black opacity-80 tracking-wide">
-                        {message.message}
-                      </p>
-                      <div className="flex justify-between items-center w-full">
-                        <p className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide ">
-                          {getTime(message.createdAt)}
+                    >
+                      <div className=" bg-mainLight rounded-full w-[6.5px] h-[6.5px] mt-2"></div>
+                      <div className="flex flex-col justify-start items-start w-10/12 gap-1">
+                        <p className="font-jost font-[400] text-[16px] text-black opacity-80 tracking-wide">
+                          {message.message}
                         </p>
-                        {/* mark as read button */}
-                        <button
-                          className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide hover:text-mainPrimary transition-all duration-700"
-                          onClick={async () => {
-                            try {
-                              const res = await axios.put(
-                                `http://localhost:3000/api/notifications/update/${message._id}`
-                              );
-                              if (res.status === 200) {
-                                setMessages((prev) => {
-                                  const newMessages = prev.map((msg) => {
-                                    if (msg._id === message._id) {
-                                      return { ...msg, read: true };
-                                    }
-                                    return msg;
+                        <div className="flex justify-between items-center w-full">
+                          <p className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide ">
+                            {getTime(message.createdAt)}
+                          </p>
+                          {/* mark as read button */}
+                          <button
+                            className="font-jost font-[400] text-[14px] text-black opacity-50 tracking-wide hover:text-mainPrimary transition-all duration-700"
+                            onClick={async () => {
+                              try {
+                                const res = await axios.put(
+                                  `/api/notifications/update/${message._id}`
+                                );
+                                if (res.status === 200) {
+                                  setMessages((prev) => {
+                                    const newMessages = prev.map((msg) => {
+                                      if (msg._id === message._id) {
+                                        return { ...msg, read: true };
+                                      }
+                                      return msg;
+                                    });
+                                    return newMessages;
                                   });
-                                  return newMessages;
-                                });
-                                Toaster.success("Notification marked as read");
+                                  Toaster.success(
+                                    "Notification marked as read"
+                                  );
+                                }
+                                console.log(res.data);
+                              } catch (error) {
+                                console.log(error);
                               }
-                              console.log(res.data);
-                            } catch (error) {
-                              console.log(error);
-                            }
-                          }}
-                        >
-                          <div className="flex justify-between items-center">
-                            <p>Mark as read</p>
-                            {message.read && (
-                              // checkmark icon from lucide icons
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width="16"
-                                height="16"
-                                className="text-mainPrimary"
-                                fill="currentColor"
-                              >
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                              </svg>
-                            )}
-                          </div>
-                        </button>
+                            }}
+                          >
+                            <div className="flex justify-between items-center">
+                              <p>Mark as read</p>
+                            </div>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )
                 );
               })}
             </div>

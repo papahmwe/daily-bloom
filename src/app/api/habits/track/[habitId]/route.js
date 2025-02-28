@@ -21,16 +21,29 @@ export async function PUT(request, { params }) {
     console.log("completedDates", completedDates);
     console.log("totalDays", totalDays);
 
+    const user = await User.findById(userId);
+
+    // Check if the user has already tracked the habit today
+    const lastTrackingDate = user.lastTrackingDate || new Date(0);
+    const today = new Date();
+    if (
+      today.getDate() - lastTrackingDate.getDate() == 1 &&
+      today.getMonth() == lastTrackingDate.getMonth() &&
+      today.getFullYear() == lastTrackingDate.getFullYear()
+    ) {
+      // update streak
+      user.streak += 1;
+    } else {
+      // reset streak
+      user.streak = 1;
+      user.lastTrackingDate = today;
+    }
+
     if (completedDates.length == totalDays) {
       habitStatus = "completed";
       pointsAwarded = 50; // Points awarded for completing habit
-
-      // Update user's points
-      await User.findByIdAndUpdate(
-        userId,
-        { $inc: { points: pointsAwarded } },
-        { new: true }
-      );
+      user.points += pointsAwarded;
+      await user.save();
     } else if (completedDates.length > 0) {
       habitStatus = "ongoing";
     } else {

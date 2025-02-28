@@ -220,7 +220,7 @@ export default function DashboardHomePage() {
       </div>
 
       {/* Pie Chart Section */}
-      <div>
+      <div className="mt-10">
         {habits && habits.length > 0 ? (
           <Data
             totalHabits={totalHabit}

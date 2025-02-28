@@ -5,7 +5,6 @@ import { CarouselSize } from "@/components/Rewards/Slide";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { set } from "mongoose";
 
 const LoginRewards = [
   {

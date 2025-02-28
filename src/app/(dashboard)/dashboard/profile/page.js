@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { ChangePasswordDialog } from "@/components/Profile/ChangePasswordBox";
 import { DeleteAccountDialog } from "@/components/Profile/DeleteAccount";
-import { AchievementDialog } from "@/components/Profile/Achievement";
 
 import {
   Pencil,
@@ -30,42 +29,40 @@ const convertToBase64Client = (file) => {
 export default function UserProfile() {
   const { data: session, update: updateSession } = useSession();
   const userId = session?.user.id;
-  // Dialog states
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen_delete, setIsOpen_delete] = useState(false);
   const [isOpen_notification, setIsOpen_notification] = useState(true);
-
-  // Edit mode states
   const [isEditingPersonal, setIsEditingPersonal] = useState(false);
   const [isEditingHeader, setIsEditingHeader] = useState(false);
-
-  // Form data state
+  const [selectedImage, setSelectedImage] = useState(null);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     gender: "",
     points: 0,
   });
-
-  // Header form data state
   const [headerData, setHeaderData] = useState({
     username: "",
     profileImage: null,
   });
-
-  // Loading state for API calls
   const [isLoading, setIsLoading] = useState(false);
   const [isHeaderLoading, setIsHeaderLoading] = useState(false);
 
   // Success/error message state
   const [statusMessage, setStatusMessage] = useState({ type: "", message: "" });
-
-  // File upload state for profile picture
-  const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+
+  function CustomLoader() {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#7C5CFC]"></div>
+      </div>
+    );
+  }
 
   // Update form data when user session changes
   useEffect(() => {
+    setIsLoading(true);
     if (session?.user?.id) {
       const fetchUser = async () => {
         try {
@@ -85,6 +82,8 @@ export default function UserProfile() {
           });
         } catch (error) {
           console.error("Error fetching user:", error);
+        } finally {
+          setIsLoading(false);
         }
       };
       fetchUser();
@@ -163,7 +162,6 @@ export default function UserProfile() {
     setStatusMessage({ type: "", message: "" });
 
     try {
-      // API endpoint for updating profile information
       const response = await axios.put("/api/users/profile", {
         username: formData.username,
         email: formData.email,
@@ -182,6 +180,9 @@ export default function UserProfile() {
           type: "success",
           message: "Profile updated successfully!",
         });
+        setTimeout(() => {
+          setStatusMessage({ message: "", type: "" });
+        }, 3000);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -209,16 +210,11 @@ export default function UserProfile() {
         headerFormData.append("profileImage", base64Image);
       }
       headerFormData.append("userId", userId);
-
-      const response = await axios.put(
-        "/api/users/profile-header",
-        headerFormData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.put("/api/users/profile-header", headerFormData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       setIsEditingHeader(false);
       setStatusMessage({
@@ -239,13 +235,13 @@ export default function UserProfile() {
     }
   };
 
-  if (!session?.user?.id) {
-    return <div>Loading...</div>; // or some other loading state
+  if (isLoading || !session) {
+    return <CustomLoader />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
-      <div className="mx-auto max-w-3xl space-y-6">
+    <div className="min-h-screen bg-gray-50 pr-8">
+      <div className="mx-auto max-w-4xl space-y-6">
         {/* Status message */}
         {statusMessage.message && (
           <div
@@ -508,10 +504,6 @@ export default function UserProfile() {
       <DeleteAccountDialog
         isOpen_delete={isOpen_delete}
         setIsOpen_delete={setIsOpen_delete}
-      />
-      <AchievementDialog
-        isOpen_notification={isOpen_notification}
-        setIsOpen_notification={setIsOpen_notification}
       />
     </div>
   );

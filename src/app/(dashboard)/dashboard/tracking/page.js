@@ -35,6 +35,24 @@ export function calculateProgress(habit) {
   };
 }
 
+export function calculateStatus(habit) {
+  const startDate = new Date(habit.startDate);
+  const endDate = new Date(habit.endDate);
+  const today = new Date();
+  const completedDates = habit.completedDates.length;
+  const totalDays = habit.totalDays;
+
+  if (today < startDate) {
+    return "Pending";
+  } else if (today.getDate() - endDate.getDate() == 1) {
+    return "Failed";
+  } else if (completedDates === totalDays) {
+    return "Completed";
+  } else {
+    return "Ongoing";
+  }
+}
+
 export default function TrackingPage() {
   const { data: session, status } = useSession();
   const [habits, setHabits] = useState([]);
@@ -111,6 +129,7 @@ export default function TrackingPage() {
   };
 
   const handleHabitComplete = async () => {
+    setIsLoading(true);
     if (!selectedHabit || !selectedDate) return;
     setShowCalendar(false);
     try {
@@ -137,6 +156,8 @@ export default function TrackingPage() {
     } catch (error) {
       console.error("Failed to update habit:", error);
       toast.error("Failed to update habit");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -352,10 +373,7 @@ export default function TrackingPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span>
-                        {habit.status.charAt(0).toUpperCase() +
-                          habit.status.slice(1)}
-                      </span>
+                      <span>{calculateStatus(habit)}</span>
                     </td>
                   </tr>
                 );

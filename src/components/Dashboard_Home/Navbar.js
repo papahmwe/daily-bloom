@@ -8,6 +8,7 @@ import Popup from "../Rewards/Popup";
 import { Toaster } from "sonner";
 
 import axios from "axios";
+import Link from "next/link";
 
 const pageTitles = {
   "/dashboard": "Overview",
@@ -86,13 +87,15 @@ export default function Navbar() {
       {pathname !== "/dashboard/rewards" && (
         <div className="flex justify-end items-center gap-6 ">
           <div className="w-auto h-[67px] flex justify-between items-center gap-6">
-            <Image
-              src={user?.profilePicture || "/assets/rewards/user.svg"}
-              alt="Profile_Image"
-              width={30}
-              height={30}
-              className="object-contain cursor-pointer rounded-full"
-            />
+            <Link href="/dashboard/profile">
+              <Image
+                src={user?.profilePicture || "/assets/rewards/user.svg"}
+                alt="Profile_Image"
+                width={30}
+                height={30}
+                className="object-contain cursor-pointer rounded-full"
+              />
+            </Link>
 
             <div className="w-auto h-[67px] flex flex-col justify-center items-start">
               <h3 className="font-jost font-[500] text-[16px] text-black leading-[21.68px]">

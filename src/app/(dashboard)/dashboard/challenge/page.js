@@ -4,8 +4,8 @@ import Popup from "@/components/Challenge/Popup";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { set } from "mongoose";
 
 const ChallengesIdeas = [
   {
@@ -77,6 +77,7 @@ export default function Challenge() {
     notification: false,
     user: session?.user?.id || "",
   });
+  const [loading, setLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
@@ -147,6 +148,7 @@ export default function Challenge() {
       }
 
       try {
+        setLoading(true);
         const response = await fetch(
           `http://localhost:3000/api/challenges/delete/${_id}`,
           {
@@ -164,11 +166,24 @@ export default function Challenge() {
         await fetchData();
       } catch (error) {
         console.log("Error deleting challenge:", error);
+      } finally {
+        setLoading(false);
       }
     },
     [fetchData]
   );
 
+  function CustomLoader() {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#7C5CFC]"></div>
+      </div>
+    );
+  }
+
+  if (status === "loading" || loading) {
+    return <CustomLoader />;
+  }
   return (
     <div className="flex flex-col justify-start gap-[50px]">
       <div className="flex flex-col gap-[30px]">

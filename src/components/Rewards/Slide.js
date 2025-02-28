@@ -2,12 +2,9 @@
 
 import * as React from "react";
 import Image from "next/image";
-
 import { useState, useEffect } from "react";
-
 import { toast } from "sonner";
 import axios from "axios";
-
 import { Card, CardContent } from "@/components/Rewards/Card";
 import {
   Carousel,
@@ -16,7 +13,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { toast } from "sonner";
 
 export function CarouselSize({ rewards, loading, setLoading }) {
   console.log("rewards", rewards);

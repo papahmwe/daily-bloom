@@ -56,7 +56,7 @@ export default function DashboardHomePage() {
     if (session) {
       fetchDashboardData();
     }
-  }, [session]);
+  }, [session, userId]);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -82,10 +82,10 @@ export default function DashboardHomePage() {
             {completedPercentage === 0 || !completedPercentage ? (
               <>
                 <h2 className="text-black text-xl font-semibold font-['Montserrat']">
-                  Welcome back, {session?.user?.username} !
+                  Welcome, {session?.user?.username} !
                 </h2>
                 <p className="text-black font-['Montserrat'] mt-2">
-                  Let's get started on building great habits today!
+                  Let&apos;s get started on building great habits today!
                   <br />
                   Track your habits and see your progress here.
                 </p>
@@ -96,10 +96,10 @@ export default function DashboardHomePage() {
                   Congratulations, {session?.user?.username} !
                 </h2>
                 <p className="text-black font-['Montserrat'] mt-2">
-                  You have done{" "}
+                  You have done
                   <span className="font-semibold">
                     {completedPercentage} more habits
-                  </span>{" "}
+                  </span>
                   today.
                   <br />
                   Check your total habit progress in your dashboard.

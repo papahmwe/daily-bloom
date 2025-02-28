@@ -52,7 +52,7 @@ export default function Navbar() {
     };
     fetchUser();
     fetchNotifications();
-  }, [session]);
+  }, [session, userId]);
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -91,21 +91,21 @@ export default function Navbar() {
             href={"/dashboard/profile"}
             className="w-auto h-[67px] flex justify-between items-center gap-6"
           >
-            <Image
+            {/* <Image
               src={user?.profilePicture || "/assets/rewards/user.svg"}
               alt="Profile_Image"
               width={30}
               height={30}
               className="object-contain cursor-pointer rounded-full"
-            />
+            /> */}
 
             <div className="w-auto h-[67px] flex flex-col justify-center items-start">
-              <h3 className="font-jost font-[500] text-[16px] text-black leading-[21.68px]">
+              <h3 className="font-jost font-[500] text-[18px] tracking-wide text-black leading-[21.68px]">
                 {user?.username}
               </h3>
-              <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
+              {/* <h3 className="font-jost font-[400] text-[14px] text-black opacity-40 leading-[18.79px]">
                 User Account
-              </h3>
+              </h3> */}
             </div>
           </Link>
 

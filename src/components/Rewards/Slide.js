@@ -16,7 +16,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { toast } from "sonner";
 
 export function CarouselSize({ rewards, loading, setLoading }) {
   console.log("rewards", rewards);

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function MissionVision() {
   return (
-    <div>
+    <section id="MissionVision">
       {/* Mission & Vision Section*/}
       <div className="w-full h-[893px] rounded rounded-t-[150px] bg-backgroundPrimary mt-[-50px] pt-20 gap-[20px] flex flex-col">
         {/* Mission */}
@@ -54,6 +54,6 @@ export default function MissionVision() {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
